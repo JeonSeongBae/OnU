@@ -24,12 +24,65 @@
   background-color: #000000;
 }
 
+.container {
+  text-align: center;
+}
+
+.container img {
+  width: 100%;
+}
+
+.container span {
+  background-color: #004797;
+  border-radius: 4px;
+  padding: 10px 20px;
+  color: white;
+}
+
 .main-header {
   background-color: #4486FF;
+  padding-top: 120px;
+  padding-bottom: 60px;
+}
+
+.main-container h1 {
+  font-size: 50px;
+  color: #ffffff;
+}
+
+.main-section {
   padding-top: 60px;
   padding-bottom: 60px;
 }
 
-.main-header h1 {
+.main-content {
+  background-color: #4486ff;
+}
 
+.main-content .container span {
+  font-size: 25px;
+}
+
+.introduce-slider {
+  background-color: transparent;
+  padding: 20px 10px;
+}
+
+.introduce-body {
+  width:200px;
+  height:200px;
+  padding: 10px;
+}
+
+.introduce-body:hover {
+  background-color: #004797;
+}
+
+.introduce-body img {
+  background-size: contain;
+}
+
+.main-guide .container span {
+  font-size: 15px;
+  text-align: left;
 }
