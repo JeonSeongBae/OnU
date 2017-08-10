@@ -84,6 +84,11 @@
   padding: 20px 10px;
 }
 
+.introduce-row img{
+  width: 18%;
+  height: 20%;
+}
+
 .introduce-body {
   width:200px;
   height:200px;
