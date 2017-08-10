@@ -60,12 +60,22 @@
 
     <div class="main-section">
       <div class="container">
-        <h1>발상의 전환</h1>
-        <h4>공급자로 부터 소비자가 선택하는 방식
-          <img class="main-img" src="images/maincontent1.png" alt="">
-        소비자로 부터 공급자가 선택하는 방식</h4>
+        <span>발상의 전환</span>
+        <hr>
+        <div id="main-slider" class="main-slider">
+          <div class="main-row">
+            <div class="main-span">
+              공급자로 부터 소비자가 선택하는 방식
+            </div>
+            <div class="main-span">
+              <img class="main-img" src="images/maincontent1.png" alt="">
+            </div>
+            <div class="main-span">
+              소비자로 부터 공급자가 선택하는 방식
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
 
     <div class="main-section main-content">
       <div class="container">
@@ -73,18 +83,48 @@
         <hr>
         <div id="introduce-slider" class="introduce-slider">
           <div class="introduce-row">
-            <img src="images/introduce (1).png" alt="">
-            <img src="images/introduce (2).png" alt="">
-            <img src="images/introduce (3).png" alt="">
-            <img src="images/introduce (4).png" alt="">
-            <img src="images/introduce (5).png" alt="">
+            <div class="introduce-img">
+              <img src="images/introduce (1).png" alt="">
+              <br>편리성 제공
+            </div>
+            <div class="introduce-img">
+              <img src="images/introduce (1).png" alt="">
+              <br>생산성 향상
+            </div>
+            <div class="introduce-img">
+              <img src="images/introduce (1).png" alt="">
+              <br>유휴공간 활용
+            </div>
+            <div class="introduce-img">
+              <img src="images/introduce (1).png" alt="">
+              <br>합리적인 가격
+            </div>
+            <div class="introduce-img">
+              <img src="images/introduce (1).png" alt="">
+              <br>부가수익 창출
+            </div>
           </div>
           <div class="introduce-row">
-            <img src="images/introduce (6).png" alt="">
-            <img src="images/introduce (7).png" alt="">
-            <img src="images/introduce (8).png" alt="">
-            <img src="images/introduce (9).png" alt="">
-            <img src="images/introduce (10).png" alt="">
+            <div class="introduce-img">
+              <img src="images/introduce (1).png" alt="">
+              <br>관리 효율화
+            </div>
+            <div class="introduce-img">
+              <img src="images/introduce (1).png" alt="">
+              <br>사용할 공간 사진
+            </div>
+            <div class="introduce-img">
+              <img src="images/introduce (1).png" alt="">
+              <br>실제 사용후기
+            </div>
+            <div class="introduce-img">
+              <img src="images/introduce (1).png" alt="">
+              <br>실시간 Q&A
+            </div>
+            <div class="introduce-img">
+              <img src="images/introduce (1).png" alt="">
+              <br>효율성
+            </div>
           </div>
         </div>
       </div>
@@ -111,17 +151,17 @@
     <script src="js/script.js"></script>
 
     <script>
-      $(document).ready(function () {
-        var div = document.createElement("div");
-        div.className = "introduce-body";
-        var img = document.createElement("img");
-        img.setAttribute("src", "./images/icon.png");
-
-        div.appendChild(img);
-
-        $("#introduce-slider").append(div);
-
-      });
+      // $(document).ready(function () {
+      //   var div = document.createElement("div");
+      //   div.className = "introduce-body";
+      //   var img = document.createElement("img");
+      //   img.setAttribute("src", "./images/icon.png");
+      //
+      //   div.appendChild(img);
+      //
+      //   $("#introduce-slider").append(div);
+      //
+      // });
     </script>
   </body>
 </html>
