@@ -32,16 +32,16 @@
   text-align: center;
 }
 
-.container img {
+/*.container img {
   width: 360px;
   height: 100px;
-}
+}*/
 
-.container span {
+/*.container span {
   border-radius: 4px;
   padding: 10px 20px;
   color: white;
-}
+}*/
 
 .main-header {
   background-color: #4486FF;
@@ -55,9 +55,32 @@
   color: #ffffff;
 }
 
-.main-section .container h1 {
+/*.main-section .container span {
   font-size: 40px;
-  color: #4486FF;
+  color: #4486ff;
+}*/
+
+.second span{
+  font-size: 40px;
+  font-weight: 900;
+  color: #4486ff;
+}
+
+.third span{
+  font-size: 40px;
+  font-weight: 900;
+  color: #ffffff;
+  padding: 10 10 10 10;
+  background-color: blue;
+}
+
+.fourth span{
+  float: left;
+  font-size: 20px;
+  font-weight: 900;
+  color: #ffffff;
+  padding: 10 10 10 10;
+  background-color: blue;
 }
 
 .main-section {
@@ -70,28 +93,36 @@
   background-color: #4486ff;
 }
 
-.main-content .container span {
-  font-size: 25px;
-}
-
 .introduce-slider {
   background-color: transparent;
+  /*text-align: center;*/
   padding: 20px 10px;
 }
-.main-slider {
+/*.main-slider {
   background-color: transparent;
   padding: 20px 10px;
-}
+}*/
 .main-span{
   float: left;
-  width: 33%;
-  height: 20%;
+  width: 40%;
+  color: #4486ff;
+  font-weight: bolder;
+  font-size: 21px;
+  padding: 1px;
+}
+.main-spanimg{
+  float: left;
+  width: 20%;
   color: #4486ff;
   font-weight: bolder;
 }
 
-.main-span img{
+.main-spanimg img, .main-span div{
   width: 100%;
+}
+
+.main-span div{
+  vertical-align: middle;
 }
 
 .introduce-img{
@@ -100,10 +131,12 @@
   height: 20%;
   color: white;
   font-weight: bolder;
+  margin-bottom: 20px;
 }
 
 .introduce-img img{
   width: 100%;
+  height: 100%;
 }
 
 .introduce-body {
@@ -118,9 +151,4 @@
 
 .introduce-body img {
   background-size: contain;
-}
-
-.main-guide .container span {
-  font-size: 15px;
-  text-align: left;
 }
