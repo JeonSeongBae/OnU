@@ -1,3 +1,7 @@
+@font-face {
+   font-family: 'mainFont'; /* 폰트 패밀리 이름 주기*/
+   src: url('../fonts.NanumFontSetup_TTF_BARUNGOTHIC_hangeulcamp.exe'); /*폰트 파일 주소*/
+}
 
 #header {
   background-color: #4486FF;
@@ -29,11 +33,11 @@
 }
 
 .container img {
-  width: 100%;
+  width: 360px;
+  height: 100px;
 }
 
 .container span {
-  background-color: #004797;
   border-radius: 4px;
   padding: 10px 20px;
   color: white;
@@ -46,11 +50,23 @@
 }
 
 .main-container h1 {
+  font-family: 'mainFont' !important;
   font-size: 50px;
   color: #ffffff;
 }
 
+.main-section .container h1 {
+  font-size: 40px;
+  color: #4486FF;
+}
+
+.main-section .container h4 {
+  font-size: 20px;
+  color: #4486FF;
+}
+
 .main-section {
+  background-color: White;
   padding-top: 60px;
   padding-bottom: 60px;
 }

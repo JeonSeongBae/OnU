@@ -6,7 +6,7 @@
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/stylesheet.css" rel="stylesheet">
-
+    <link href="css/signUp.css" rel="stylesheet">
     <!-- IE8 에서 HTML5 요소와 미디어 쿼리를 위한 HTML5 shim 와 Respond.js -->
         <!-- WARNING: Respond.js 는 당신이 file:// 을 통해 페이지를 볼 때는 동작하지 않습니다. -->
         <!--[if lt IE 9]>
@@ -35,8 +35,9 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">회원가입</a></li>
-            <li><a href="#">로그인</a></li>
+            <li><a href="./login.html">회원가입</a></li>
+            <li><a href="./login.html">회원가입</a></li>
+            <li><a href="./signUp.html">로그인</a></li>
           </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
@@ -46,38 +47,27 @@
 
   <main>
 
-    <div class="main-header">
-      <div class="container main-container">
-        <h1>공유하는 시대</h1>
-        <h1>나눠쓰자 나의공간</h1>
-        <br>
-        <button type="button" class="btn btn-default btn-lg">
-          장소견적 신청하기
-        </button>
-      </div>
-    </div>
-
-    <div class="main-section">
-      <div class="container">
-        <img src="images/maincontent1.png" alt="발상의 전환">
-      </div>
-    </div>
-
-    <div class="main-section main-content">
-      <div class="container">
-        <span>공앤유를 사용하면?</span>
-        <hr>
-        <div id="introduce-slider" class="introduce-slider">
-
-        </div>
-      </div>
-    </div>
-
-    <div class="main-section main-guide">
-      <div class="container">
-        <span>공앤유의 이용방법</span>
-        <hr>
-        <img src="images/maincontent2.png" alt="이용방법">
+    <div id="wrap">
+      <div id="container">
+          <h1 class="title">어서오세요.</h1>
+          <form name="singIn" action="./signIn.php" method="post" onsubmit="return checkSubmit()">
+              <div class="line">
+                  <p>아이디</p>
+                  <div class="inputArea">
+                      <input type="text" name="memberId" class="memberId" />
+                  </div>
+              </div>
+              <div class="line">
+                  <p>비밀번호</p>
+                  <div class="inputArea">
+                      <input type="password" name="memberPw" class="memberPw" />
+                  </div>
+              </div>
+              <div class="line">
+                  <input type="submit" value="로그인" class="submit" />
+              </div>
+          </form>
+          <h1 class="title"><a href="./signUpForm.php">회원가입 하기</a></h1>
       </div>
     </div>
 
@@ -91,7 +81,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/script.js"></script>
+    <script src="js/signUp.js"></script>
 
     <script>
       $(document).ready(function () {
