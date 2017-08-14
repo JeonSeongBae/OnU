@@ -147,5 +147,159 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/script.js"></script>
 
+    <script>
+      var typeList = ["스터디룸", "카페", "파티룸", "회의실"];
+      var locationList = ["서울", "대전", "제주도"];
+
+      $(document).ready(function () {
+        var div = document.createElement("div");
+        div.className = "introduce-body";
+        var img = document.createElement("img");
+        img.setAttribute("src", "./images/icon.png");
+
+        div.appendChild(img);
+
+        $("#introduce-slider").append(div);
+
+      });
+
+      function openForm() {
+        var index = 0;
+
+        var bg = document.createElement("div");
+        bg.className = "main-modal";
+
+        var formDiv = document.createElement("div");
+        formDiv.className = "main-form";
+
+        var span = document.createElement("span");
+        span.id = "form-title";
+        span.innerHTML = "견적서 신청하기";
+        formDiv.appendChild(span);
+
+        initButton(formDiv, index++, "공간유형", typeList);
+        initButton(formDiv, index++, "지역", locationList);
+        initButton(formDiv, index++, "인원", null);
+        //setFormLocation(formDiv, index++, "지 역", "대전시");
+        //setFormButton(formDiv, index++, "대 여 시 간", "4명");
+        //setFormButton(formDiv, index++, "가 격 대", "2000원");
+        //setFormButton(formDiv, index++, "추가요구 정보기입", "4명");
+
+        var confirm = document.createElement("button");
+        confirm.className = "btn btn-success";
+        confirm.setAttribute("type", "button");
+        confirm.innerHTML = "요청하기";
+
+        formDiv.appendChild(document.createElement("hr"));
+        formDiv.appendChild(confirm);
+
+        var body = document.body;
+        body.appendChild(bg);
+        body.appendChild(formDiv);
+
+      }
+
+      function initButton(form, index, name, list) {
+        var div = document.createElement("div");
+        div.className = "form-btn";
+
+        var type = document.createElement("button");
+        type.setAttribute("type", "button");
+        type.className = "btn btn-info";
+        type.setAttribute("data-toggle", "collapse");
+        type.setAttribute("data-target", "#formElement" + index);
+        type.innerHTML = name;
+
+        var span = document.createElement("span");
+        span.className = "form-text";
+
+        type.appendChild(span);
+
+        var typeDiv = document.createElement("div");
+        typeDiv.id = "formElement" + index;
+        typeDiv.className = "collapse";
+
+        var listDiv = setList(index, list);
+
+        typeDiv.appendChild(listDiv);
+
+        div.appendChild(type);
+        div.appendChild(typeDiv);
+
+        form.appendChild(div);
+      }
+
+      function setList(index, list) {
+        switch (index) {
+          case 0:
+            var listDiv = document.createElement("div");
+            listDiv.className = "list-group";
+
+            for(var j = 0; j < list.length; j++) {
+              var bt = document.createElement("button");
+              bt.setAttribute("type", "button");
+              bt.className = "list-group-item";
+              bt.innerHTML = list[j];
+              bt.setAttribute("onclick", "selectItem(" + index + ", this)");
+
+              listDiv.appendChild(bt);
+            }
+
+            return listDiv;
+
+          case 1:
+            var listDiv = document.createElement("div");
+
+          case 2:
+            var listDiv = document.createElement("div");
+            listDiv.className = "input-group";
+
+            var text = document.createElement("input");
+            text.className = "form-control";
+            text.setAttribute("type", "number");
+            text.setAttribute("placeholder", "인원 수를 입력해주세요.");
+
+            var span = document.createElement("span");
+            span.className = "input-group-addon";
+            span.innerHTML = "명";
+
+            var bt = document.createElement("button");
+            bt.setAttribute("type", "button");
+            bt.className = "btn btn-default";
+            bt.innerHTML = "선택하기";
+            bt.style.float = "right";
+            bt.setAttribute("onclick", "selectItem(" + index + ", this)");
+
+            listDiv.appendChild(text);
+            listDiv.appendChild(span);
+            listDiv.appendChild(bt);
+
+            return listDiv;
+          default:
+
+        }
+      }
+
+      function selectItem(index, item) {
+        var text = document.getElementsByClassName("form-text");
+
+        switch (index) {
+          case 0:
+            text[index].innerHTML = "<br>" + item.innerHTML;
+            break;
+
+          case 1:
+            text[index].innerHTML = item.parentNode.childNodes[0].value + "명";
+            break;
+          default:
+
+        }
+
+
+        var collapseDiv = document.getElementById("formElement" + index);
+        collapseDiv.className = "collapse";
+      }
+    </script>
+
   </body>
 </html>
