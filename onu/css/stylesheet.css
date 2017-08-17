@@ -86,12 +86,35 @@
 }
 
 .fourth span{
-  float: left;
-  font-size: 20px;
+  /*float: left;*/
+  text-align: left;
+  left: 0;
+  font-size: 30px;
   font-weight: 900;
   color: #ffffff;
   padding: 10 10 10 10;
   background-color: #4486ff;
+}
+
+.circle-row{
+  width: 80%;
+}
+
+.circle {
+ float: left;
+ width:25%;
+ height:40%;
+ border-radius:200px;
+ -moz-border-radius : 100px;
+ -webkit-border-radius : 100%;
+ -ms-border-radius :100px;
+ -khtml-border-radius : 100px;
+ -o-border-radius :100px;
+ background:#09F;
+ font:normal 12px/200px "나눔고딕", "돋움", "굴림";
+ color:#fff;
+ text-align:center;
+ margin: 0 35 0 35 ;
 }
 
 .main-section {
@@ -164,10 +187,10 @@
   background-size: contain;
 }
 
-.main-guide .container span {
+/*.main-guide .container span {
   font-size: 15px;
   text-align: left;
-}
+}*/
 
 .main-modal {
   width: 100%;
