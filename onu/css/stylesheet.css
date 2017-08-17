@@ -48,7 +48,7 @@
 }
 
 .container span {
-  background-color: #004797;
+  background-color: #4486FF;
   border-radius: 4px;
   padding: 10px 20px;
   color: white;
@@ -74,7 +74,7 @@
 .second span{
   font-size: 40px;
   font-weight: 900;
-  color: #4486ff;
+  /*color: #4486ff;*/
 }
 
 .third span{
@@ -82,7 +82,7 @@
   font-weight: 900;
   color: #ffffff;
   padding: 10 10 10 10;
-  background-color: blue;
+  background-color: #4051E6;
 }
 
 .fourth span{
@@ -91,7 +91,7 @@
   font-weight: 900;
   color: #ffffff;
   padding: 10 10 10 10;
-  background-color: blue;
+  background-color: #4486ff;
 }
 
 .main-section {
