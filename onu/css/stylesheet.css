@@ -97,13 +97,19 @@
 }
 
 .circle-row{
-  width: 80%;
+  text-align: -webkit-center;
+  float: left;
+  width: 33%;
+  height: 50%;
+  color: white;
+  font-weight: bolder;
+  margin-bottom: 20px;
 }
 
 .circle {
- float: left;
- width:25%;
- height:40%;
+ /*float: left;*/
+ width:60%;
+ height:60%;
  border-radius:200px;
  -moz-border-radius : 100px;
  -webkit-border-radius : 100%;
