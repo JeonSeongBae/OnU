@@ -39,6 +39,17 @@
   color: white;
 }
 
+.container img {
+  width: 100%;
+}
+
+.container span {
+  background-color: #4486FF;
+  border-radius: 4px;
+  padding: 10px 20px;
+  color: white;
+}
+
 .main-header {
   background-color: #4486FF;
   padding-top: 120px;
