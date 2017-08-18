@@ -32,16 +32,12 @@
   text-align: center;
 }
 
-/*.container img {
-  width: 360px;
-  height: 100px;
-}*/
-
-/*.container span {
+.container span {
+  background-color: #4486FF;
   border-radius: 4px;
   padding: 10px 20px;
   color: white;
-}*/
+}
 
 .container img {
   width: 100%;
@@ -86,12 +82,24 @@
 }
 
 .fourth span{
-  float: left;
-  font-size: 20px;
+  font-size: 30px;
   font-weight: 900;
   color: #ffffff;
   padding: 10 10 10 10;
   background-color: #4486ff;
+}
+
+.guide-img{
+  float: left;
+  width: 20%;
+  height: 20%;
+  font-weight: bolder;
+  margin-bottom: 20px;
+}
+
+.guide-img img{
+  width: 100%;
+  height: 100%;
 }
 
 .main-section {
@@ -109,10 +117,7 @@
   /*text-align: center;*/
   padding: 20px 10px;
 }
-/*.main-slider {
-  background-color: transparent;
-  padding: 20px 10px;
-}*/
+
 .main-span{
   float: left;
   width: 40%;
@@ -164,10 +169,10 @@
   background-size: contain;
 }
 
-.main-guide .container span {
+/*.main-guide .container span {
   font-size: 15px;
   text-align: left;
-}
+}*/
 
 .main-modal {
   width: 100%;
