@@ -7,6 +7,9 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/stylesheet.css" rel="stylesheet">
 
+        <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+
     <!-- IE8 에서 HTML5 요소와 미디어 쿼리를 위한 HTML5 shim 와 Respond.js -->
         <!-- WARNING: Respond.js 는 당신이 file:// 을 통해 페이지를 볼 때는 동작하지 않습니다. -->
         <!--[if lt IE 9]>
@@ -55,6 +58,7 @@
         <button type="button" class="btn btn-default btn-lg" onclick="openForm()">
           장소견적 신청하기
         </button>
+
       </div>
     </div>
 
@@ -186,10 +190,13 @@
 
   </footer>
     <!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
     <script src="js/bootstrap.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
     <script src="js/script.js"></script>
+
 
     <script>
       var typeList = ["스터디룸", "카페", "파티룸", "회의실"];
@@ -203,6 +210,8 @@
         // div.appendChild(img);
         // $("#introduce-slider").append(div);
       });
+
+
 
       function openForm() {
         var index = 0;
@@ -221,7 +230,6 @@
         initButton(formDiv, index++, "공간유형", typeList);
         initButton(formDiv, index++, "지역", locationList);
         initButton(formDiv, index++, "인원", null);
-        //setFormLocation(formDiv, index++, "지 역", "대전시");
         //setFormButton(formDiv, index++, "대 여 시 간", "4명");
         //setFormButton(formDiv, index++, "가 격 대", "2000원");
         //setFormButton(formDiv, index++, "추가요구 정보기입", "4명");
@@ -237,6 +245,31 @@
         var body = document.body;
         body.appendChild(bg);
         body.appendChild(formDiv);
+
+
+        $('.selectpicker').selectpicker();
+        //$('.selectpicker').on('change', function(){
+        //  var selected = $(this).find("option:selected").val();
+        //  alert(selected);
+        //});
+
+        $('.selectpicker.city').on('changed.bs.select', function (e) {
+          console.log(e);
+
+          $('.selectpicker.district').html("");
+
+          for(var index in typeList) {
+            var op = document.createElement("option");
+            op.innerHTML = typeList[index];
+            $('.selectpicker.district').append(op);
+          }
+          $('.selectpicker.district').selectpicker('refresh');
+        });
+
+        $('.selectpicker.district').on('changed.bs.select', function(e) {
+          var result = $('.selectpicker.city').val() + " " + $('.selectpicker.district').val();
+          selectItem(1, result);
+        });
 
       }
 
@@ -290,6 +323,32 @@
 
           case 1:
             var listDiv = document.createElement("div");
+            listDiv.className = "input-group";
+
+            var city = document.createElement("select");
+            city.className = "selectpicker city";
+            city.setAttribute("title", "지역");
+            city.setAttribute("data-live-search", "true");
+            //city.setAttribute("data-width", "25%");
+
+
+            for(var j = 0; j < list.length; j++) {
+              var op = document.createElement("option");
+              op.innerHTML = list[j];
+
+              city.appendChild(op);
+            }
+
+            var district = document.createElement("select");
+            district.className = "selectpicker district";
+            district.setAttribute("title", "선택해주세요");
+            district.setAttribute("data-live-search", "true");
+
+
+            listDiv.appendChild(city);
+            listDiv.appendChild(district);
+
+            return listDiv;
 
           case 2:
             var listDiv = document.createElement("div");
@@ -326,12 +385,16 @@
 
         switch (index) {
           case 0:
-            text[index].innerHTML = "<br>" + item.innerHTML;
+            text[index].innerHTML = " : " + item.innerHTML;
             break;
 
           case 1:
-            text[index].innerHTML = item.parentNode.childNodes[0].value + "명";
+            text[index].innerHTML = " : " + item;
             break;
+
+          case 2:
+            text[index].innerHTML = " : " + item.parentNode.childNodes[0].value + "명";
+
           default:
 
         }

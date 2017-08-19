@@ -219,3 +219,7 @@
 .form-btn button {
   width:100%;
 }
+
+.form-text {
+  font-weight: bold;
+}
