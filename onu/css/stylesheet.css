@@ -5,8 +5,12 @@
  }
 */
 #header {
-  background-color: #4486FF;
+  background-color: transparent;
   border-radius: 0px;
+}
+
+#header.navbar-shrink {
+  background-color: #4486FF;
 }
 
 #header a {
@@ -52,9 +56,16 @@
 }
 
 .main-header {
-  background-color: #4486FF;
+  background-image: url("../images/main-background.jpg");
+  background-size: contain;
   padding-top: 120px;
   padding-bottom: 60px;
+  height: 100%;
+}
+
+.main-container {
+  padding: 40px;
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 .main-container h1 {
@@ -223,4 +234,14 @@
 
 .form-text {
   font-weight: bold;
+}
+
+#current {
+  font-size: 20px;
+  color: white;
+  background-color: transparent;
+}
+
+.current-container {
+  margin: 40px 0px;
 }
