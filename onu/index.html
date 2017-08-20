@@ -170,20 +170,35 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
     <script src="js/script.js"></script>
 
+    <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyB5Aji_Ysf6EsI_6cR4kDs3yi9s0bjo9_k",
+        authDomain: "andu-3f6db.firebaseapp.com",
+        databaseURL: "https://andu-3f6db.firebaseio.com",
+        projectId: "andu-3f6db",
+        storageBucket: "andu-3f6db.appspot.com",
+        messagingSenderId: "799401536592"
+      };
+      firebase.initializeApp(config);
+    </script>
+
 
     <script>
-      var typeList = ["스터디룸", "카페", "파티룸", "회의실"];
-      var locationList = ["서울", "대전", "제주도"];
-
-      $(document).ready(function () {
-        // var div = document.createElement("div");
-        // div.className = "introduce-body";
-        // var img = document.createElement("img");
-        // img.setAttribute("src", "./images/icon.png");
-        // div.appendChild(img);
-        // $("#introduce-slider").append(div);
+      var typeRef = firebase.database().ref('type');
+      var typeList;
+      
+      typeRef.once('value').then(function(snapshot) {
+        typeList = snapshot.val();
       });
 
+      var cityRef = firebase.database().ref('city');
+      var locationList;
+
+      cityRef.once('value').then(function(snapshot) {
+        locationList = snapshot.val();
+      };
 
 
       function openForm() {
@@ -231,10 +246,20 @@
 
           $('.selectpicker.district').html("");
 
-          for(var index in typeList) {
-            var op = document.createElement("option");
-            op.innerHTML = typeList[index];
-            $('.selectpicker.district').append(op);
+
+          for(var index in locationList) {
+            var select = $('.selectpicker.city').find("option:selected").val();
+
+            if(index == select) {
+
+              for(var i in locationList[index]) {
+                console.log(locationList[index][i]);
+                var op = document.createElement("option");
+
+                op.innerHTML = locationList[index][i];
+                $('.selectpicker.district').append(op);
+              }
+            }
           }
           $('.selectpicker.district').selectpicker('refresh');
         });
@@ -282,11 +307,11 @@
             var listDiv = document.createElement("div");
             listDiv.className = "list-group";
 
-            for(var j = 0; j < list.length; j++) {
+            for(var j in list) {
               var bt = document.createElement("button");
               bt.setAttribute("type", "button");
               bt.className = "list-group-item";
-              bt.innerHTML = list[j];
+              bt.innerHTML = j;
               bt.setAttribute("onclick", "selectItem(" + index + ", this)");
 
               listDiv.appendChild(bt);
@@ -305,9 +330,9 @@
             //city.setAttribute("data-width", "25%");
 
 
-            for(var j = 0; j < list.length; j++) {
+            for(var index in list) {
               var op = document.createElement("option");
-              op.innerHTML = list[j];
+              op.innerHTML = index;
 
               city.appendChild(op);
             }
