@@ -1,8 +1,9 @@
+/*
 @font-face {
-   font-family: 'mainFont'; /* 폰트 패밀리 이름 주기*/
-   src: url('../fonts.NanumFontSetup_TTF_BARUNGOTHIC_hangeulcamp.exe'); /*폰트 파일 주소*/
-}
-
+   font-family: 'mainFont';
+   src: url('../fonts.NanumFontSetup_TTF_BARUNGOTHIC_hangeulcamp.exe');
+ }
+*/
 #header {
   background-color: #4486FF;
   border-radius: 0px;
