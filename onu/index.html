@@ -188,7 +188,7 @@
     <script>
       var typeRef = firebase.database().ref('type');
       var typeList;
-      
+
       typeRef.once('value').then(function(snapshot) {
         typeList = snapshot.val();
       });
@@ -198,7 +198,7 @@
 
       cityRef.once('value').then(function(snapshot) {
         locationList = snapshot.val();
-      };
+      });
 
 
       function openForm() {
