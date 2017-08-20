@@ -19,7 +19,6 @@
   </head>
 
   <body>
-
     <header>
     <nav id="header" class="navbar navbar-default navbar-fixed-top">
       <div class="container-fluid">
@@ -47,9 +46,7 @@
     </nav>
 
   </header>
-
   <main>
-
     <div class="main-header">
       <div class="container main-container">
         <h1>공유하는 시대</h1>
@@ -58,7 +55,6 @@
         <button type="button" class="btn btn-default btn-lg" onclick="openForm()">
           장소견적 신청하기
         </button>
-
       </div>
     </div>
 
@@ -135,9 +131,30 @@
     <div class="main-section main-guide">
       <div class="container fourth">
         <span>공앤유의 이용방법</span>
-        <br>
-        <div class="">
-          <img src="images/maincontent2.png" alt="이용방법">
+        <hr>
+        <div>
+          <div class="guide-img">
+              <img src="images/howtouse.png" alt="">
+              1 장소 견적 신청하기
+          </div>
+
+          <div class="guide-img">
+              <img src="images/howtouse (2).png" alt="">
+          </div>
+
+          <div class="guide-img">
+              <img src="images/howtouse.png" alt="">
+              2 견적 비교후 예약하기
+          </div>
+
+          <div class="guide-img">
+              <img src="images/howtouse (2).png" alt="">
+          </div>
+
+          <div class="guide-img">
+              <img src="images/howtouse.png" alt="">
+              3 임대인과 마무리계약
+          </div>
         </div>
       </div>
     </div>
@@ -171,19 +188,17 @@
     <script>
       var typeRef = firebase.database().ref('type');
       var typeList;
-
+      
       typeRef.once('value').then(function(snapshot) {
         typeList = snapshot.val();
       });
-
 
       var cityRef = firebase.database().ref('city');
       var locationList;
 
       cityRef.once('value').then(function(snapshot) {
         locationList = snapshot.val();
-      });
-
+      };
 
 
       function openForm() {
