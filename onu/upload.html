@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/stylesheet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="./css/upload.css">
+
+    <title></title>
+  </head>
+  <body>
+    <header>
+      <nav id="header" class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <a class="navbar-brand" href="#">
+          <img src="./img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+          공앤유
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav justify-content-end">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">회원가입</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="#" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="login">로그인</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <div class="main-header">
+      <div class="container main-container">
+        <h1 id="status">공유하는 시대</h1>
+        <div class = "signup_form">
+          <div class="form-group">
+            <!-- 파일 업로드 -->
+            <button type="button" name="button" class="btnfile">
+              <input type="file" class="inputfile" id="file1" name="file" multiple="multiple">
+            </button>
+            <button type="button" name="button" class="btnfile">
+              <input type="file" class="inputfile" id="file2" name="file" multiple="multiple">
+            </button>
+            <button type="button" name="button" class="btnfile">
+              <input type="file" class="inputfile" id="file3" name="file" multiple="multiple">
+            </button>
+            <button type="button" name="button" class="btnfile">
+              <input type="file" class="inputfile" id="file4" name="file" multiple="multiple">
+            </button>
+          </div>
+          <div id="holder"class="holder"></div>
+          <button type="button" onclick="fileUpLoad()" class="btn btn_gray" style="display:inline">사진 저장하기</button>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
+  <script src="./js/fileUpLoad.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyDxbF57tRwkq5bdMyMPLbG5o9MfhfAHKmg",
+      authDomain: "andu-temp.firebaseapp.com",
+      databaseURL: "https://andu-temp.firebaseio.com",
+      projectId: "andu-temp",
+      storageBucket: "andu-temp.appspot.com",
+      messagingSenderId: "110005684913"
+    };
+    firebase.initializeApp(config);
+
+    // Get a reference to the database service
+    var database = firebase.database();
+    // Get a reference to the storage service, which is used to create references in your storage bucket
+    var storage = firebase.storage();
+    // Create a root reference
+    var storageRef = firebase.storage().ref();
+
+    function fileUpLoad(){
+      var file = document.getElementById("file").files[0];
+      var uploadTask = storageRef.child(file.name).put(file);
+      // var uploadTask = storageRef.child('images/' + file.name).put(file, metadata);
+
+      // Listen for state changes, errors, and completion of the upload.
+      uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+        function(snapshot) {
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log('Upload is ' + progress + '% done');
+          switch (snapshot.state) {
+            case firebase.storage.TaskState.PAUSED: // or 'paused'
+              console.log('Upload is paused');
+              break;
+            case firebase.storage.TaskState.RUNNING: // or 'running'
+              console.log('Upload is running');
+              break;
+          }
+        }, function(error) {
+        switch (error.code) {
+          case 'storage/unauthorized':
+            // User doesn't have permission to access the object
+            break;
+          case 'storage/canceled':
+            // User canceled the upload
+            break;
+          case 'storage/unknown':
+            // Unknown error occurred, inspect error.serverResponse
+            break;
+        }
+      }, function() {
+        // Upload completed successfully, now we can get the download URL
+        var downloadURL = uploadTask.snapshot.downloadURL;
+        document.getElementsByClassName("col-form-label").innerHTML = downloadURL;
+      });
+    }
+  </script>
+
+  <script>
+    var upload = document.getElementsByTagName('input');
+    var holder = document.getElementById('holder');
+    var state = document.getElementById('status');
+
+    if (typeof window.FileReader === 'undefined') {
+      state.className = 'fail';
+    } else {
+      state.className = 'success';
+    }
+
+    upload.onchange = function (e) {
+      e.preventDefault();
+
+      var file = upload.files[0];
+      var reader = new FileReader();
+      reader.onload = function (event) {
+        var img = new Image();
+        img.src = event.target.result;
+
+        holder.appendChild(img);
+      };
+      reader.readAsDataURL(file);
+
+      return false;
+    };
+    </script>
+</html>
