@@ -41,8 +41,9 @@
         <h1 id="status">공유하는 시대</h1>
         <div class = "signup_form">
           <div id="holder"class="holder"></div>
-          <button type="button" class="btn btn_gray" style="display:inline">추가<input type="file" class="inputfile" id="file" name="file" multiple="multiple"></button>
-          <button type="button" onclick="fileUpLoad()" class="btn btn_gray" style="display:inline">저장</button>
+          <button type="button" class="btn btn_gray" id="btn-upload">추 가</button>
+          <input type="file" class="inputfile" id="file" name="file" multiple="multiple">
+          <button type="button" onclick="fileUpLoad()" class="btn btn_gray" style="display:inline">저 장</button>
         </div>
       </div>
     </div>
@@ -50,6 +51,17 @@
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
   <script src="./js/fileUpLoad.js"></script>
+  <script>
+  $(function () {
+    $('#btn-upload').click(function (e) {
+      e.preventDefault();
+      $('#file').click();
+    });
+  });
+  function changeValue(obj){
+    alert(obj.value);
+  }
+  </script>
   <script>
     // Initialize Firebase
     var config = {
@@ -114,7 +126,8 @@
   </script>
 
   <script>
-    var upload = document.getElementsByTagName('input')[0];
+    var upload = new Array();
+    upload = document.getElementsByTagName('input')[0];
     var holder = document.getElementById('holder');
     var state = document.getElementById('status');
 
@@ -127,7 +140,7 @@
     upload.onchange = function (e) {
       e.preventDefault();
       holder.innerHTML='';
-      for (var i = 0; i < upload.files.length; i++) {
+      for (var i = 0; i < upload.files.length && i <8; i++) {
         var file = upload.files[i];
         var reader = new FileReader();
         reader.onload = function (event) {
