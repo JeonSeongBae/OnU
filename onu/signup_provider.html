@@ -46,6 +46,14 @@
             <input type="text" class="form-control input_form" id="tel" placeholder="전화번호를 입력해주세요">
           </div>
         </div>
+
+        <div class="form-group">
+          <select class="search" id="sido" name="big" style = "height:30px">
+					</select>
+					<select class="search" id="gugun" name="small" style = "height:30px">
+					</select>
+        </div>
+
         <button type="button" onclick="make_id()" class="btn btn_gray">회원가입</button>
         <button type="button" onclick = "cancel_signup()" class= "btn btn_gray">취소</button>
       </div>
@@ -74,6 +82,7 @@
     var duple_check = false;
     var is_provider = false;
     var email, password, password_compare, tel;
+    var sido;
 
       $(document).ready(function () {
         var div = document.createElement("div");
@@ -211,6 +220,108 @@
         console.log(snapshot.val());
       });
     }
+
+    function js_select_region(select1, select2) {//시-도를 선택했을 때 해당하는 구-군을 다음 select에 나타냄
+
+			if (!js_select_region_select_sido(select1)) {
+        console.log("리턴된거임 ㅄ아");
+				return;
+			}
+			if (!js_select_region_select_gugun(select1, select2)) {
+				return;
+			}
+      console.log("맞잔하");
+			select1.onchange = function() {
+        console.log("맞잔하");
+				select2.value = '';
+				js_select_region_select_gugun(select1, select2)
+			}
+		}
+
+		function js_select_region_select_sido(select1) {
+      var big_category = firebase.database().ref('place');
+
+      big_category.once('value').then(function(snapshot){
+        sido = Object.keys(snapshot.val());
+        if (!sido) {
+          console.log('너구나??');
+  				return false;
+  			}
+
+  			if (select1.tagName != 'SELECT') {
+          console.log("너냐");
+  				return false;
+  			}
+
+  			var val = select1.value;
+  			var opts = select1.options;
+  			select1.length = 0;
+
+  			var opt = new Option('대분류', '', (val == ''), (val == ''));
+  			opts.add(opt);
+
+
+  			for (var i = 0, m = sido.length; i < m; i++) {
+  				var opt = new Option(sido[i], sido[i], (val == sido[i]),
+  						(val == sido[i]));
+  				opts.add(opt);
+  			}
+  			return true;
+      });
+      return true;
+		}
+
+		function js_select_region_select_gugun(select1, select2) {
+      var small_category = firebase.database().ref('place/' + select1.value);
+      console.log(select1.value);
+      var gugun;
+
+      small_category.once('value').then(function(snapshot){
+        gugun = snapshot.val();
+        if (!gugun) {
+          console.log("여기까진오냐");
+  				return true;
+  			}
+  			if (select1.tagName != 'SELECT') {
+          console.log("여기까진오냐2");
+  				return false;
+  			}
+  			if (select2.tagName != 'SELECT') {
+          console.log("여기까진오냐3");
+  				return false;
+  			}
+
+  			var val = select2.value;
+  			var opts = select2.options;
+  			select2.length = 0;
+  			var opt = new Option('소분류', '', (val == ''), (val == ''));
+  			opts.add(opt);
+
+        console.log("여기까진오냐");
+  			if (!select1.value) {
+  				select2.disabled = true;
+  				return true;
+  			} else {
+  				select2.disabled = false;
+  			}
+
+  			//var list = gugun[select1.value];
+  			if (!gugun) {
+  				return false;
+  			}
+
+  			for (var i = 0, m = gugun.length; i < m; i++) {
+  				var opt = new Option(gugun[i], gugun[i], (val == gugun[i]),
+  						(val == gugun[i]));
+  				opts.add(opt);
+  			}
+  			return true;
+      })
+      return true;
+		}
+
+		js_select_region(document.getElementById("sido"), document
+				.getElementById("gugun"));
 
     function cancel_signup(){
       location.href = "index.html";
