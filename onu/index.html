@@ -1,21 +1,191 @@
-<html>
+<!DOCTYPE html>
+<html lang="kr">
   <head>
+    <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/stylesheet.css" rel="stylesheet">
-
-        <!-- Latest compiled and minified CSS -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/stylesheet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
 
-    <!-- IE8 에서 HTML5 요소와 미디어 쿼리를 위한 HTML5 shim 와 Respond.js -->
-        <!-- WARNING: Respond.js 는 당신이 file:// 을 통해 페이지를 볼 때는 동작하지 않습니다. -->
-        <!--[if lt IE 9]>
-          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
+  </head>
+  <body>
+    <header>
+      <nav id="header" class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <a class="navbar-brand" href="#">
+          <img src="./img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+          공앤유
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav justify-content-end">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">회원가입</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="#" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="login">로그인</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <div class="main-header">
+      <div class="container main-container">
+        <h1>공유하는 시대</h1>
+        <h1>나눠쓰자 나의공간</h1>
+        <br>
+        <div class="current-container">
+          <hr>
+          <span id="current"></span>
+          <hr>
+        </div>
+        <button type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="request">
+          장소견적 신청하기
+        </button>
+      </div>
+    </div>
+
+    <div class="main-section">
+      <div class="container">
+        <span>발상의 전환</span>
+        <hr>
+        <div class="row">
+          <div class="col align-self-center">
+            <p>공급자로부터 소비자가 선택하는 방식</p>
+          </div>
+          <div class="col">
+            <img src="img/maincontent1.png" alt="">
+          </div>
+          <div class="col align-self-center">
+            <p>소비자로부터 공급자가 선택하는 방식</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="main-section main-content">
+      <div class="container">
+        <span>공앤유를 사용하면?</span>
+        <hr>
+        <div class="row">
+          <div class="col">
+            <img src="img/introduce (1).png" alt="">
+            <br>
+            <h4>편리성 제공</h4>
+          </div>
+          <div class="col">
+            <img src="img/introduce (1).png" alt="">
+            <br>
+            <h4>생산성 향상</h4>
+          </div>
+          <div class="col">
+            <img src="img/introduce (1).png" alt="">
+            <br>
+            <h4>유휴공간 활용</h4>
+          </div>
+          <div class="col">
+            <img src="img/introduce (1).png" alt="">
+            <br>
+            <h4>합리적인 가격</h4>
+          </div>
+          <div class="col">
+            <img src="img/introduce (1).png" alt="">
+            <br>
+            <h4>부가수익 창출</h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <img src="img/introduce (1).png" alt="">
+            <br>
+            <h4>관리 효율화</h4>
+          </div>
+          <div class="col">
+            <img src="img/introduce (1).png" alt="">
+            <br>
+            <h4>사용할 공간 사진</h4>
+          </div>
+          <div class="col">
+            <img src="img/introduce (1).png" alt="">
+            <br>
+            <h4>실제 사용후기</h4>
+          </div>
+          <div class="col">
+            <img src="img/introduce (1).png" alt="">
+            <br>
+            <h4>실시간 Q&A</h4>
+          </div>
+          <div class="col">
+            <img src="img/introduce (1).png" alt="">
+            <br>
+            <h4>효율성</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-section">
+      <div class="container">
+        <span>공앤유의 이용방법</span>
+        <hr>
+        <div class="row">
+          <div class="col align-self-center">
+            1. 장소견적 신청하기
+          </div>
+          <div class="col">
+            <img src="img/maincontent1.png" alt="">
+          </div>
+          <div class="col align-self-center">
+            2. 견적 비교후 예약하기
+          </div>
+          <div class="col">
+            <img src="img/maincontent1.png" alt="">
+          </div>
+          <div class="col align-self-center">
+            3. 임대인과 마무리계약
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="modal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <span class="modal-title"></span>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+
+          </div>
+          <div class="modal-footer">
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <footer>
+
+    </footer>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
     <script>
       // Initialize Firebase
@@ -28,9 +198,8 @@
         messagingSenderId: "799401536592"
       };
       firebase.initializeApp(config);
-    </script>
-    <script>
-      function loadCurrent() {
+
+      $(window).ready(function() {
         var ref = firebase.database().ref('type');
         var content = "현재까지 등록된 공간 수는 ";
         ref.once('value').then(function(snapshot) {
@@ -43,172 +212,9 @@
           content += "입니다.";
           console.log(content);
           document.getElementById("current").innerHTML = content;
-        })
-      }
-      loadCurrent();
-    </script>
-  </head>
+        });
+      })
 
-  <body>
-    <header>
-    <nav id="header" class="navbar navbar-expand-lg navbar-light navbar-fixed-top">
-      <div class="container-fluid">
-      <!-- Brand and toggle get grouped for better mobile display -->
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-        <a class="nav-logo" href="#"><img src="images/icon.png"></img><span>   </span>공앤유</a>
-      </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="./login.html">회원가입</a></li>
-            <li><a href="./login.html">회원가입</a></li>
-            <li><a href="./signUp.html">로그인</a></li>
-          </ul>
-        </div><!-- /.navbar-collapse -->
-      </div><!-- /.container-fluid -->
-    </nav>
-
-  </header>
-  <main>
-    <div class="main-header">
-      <div class="container main-container">
-        <h1>공유하는 시대</h1>
-        <h1>나눠쓰자 나의공간</h1>
-        <br>
-        <div class="current-container">
-          <hr>
-          <span id="current"></span>
-          <hr>
-        </div>
-        <button type="button" class="btn btn-default btn-lg" onclick="openForm()">
-          장소견적 신청하기
-        </button>
-      </div>
-    </div>
-
-    <div class="main-section">
-      <div class="container second">
-        <span>발상의 전환</span><hr>
-        <div id="main-slider" class="main-slider">
-          <div class="main-span">
-            <p>공급자로 부터 소비자가 선택하는 방식</p>
-          </div>
-          <div class="main-spanimg">
-            <img class="main-img" src="images/maincontent1.png" alt="">
-          </div>
-          <div class="main-span">
-            <p>소비자로 부터 공급자가 선택하는 방식</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="main-section main-content">
-      <div class="container third">
-        <span>공앤유를 사용하면?</span>
-        <hr>
-        <div id="introduce-slider" class="introduce-slider">
-          <div>
-            <div class="introduce-img">
-              <img src="images/introduce (1).png" alt="">
-              <br>편리성 제공
-            </div>
-            <div class="introduce-img">
-              <img src="images/introduce (1).png" alt="">
-              <br>생산성 향상
-            </div>
-            <div class="introduce-img">
-              <img src="images/introduce (1).png" alt="">
-              <br>유휴공간 활용
-            </div>
-            <div class="introduce-img">
-              <img src="images/introduce (1).png" alt="">
-              <br>합리적인 가격
-            </div>
-            <div class="introduce-img">
-              <img src="images/introduce (1).png" alt="">
-              <br>부가수익 창출
-            </div>
-          </div>
-          <div>
-            <div class="introduce-img">
-              <img src="images/introduce (1).png" alt="">
-              <br>관리 효율화
-            </div>
-            <div class="introduce-img">
-              <img src="images/introduce (1).png" alt="">
-              <br>사용할 공간 사진
-            </div>
-            <div class="introduce-img">
-              <img src="images/introduce (1).png" alt="">
-              <br>실제 사용후기
-            </div>
-            <div class="introduce-img">
-              <img src="images/introduce (1).png" alt="">
-              <br>실시간 Q&A
-            </div>
-            <div class="introduce-img">
-              <img src="images/introduce (1).png" alt="">
-              <br>효율성
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="main-section main-guide">
-      <div class="container fourth">
-        <span>공앤유의 이용방법</span>
-        <hr>
-        <div>
-          <div class="guide-img">
-              <img src="images/howtouse.png" alt="">
-              1 장소 견적 신청하기
-          </div>
-
-          <div class="guide-img">
-              <img src="images/howtouse (2).png" alt="">
-          </div>
-
-          <div class="guide-img">
-              <img src="images/howtouse.png" alt="">
-              2 견적 비교후 예약하기
-          </div>
-
-          <div class="guide-img">
-              <img src="images/howtouse (2).png" alt="">
-          </div>
-
-          <div class="guide-img">
-              <img src="images/howtouse.png" alt="">
-              3 임대인과 마무리계약
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
-  <footer>
-
-  </footer>
-    <!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
-    <script src="js/bootstrap.min.js"></script>
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
-    <script src="js/script.js"></script>
-
-
-    <script>
-      // Collapse the navbar when page is scrolled
       $(window).scroll(function() {
         console.log($("#header").offset().top);
         if ($("#header").offset().top > 600) {
@@ -232,75 +238,94 @@
         locationList = snapshot.val();
       });
 
-      function openForm() {
-        var index = 0;
+      $('#modal').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget);
+        var type = button.data('whatever');
 
-        var bg = document.createElement("div");
-        bg.className = "main-modal";
+        var modal = $(this);
+        modal.find('.modal-body').text("");
+        modal.find('.modal-footer').text("");
 
-        var formDiv = document.createElement("div");
-        formDiv.className = "main-form";
+        switch (type) {
+          case 'request':
+            var index = 0;
+            modal.find('.modal-title').text('견적서 신청하기');
+            initButton($('.modal-body'), index++, "공간유형", typeList);
+            initButton($('.modal-body'), index++, "지역", locationList);
+            initButton($('.modal-body'), index++, "인원", null);
 
-        var span = document.createElement("span");
-        span.id = "form-title";
-        span.innerHTML = "견적서 신청하기";
-        formDiv.appendChild(span);
+            var btn = document.createElement("button");
+            btn.setAttribute("type", "button");
+            btn.className = "btn btn-primary";
+            btn.innerHTML = "신청하기";
 
-        initButton(formDiv, index++, "공간유형", typeList);
-        initButton(formDiv, index++, "지역", locationList);
-        initButton(formDiv, index++, "인원", null);
-        //setFormButton(formDiv, index++, "대 여 시 간", "4명");
-        //setFormButton(formDiv, index++, "가 격 대", "2000원");
-        //setFormButton(formDiv, index++, "추가요구 정보기입", "4명");
+            modal.find('.modal-footer').append(btn);
 
-        var confirm = document.createElement("button");
-        confirm.className = "btn btn-success";
-        confirm.setAttribute("type", "button");
-        confirm.innerHTML = "요청하기";
+            break;
+          case 'login':
+            modal.find('.modal-title').text("로그인");
 
-        formDiv.appendChild(document.createElement("hr"));
-        formDiv.appendChild(confirm);
+            var div = document.createElement("div");
+            div.className = "row";
 
-        var body = document.body;
-        body.appendChild(bg);
-        body.appendChild(formDiv);
+            var leftDiv = document.createElement("div");
+            leftDiv.className = "col-8";
 
+            var form = document.createElement("form");
 
-        $('.selectpicker').selectpicker();
-        //$('.selectpicker').on('change', function(){
-        //  var selected = $(this).find("option:selected").val();
-        //  alert(selected);
-        //});
+            makeForm(form, "Email", "email", "email");
+            makeForm(form, "비밀번호", "password", "password");
 
-        $('.selectpicker.city').on('changed.bs.select', function (e) {
-          console.log(e);
+            leftDiv.appendChild(form);
 
-          $('.selectpicker.district').html("");
+            var rightDiv = document.createElement("div");
+            rightDiv.className = "col-4";
 
+            var p = document.createElement("p");
+            p.innerHTML = "간편 로그인";
 
-          for(var index in locationList) {
-            var select = $('.selectpicker.city').find("option:selected").val();
+            var btnDiv = document.createElement("div");
 
-            if(index == select) {
+            var googlebtn = document.createElement("button");
+            googlebtn.innerHTML = "구글로그인 자리";
 
-              for(var i in locationList[index]) {
-                console.log(locationList[index][i]);
-                var op = document.createElement("option");
+            var facebookbtn = document.createElement("button");
+            facebookbtn.innerHTML = "페이스북 자리";
 
-                op.innerHTML = locationList[index][i];
-                $('.selectpicker.district').append(op);
-              }
-            }
-          }
-          $('.selectpicker.district').selectpicker('refresh');
-        });
+            var kakaobtn = document.createElement("button");
+            kakaobtn.innerHTML = "카카오 자리";
 
-        $('.selectpicker.district').on('changed.bs.select', function(e) {
-          var result = $('.selectpicker.city').val() + " " + $('.selectpicker.district').val();
-          selectItem(1, result);
-        });
+            btnDiv.appendChild(googlebtn);
+            btnDiv.appendChild(facebookbtn);
+            btnDiv.appendChild(kakaobtn);
 
-      }
+            rightDiv.appendChild(p);
+            rightDiv.appendChild(btnDiv);
+
+            div.appendChild(leftDiv);
+            div.appendChild(rightDiv);
+
+            modal.find('.modal-body').append(div);
+
+            var btn = document.createElement("button");
+            btn.setAttribute("type", "button");
+            btn.className = "btn btn-primary";
+            btn.innerHTML = "로그인";
+
+            modal.find('.modal-footer').append(btn);
+
+            break;
+          default:
+
+        }
+      });
+
+      $('.dropdown-menu a').click(function() {
+        var item = $(this).text();
+        console.log("124124");
+        $(this).parents('.btn-group').find('.dropdown-toggle').html(item);
+      });
+
 
       function initButton(form, index, name, list) {
         var div = document.createElement("div");
@@ -323,13 +348,14 @@
         typeDiv.className = "collapse";
 
         var listDiv = setList(index, list);
+        $('.selectpicker').selectpicker();
 
         typeDiv.appendChild(listDiv);
 
         div.appendChild(type);
         div.appendChild(typeDiv);
 
-        form.appendChild(div);
+        form.append(div);
       }
 
       function setList(index, list) {
@@ -354,25 +380,8 @@
             var listDiv = document.createElement("div");
             listDiv.className = "input-group";
 
-            var city = document.createElement("select");
-            city.className = "selectpicker city";
-            city.setAttribute("title", "지역");
-            city.setAttribute("data-live-search", "true");
-            //city.setAttribute("data-width", "25%");
-
-
-            for(var index in list) {
-              var op = document.createElement("option");
-              op.innerHTML = index;
-
-              city.appendChild(op);
-            }
-
-            var district = document.createElement("select");
-            district.className = "selectpicker district";
-            district.setAttribute("title", "선택해주세요");
-            district.setAttribute("data-live-search", "true");
-
+            var city = makeDropdown("지역", list);
+            var district = makeDropdown("선택해주세요", null);
 
             listDiv.appendChild(city);
             listDiv.appendChild(district);
@@ -409,30 +418,56 @@
         }
       }
 
-      function selectItem(index, item) {
-        var text = document.getElementsByClassName("form-text");
+      function makeDropdown(title, list) {
+        var div = document.createElement("div");
+        div.className = "btn-group";
+        var button = document.createElement("button");
+        button.className = "btn btn-secondary dropdown-toggle";
+        button.id = "dropdownMenuButton";
+        button.setAttribute("type", "button");
+        button.setAttribute("data-toggle", "dropdown");
+        button.setAttribute("aria-haspopup", "true");
+        button.setAttribute("aria-expanded", "false");
+        button.innerHTML = title;
 
-        switch (index) {
-          case 0:
-            text[index].innerHTML = " : " + item.innerHTML;
-            break;
+        var menu = document.createElement("div");
+        menu.className = "dropdown-menu";
+        menu.setAttribute("aria-labelledby", "dropdownMenuButton");
 
-          case 1:
-            text[index].innerHTML = " : " + item;
-            break;
+        for(var index in list) {
+          var a = document.createElement("a");
+          a.className = "dropdown-item";
+          a.setAttribute("href", "#");
+          a.innerHTML = index;
 
-          case 2:
-            text[index].innerHTML = " : " + item.parentNode.childNodes[0].value + "명";
-
-          default:
-
+          menu.appendChild(a);
         }
 
 
-        var collapseDiv = document.getElementById("formElement" + index);
-        collapseDiv.className = "collapse";
-      }
-    </script>
+        div.appendChild(button);
+        div.appendChild(menu);
 
+        return div;
+      }
+
+      function makeForm(form, text, id, type) {
+        var formDiv = document.createElement("div");
+        formDiv.className = "form-group";
+
+        var label = document.createElement("label");
+        label.setAttribute("for", id);
+        label.innerHTML = text;
+        var input = document.createElement("input");
+        input.setAttribute("type", type);
+        input.className = "form-control";
+        input.id = id;
+        input.setAttribute("placeholder", text + "를 입력해주세요");
+        formDiv.appendChild(label);
+        formDiv.appendChild(input);
+
+        form.appendChild(formDiv);
+      }
+
+    </script>
   </body>
 </html>
