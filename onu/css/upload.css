@@ -3,12 +3,14 @@
 /* css reset */
 div,span,body{margin:0;padding:0}
 
-#wrap{
-  clear:both;
-  float:left;
-  width:100%;
-  background:hotpink
+#status{
+  text-align: center;
+  font-family: 'mainFont' !important;
+  font-size: 50px;
+  color: #ffffff;
+  font-weight: bolder;
 }
+
 #container{
   clear:both;
   width:800px;
@@ -41,20 +43,30 @@ div,span,body{margin:0;padding:0}
 }
 
 .signup_form{
-  /*padding-left: 33%;*/
   text-align: center;
 }
 
 .signup_form img{
-  width: 25%;
+  width: 24%;
+  padding-top: 2%;
+  max-height: 160px;
 }
 
 .btn_gray{
+  font-weight: bolder;
+  font-size: 20px;
+  cursor: pointer;
   color: #fff;
-    background-color: #343a40;
-    border-color: #343a40;
+  background-color: #343a40;
+  border-color: #343a40;
+  margin-top: 3%;
+  margin-left: 4%;
+  margin-right: 4%;
+  width: 30%;
+  height: 70px;
 }
 
+#file { display:none; }
 
 .line{
   clear:both;
