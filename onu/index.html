@@ -315,6 +315,8 @@
             btn.className = "btn btn-primary";
             btn.innerHTML = "로그인";
 
+            btn.setAttribute("onclick", "consumer_login()");
+
             modal.find('.modal-footer').append(btn);
 
             break;
@@ -323,6 +325,27 @@
         }
       });
 
+      function consumer_login(){
+        var email = document.getElementById('email').value;
+        var password = document.getElementById('password').value;
+
+        firebase.auth().signInWithEmailAndPassword("leein3293@naver.com", "cca06151").catch(function(error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          alert(errorCode + " " + errorMessage);
+          // ...
+        });
+        alert("로그인에 성공하였습니다.");
+      }
+
+      function logout(){
+        firebase.auth().signOut().then(function() {
+          // Sign-out successful.
+        }, function(error) {
+          console.log(error);
+          // An error happened.
+        });
 
       function initButton(form, index, name, list) {
         var div = document.createElement("div");

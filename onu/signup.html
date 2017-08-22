@@ -35,63 +35,42 @@
         </div>
       </nav>
     </header>
-
-    <div class="main-window">
+    <div class="signup_header">
       <div class="container main-container">
-        <h3>회원가입</h3>
-        <div class="row">
-          <div class="col-7">
-            <form>
-              <div class="row">
-                <div class="col-4">
-                  <label for="inputId">아이디</label>
-                </div>
-                <div class="col-8">
-                  <input type="text" class="form-control" id="inputId"></input>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-4">
-                  <label for="inputPassword">비밀번호</label>
-                </div>
-                <div class="col-8">
-                  <input type="password" class="form-control" id="inputPassword"></input>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-4">
-                  <label for="inputName">이름</label>
-                </div>
-                <div class="col-8">
-                  <input type="text" class="form-control" id="inputName"></input>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-4">
-                  <label for="inputNumber">전화번호</label>
-                </div>
-                <div class="col-8">
-                  <input type="password" class="form-control" id="inputNumber"></input>
-                </div>
-              </div>
-            </form>
-          </div>
+        <h3>일반인 회원가입</h3>
 
-          <div class="col-5">
-            <div class="row">
-              <input type="text" readonly class="form-control" id="role"></input>
-            </div>
+        <div class = "signup_form">
+          <div class="form-group">
+            <label for="inputEmail4" class="col-form-label user_data">이메일</label>
+            <input type="email" class="form-control input_form" style="display:inline-block" id="email" placeholder="ID">
+            <button type="button" onclick="is_duplicate()" class="btn btn_gray duplicate_check">중복확인</button>
+          </div>
+          <div class="form-group">
+            <label for="inputPassword4" class="col-form-label user_data">비밀번호</label>
+            <input type="password" class="form-control input_form" id="password" placeholder="Password">
+          </div>
+          <div class="form-group">
+            <label for="inputAddress" class="col-form-label user_data">비밀번호확인</label>
+            <input type="text" class="form-control input_form" id="password_compare" placeholder="Password_cmp">
+          </div>
+          <div class="form-group">
+            <label for="inputAddress2" class="col-form-label user_data">전화번호</label>
+            <input type="text" class="form-control input_form" id="tel" placeholder="전화번호를 입력해주세요">
+          </div>
+          <div class="dropdown">
+            <label for="inputAddress2" class="col-form-label user_data">주소</label>
+            <button class="btn btn-primary" type="button" data-toggle="dropdown">Dropdown Example
+            <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li><a href="#">HTML</a></li>
+              <li><a href="#">CSS</a></li>
+              <li><a href="#">JavaScript</a></li>
+            </ul>
           </div>
         </div>
-
-        <div class="row">
-          <input type="submit" class="form-control" value="가입하기"></input>
-          <input type="button" class="form-control" value="취소"></input>
-        </div>
-
+        <button type="button" onclick="make_id()" class="btn btn_gray">회원가입</button>
       </div>
     </div>
-
 
 
     <footer>
@@ -106,13 +85,28 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
+
     <script>
-    var id, password, password_compare, name, tel, date;
     var reg_id = /^[a-zA-Z0-9]{6,10}$/;
   	var reg_pw = /^(?=.*[a-zA-Z\W])(?=.*\d).{6,20}$/;
   	var reg_name = /^[a-zA-Z가-힣]+$/;
   	var reg_number = /^01([0|1|6|7|8]?)-?([0-9]{3,4})-?([0-9]{4})$/;
+    var reg_email = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
     var duple_check = false;
+    var is_provider = false;
+    var email, password, password_compare, tel;
+
+      $(document).ready(function () {
+        var div = document.createElement("div");
+        div.className = "introduce-body";
+        var img = document.createElement("img");
+        img.setAttribute("src", "./images/icon.png");
+
+        div.appendChild(img);
+
+        $("#introduce-slider").append(div);
+
+      });
 
       //Initialze Firebase
       var config = {
@@ -135,35 +129,44 @@
       });
     }
 
+    function signup_change(provider){
+      is_provider = provider;
+      var index = 0;
+
+      if(is_provider){//공급자 회원가입
+        document.getElementById("provider_only").style.display = "block";
+
+
+      }
+      else{
+        document.getElementById("provider_only").style.display = "none";
+      }
+    }
+
+
     function make_id(){
 
-      id = document.getElementById("id").value;
+      email = document.getElementById("email").value;
       password = document.getElementById("password").value;
       password_compare = document.getElementById("password_compare").value;
-      name = document.getElementById("name").value;
       tel = document.getElementById("tel").value;
-      date = document.getElementById("date").value;
 
-      check_form(id, password, password_compare, name, tel, date);
+
+      check_form(email, password, password_compare, tel);
 
     }
-    function check_form(id, password, password_compare, name, tel, date){
+    function check_form(id, password, password_compare, tel){
       //if 아이디 중복확인 추가 필요
 
-      if(id == ""){
-        alert("아이디를 입력해주세요.");
+      if(email == ""){
+        alert("이메일을 입력해주세요.");
       }
-      else if(!duple_check){
-        alert("아이디 중복체크를 해주세요.")
-      }
+
       else if(password == ""){
         alert("패스워드를 입력해주세요.")
       }
       else if(password_compare == ""){
         alert("패스워드확인을 입력해주세요.")
-      }
-      else if(name == ""){
-        alert("이름을 입력해주세요");
       }
       else if(tel == ""){
         alert("전화번호를 입력해주세요");
@@ -172,25 +175,22 @@
         alert("입력한 비밀번호가 서로 일치하지 않습니다.");
       }
       else{
-        save_id(id, password, password_compare, name, tel, date);
+        save_id(email, password, password_compare, tel);
         alert("회원가입이 완료되었습니다.");
       }
     }
-    function save_id(id, password, password_compare, name, tel, date){
-      firebase.database().ref('/users/consumer/' + id).set({
-        id : id,
-        password: password,
-        password_compare: password_compare,
-        name: name,
-        tel: tel,
-        date: date
-      });
-    }
 
-    function temp1(){
-      firebase.database().ref('users/leein3293/reserve').push({
-        place: '서울',
-        time: '2시-3시'
+    function save_id(email, password, password_compare, tel){
+      firebase.database().ref('/users/consumer').push({
+        email : email,
+        tel: tel,
+      });
+
+      firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        alert(errorCode + " " + errorMessage);
       });
     }
 
@@ -203,13 +203,11 @@
     }
 
     function check_regex(name, regex, message) {
-  		var item = document.getElementsByName(name)[0];
-
-  		if(!regex.test(item.value)) {
-  			if(item.value != "") {
-  				item.value = "";
+  		if(!regex.test(name)) {
+  			if(name != "") {
+  				name = "";
   				alert(message);
-  				item.focus();
+  				document.getElementById('email').focus();
   			}
 
   			return false;
@@ -218,13 +216,14 @@
   		}
   	}
 
-
-
     function is_duplicate(){
-      var data = database.ref('users/consumer/' + document.getElementById('id').value + '/id');
+      var data = database.ref('users/consumer/' + document.getElementById('email').value + '/id');
       data.once('value').then(function(snapshot){
         if(snapshot.val()){
           alert('이미 존재하는 아이디입니다.');
+        }
+        else if(!check_regex(document.getElementById("email"), reg_email, "이메일 형식을 지켜주세요")){
+          return;
         }
         else{
           duple_check = true;
@@ -233,6 +232,10 @@
         console.log(snapshot.val());
       });
     }
+
+
+
+
     </script>
   </body>
 </html>
