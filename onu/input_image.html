@@ -5,17 +5,27 @@
     <title></title>
   </head>
   <body>
-      <!-- <div class="temp"onclick="writeUserData()">
-        JeonSeongBae
-      </div>
-      <input type="file" id="inputFileId"name="inputFileName"> -->
-      <input id="INPUT_MESSAGE" type="text" class="validate">
-      <button id="BTN_WRITE" type="button" class="btn indigo" >메모 작성하기</button>
-      <ul class="collapsible" data-collapsible="expandable" id="READ_MEMO">
+      <!-- 메모 등록 -->
+      <form id="memo"class="" action="index.html" method="post">
 
+        <input id="INPUT_MESSAGE" type="text" class="validate">
+        <button id="BTN_WRITE" type="button" class="btn indigo" >메모 작성하기</button>
+        <ul class="collapsible" data-collapsible="expandable" id="READ_MEMO">
+      </form>
+
+      <!-- 파일 업로그 -->
+      <form class="" action="index.html" method="post">
+        <div class="btn">
+          <span>파일선택</span>
+          <input type="file" id="INPUT_FILE">
+        </div>
+        <div class="file-path-wrapper">
+          <input class="file-path validate"type="text">
+        </div>
+      </form>
       </ul>
   </body>
-
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
   <script>
     // Initialize Firebase
@@ -24,7 +34,7 @@
       authDomain: "andu-temp.firebaseapp.com",
       databaseURL: "https://andu-temp.firebaseio.com",
       projectId: "andu-temp",
-      storageBucket: "",
+      storageBucket: "andu-temp.appspot.com",
       messagingSenderId: "110005684913"
     };
     firebase.initializeApp(config);
@@ -33,28 +43,69 @@
     var database = firebase.database();
     // Get a reference to the storage service, which is used to create references in your storage bucket
     var storage = firebase.storage();
+    //파일 업로드
 
+
+    // 메모등록
+$("#BTN_WRITE").click(function(){
     /* DB에 메모내용을 기록 */
-    var new_memo = $("INPUT_MESSAGE").val();
-    var _filename = "unknown";
-    database.ref('/filememo').push({
+    var new_memo = $("#INPUT_MESSAGE").val();
+    var _filename = _file.name;
+    database.ref('/filememo').set({
       "memo" : new_memo ,
       "time" : firebase.database.ServerValue.TIMESTAMP ,
       "filename" : _filename
     });
-
-    $("form").each(function() {
+    $("#memo").each(function() {
         this.reset();
     });
-    $("#PROGRESS").hide();
+    _file = null;
+    // $("#PROGRESS").hide();
+  });
+    var _file = null;
+    // document.getElementById("INPUT-FILE").addEventListener("change", handleFiles, false);
+    function handleFiles(){
+      _file = (this.files)[0];
+    }
 
-    database.ref('./filememo').on('value', function(snapshot){
-      $("#PROGRESS").show();
-        return true;
-      $("#PROGRESS").hide();
+    database.ref('/filememo').on('value', function(snapshot){
+      // $("#PROGRESS").show();
+      // $("#READ_MEMO").html("");
+      if (snapshot.val() == null) {
+        $("#READ_MEMO").append('<div class="collapsible-header">아직 등록된 파일이 없습니다.</div>');
+        // $("#PROGRESS").hide();
         return false;
+      }
+
+      var _keys = Object.keys(snapshot.val());
+
+      for (var i=_keys.length; 0<i; i--) {
+        var child = snapshot.child(_keys[(i-1)]).val();
+        var uploadDate = new Date(child.time*1000);
+        var appendHTML =
+        '<li>'
+        +'<div class="collapsible-header"><i class="material-icons">subject</i>'
+        +child.memo+'</div>'
+        +'<div class="collapsible-body">'
+        +'<p><span class="right"><button data-f="'+child.filename+'"data-k="'+_keys[(i-1)]+'" class="btn red BTN_DELETE">삭제<button>'
+        +'<button data-f="'+child.filename+'" class="btn BTN_DOWNLOAD">다운로드</button>'
+        +'<br></span>파일명 : '+child.filename+'<br>등록일 : '+uploadDate+'</p>'
+        +'</div>'
+        +'</li>';
+          $("#READ_MEMO").append(appendHTML);
+      }
+      $("#PROGRESS").hide();
+
+      $(".BTN_DELETE").off("click");
+      $(".BTN_DELETE").click(function(){
+        var _keys = $(this).data("k");
+        firebase.database().ref('/filememo').child(_key).remove();
+      });
     });
-    
+
+
+
+
     // function writeUserStorage() {
     //
     // }
