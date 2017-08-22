@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="kr">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/stylesheet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="./css/signup.css">
+
+  </head>
+  <body>
+    <header>
+      <nav id="header" class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <a class="navbar-brand" href="#">
+          <img src="./img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+          공앤유
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav justify-content-end">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">회원가입</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="#" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="login">로그인</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <div class="main-header">
+      <div class="container main-container">
+        <h1>공유하는 시대</h1>
+
+
+        <div class = "signup_form">
+          <div class="form-group">
+            <label for="inputEmail4" class="col-form-label">ID</label> <br/>
+            <input type="email" class="form-control input_form" style="display:inline-block" id="id" placeholder="ID">
+            <button type="button" onclick="is_duplicate()" class="btn btn_gray" style="display:inline">중복확인</button>
+          </div>
+          <div class="form-group">
+            <label for="inputPassword4" class="col-form-label">비밀번호</label>
+            <input type="password" class="form-control input_form" id="password" placeholder="Password">
+          </div>
+          <div class="form-group">
+            <label for="inputAddress" class="col-form-label">비밀번호확인</label>
+            <input type="text" class="form-control input_form" id="password_compare" placeholder="Password_cmp">
+          </div>
+          <div class="form-group">
+            <label for="inputAddress2" class="col-form-label">이름</label>
+            <input type="text" class="form-control input_form" id="name" placeholder="이름을 입력해주세요">
+          </div>
+          <div class="form-group">
+            <label for="inputAddress2" class="col-form-label">전화번호</label>
+            <input type="text" class="form-control input_form" id="tel" placeholder="전화번호를 입력해주세요">
+          </div>
+          <div class="form-group">
+            <label for="inputAddress2" class="col-form-label">생년월일</label>
+            <input type="date" class="form-control input_form" id="date">
+          </div>
+        </div>
+        <button type="button" onclick="make_id()" class="btn btn_gray">회원가입</button>
+      </div>
+    </div>
+
+
+    <footer>
+
+    </footer>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
+    <script>
+    var id, password, password_compare, name, tel, date;
+    var reg_id = /^[a-zA-Z0-9]{6,10}$/;
+  	var reg_pw = /^(?=.*[a-zA-Z\W])(?=.*\d).{6,20}$/;
+  	var reg_name = /^[a-zA-Z가-힣]+$/;
+  	var reg_number = /^01([0|1|6|7|8]?)-?([0-9]{3,4})-?([0-9]{4})$/;
+    var duple_check = false;
+
+      $(document).ready(function () {
+        var div = document.createElement("div");
+        div.className = "introduce-body";
+        var img = document.createElement("img");
+        img.setAttribute("src", "./images/icon.png");
+
+        div.appendChild(img);
+
+        $("#introduce-slider").append(div);
+
+      });
+
+      //Initialze Firebase
+      var config = {
+      apiKey: "AIzaSyB5Aji_Ysf6EsI_6cR4kDs3yi9s0bjo9_k",
+      authDomain: "andu-3f6db.firebaseapp.com",
+      databaseURL: "https://andu-3f6db.firebaseio.com",
+      projectId: "andu-3f6db",
+      storageBucket: "andu-3f6db.appspot.com",
+      messagingSenderId: "799401536592"
+    };
+    firebase.initializeApp(config);
+
+    var database = firebase.database();
+
+    function writeUserData(userID, name, email, imageUrl){
+      firebase.database().ref('/users/' + userID).set({
+        username : name,
+        email: email,
+        profile_picture:imageUrl
+      });
+    }
+
+    function make_id(){
+
+      id = document.getElementById("id").value;
+      password = document.getElementById("password").value;
+      password_compare = document.getElementById("password_compare").value;
+      name = document.getElementById("name").value;
+      tel = document.getElementById("tel").value;
+      date = document.getElementById("date").value;
+
+      check_form(id, password, password_compare, name, tel, date);
+
+    }
+    function check_form(id, password, password_compare, name, tel, date){
+      //if 아이디 중복확인 추가 필요
+
+      if(id == ""){
+        alert("아이디를 입력해주세요.");
+      }
+      else if(!duple_check){
+        alert("아이디 중복체크를 해주세요.")
+      }
+      else if(password == ""){
+        alert("패스워드를 입력해주세요.")
+      }
+      else if(password_compare == ""){
+        alert("패스워드확인을 입력해주세요.")
+      }
+      else if(name == ""){
+        alert("이름을 입력해주세요");
+      }
+      else if(tel == ""){
+        alert("전화번호를 입력해주세요");
+      }
+      else if(password != password_compare){
+        alert("입력한 비밀번호가 서로 일치하지 않습니다.");
+      }
+      else{
+        save_id(id, password, password_compare, name, tel, date);
+        alert("회원가입이 완료되었습니다.");
+      }
+    }
+    function save_id(id, password, password_compare, name, tel, date){
+      firebase.database().ref('/users/consumer/' + id).set({
+        id : id,
+        password: password,
+        password_compare: password_compare,
+        name: name,
+        tel: tel,
+        date: date
+      });
+    }
+
+    function temp1(){
+      firebase.database().ref('users/leein3293/reserve').push({
+        place: '서울',
+        time: '2시-3시'
+      });
+    }
+
+    function temp(){
+      var data = database.ref('users/leein93/name');
+      data.on('value', function(data){
+        //child_added 등과 같이 DB에 변화가 있을 때 콜백 할 수도 있다.(오른쪽 함수를 콜백)
+        console.log(data.val());
+      });
+    }
+
+    function check_regex(name, regex, message) {
+  		var item = document.getElementsByName(name)[0];
+
+  		if(!regex.test(item.value)) {
+  			if(item.value != "") {
+  				item.value = "";
+  				alert(message);
+  				item.focus();
+  			}
+
+  			return false;
+  		} else {
+  			return true;
+  		}
+  	}
+
+
+
+    function is_duplicate(){
+      var data = database.ref('users/consumer/' + document.getElementById('id').value + '/id');
+      data.once('value').then(function(snapshot){
+        if(snapshot.val()){
+          alert('이미 존재하는 아이디입니다.');
+        }
+        else{
+          duple_check = true;
+          alert('사용 가능한 아이디입니다.');
+        }
+        console.log(snapshot.val());
+      });
+    }
+    </script>
+  </body>
+</html>
