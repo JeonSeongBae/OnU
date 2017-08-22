@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/stylesheet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
-    <link rel="stylesheet" href="./css/signup.css">
+    <link rel="stylesheet" href="./css/upload.css">
 
     <title></title>
   </head>
@@ -38,7 +38,7 @@
     </header>
     <div class="main-header">
       <div class="container main-container">
-        <h1 id="status">공유하는 시대</h1>
+        <h1 id="status">사진 공유하기</h1>
         <div class = "signup_form">
           <div class="form-group">
             <label for="inputEmail4" class="col-form-label">ID</label> <br/>
@@ -46,9 +46,7 @@
             <input type="file" id="file" name="file">
             <button type="button" onclick="fileUpLoad()" class="btn btn_gray" style="display:inline">사진업로드</button>
           </div>
-          <div id="holder"class="">
-
-          </div>
+          <div id="holder"class="holder"></div>
         </div>
       </div>
     </div>
@@ -74,6 +72,8 @@
     var storage = firebase.storage();
     // Create a root reference
     var storageRef = firebase.storage().ref();
+    // save file
+
 
     function fileUpLoad(){
       var file = document.getElementById("file").files[0];
@@ -85,39 +85,8 @@
       // var uploadTask = storageRef.child('images/' + file.name).put(file, metadata);
 
       // Listen for state changes, errors, and completion of the upload.
-      uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
-        function(snapshot) {
-          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-          var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log('Upload is ' + progress + '% done');
-          switch (snapshot.state) {
-            case firebase.storage.TaskState.PAUSED: // or 'paused'
-              console.log('Upload is paused');
-              break;
-            case firebase.storage.TaskState.RUNNING: // or 'running'
-              console.log('Upload is running');
-              break;
-          }
-        }, function(error) {
-        switch (error.code) {
-          case 'storage/unauthorized':
-            // User doesn't have permission to access the object
-            break;
-          case 'storage/canceled':
-            // User canceled the upload
-            break;
-          case 'storage/unknown':
-            // Unknown error occurred, inspect error.serverResponse
-            break;
-        }
-      }, function() {
-        // Upload completed successfully, now we can get the download URL
-        var downloadURL = uploadTask.snapshot.downloadURL;
-        document.getElementsByClassName("col-form-label").innerHTML = downloadURL;
-      });
+      uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED);
     }
-  </script>
-  <script>
     var upload = document.getElementsByTagName('input')[0],
         holder = document.getElementById('holder'),
         state = document.getElementById('status');
@@ -126,22 +95,15 @@
       state.className = 'fail';
     } else {
       state.className = 'success';
-      state.innerHTML = 'File API & FileReader available';
     }
 
     upload.onchange = function (e) {
       e.preventDefault();
-
       var file = upload.files[0],
           reader = new FileReader();
       reader.onload = function (event) {
         var img = new Image();
         img.src = event.target.result;
-        // note: no onload required since we've got the dataurl...I think! :)
-        if (img.width > 560) { // holder width
-          img.width = 560;
-        }
-        holder.innerHTML = '';
         holder.appendChild(img);
       };
       reader.readAsDataURL(file);

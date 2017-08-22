@@ -66,16 +66,6 @@ body::-webkit-scrollbar {
   margin: 10px 0px;
 }
 
-/*
-@font-face {
-   font-family: 'mainFont';
-   src: url('../fonts.NanumFontSetup_TTF_BARUNGOTHIC_hangeulcamp.exe');
- }
-*/
-
-/*
-  전 버전 css
-*/
 #header {
   background-color: transparent;
   border-radius: 0px;
@@ -140,15 +130,9 @@ body::-webkit-scrollbar {
   color: #ffffff;
 }
 
-/*.main-section .container span {
-  font-size: 40px;
-  color: #4486ff;
-}*/
-
 .second span{
   font-size: 40px;
   font-weight: 900;
-  /*color: #4486ff;*/
 }
 
 .third span{
@@ -192,7 +176,6 @@ body::-webkit-scrollbar {
 
 .introduce-slider {
   background-color: transparent;
-  /*text-align: center;*/
   padding: 20px 10px;
 }
 
@@ -246,11 +229,6 @@ body::-webkit-scrollbar {
 .introduce-body img {
   background-size: contain;
 }
-
-/*.main-guide .container span {
-  font-size: 15px;
-  text-align: left;
-}*/
 
 .main-modal {
   width: 100%;
