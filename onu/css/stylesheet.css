@@ -33,11 +33,15 @@ body::-webkit-scrollbar {
 }
 
 .input-group .btn-group {
-  width:50%;
+  width:100%;
 }
 
-.col-8 {
-  border-right: 1px solid #eee;
+.input-group button {
+  width: 30%;
+}
+
+.btn-group button {
+  width:100%;
 }
 
 .col-4 {
@@ -56,6 +60,15 @@ body::-webkit-scrollbar {
 
 .col-4 div button {
   margin: 10px 0px;
+}
+
+.col-7 {
+  border-right: 1px solid #eee;
+}
+
+#calendar {
+  width:100%;
+  height:200px;
 }
 
 /*
@@ -115,7 +128,9 @@ body::-webkit-scrollbar {
 
 .main-header {
   background-image: url("../img/main-background.jpg");
-  background-size: contain;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
   padding-top: 120px;
   padding-bottom: 60px;
   height: 100%;
@@ -132,6 +147,18 @@ body::-webkit-scrollbar {
   color: #ffffff;
 }
 
+.main-container h3 {
+  color:#ffffff;
+}
+
+/*
+.modal-content {
+  background-image: url("../img/modal-background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+*/
 /*.main-section .container span {
   font-size: 40px;
   color: #4486ff;
@@ -291,7 +318,7 @@ body::-webkit-scrollbar {
   margin-top: 30px;
 }
 
-.form-btn button {
+.form-btn .btn-info {
   width:100%;
 }
 
@@ -322,7 +349,10 @@ body::-webkit-scrollbar {
 }
 
 .main-window {
-  background-color: aliceblue;
+  background-image: url("../img/main-window.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   padding-top: 60px;
   padding-bottom: 60px;
   height: 100%;
