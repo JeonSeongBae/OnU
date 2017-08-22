@@ -1,8 +1,72 @@
+html, body {
+  height:100%;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+.navbar-nav {
+  width: 100%;
+}
+
+.col p {
+  font-size: 20px;
+  color: #4486ff;
+}
+
+.col h4 {
+  color: #ffffff;
+}
+
+.modal-header {
+  display: inline-block;
+  text-align: center;
+}
+
+.modal-header span {
+  font-size: 25px;
+}
+
+#modal::-webkit-scrollbar {
+  display: none;
+}
+
+.input-group .btn-group {
+  width:50%;
+}
+
+.col-8 {
+  border-right: 1px solid #eee;
+}
+
+.col-4 {
+  text-align: center;
+}
+
+.col-4 span {
+  font-size: 15px;
+}
+
+.col-4 div {
+  display: inline-grid;
+  width: 100%;
+  height: inherit;
+}
+
+.col-4 div button {
+  margin: 10px 0px;
+}
+
 /*
 @font-face {
    font-family: 'mainFont';
    src: url('../fonts.NanumFontSetup_TTF_BARUNGOTHIC_hangeulcamp.exe');
  }
+*/
+
+/*
+  전 버전 css
 */
 #header {
   background-color: transparent;
@@ -39,6 +103,7 @@
 
 .container span {
   background-color: #4486FF;
+  font-size: 40px;
   border-radius: 4px;
   padding: 10px 20px;
   color: white;
@@ -48,15 +113,8 @@
   width: 100%;
 }
 
-.container span {
-  background-color: #4486FF;
-  border-radius: 4px;
-  padding: 10px 20px;
-  color: white;
-}
-
 .main-header {
-  background-image: url("../images/main-background.jpg");
+  background-image: url("../img/main-background.jpg");
   background-size: contain;
   padding-top: 120px;
   padding-bottom: 60px;
@@ -205,6 +263,7 @@
 
 .main-form {
   padding: 20px 20px;
+  border-radius: 4px;
   background-color: white;
   position: absolute;
   top: 100px;
@@ -213,6 +272,10 @@
   transform: translate(-50%, 0%);
   z-index: 10000;
   text-align: center;
+}
+
+.main-form form {
+  text-align: left;
 }
 
 #form-title {
@@ -244,4 +307,27 @@
 
 .current-container {
   margin: 40px 0px;
+}
+
+#close {
+  position: absolute;
+  right: 0%;
+  top: 0%;
+  font-size: 30px;
+  padding: 0px 10px;
+  color: #ffffff;
+  background-color: #4486ff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.main-window {
+  background-color: aliceblue;
+  padding-top: 60px;
+  padding-bottom: 60px;
+  height: 100%;
+}
+
+.main-window hr {
+  border: 2px solid #eee;
 }
