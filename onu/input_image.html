@@ -2,15 +2,60 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/stylesheet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="./css/signup.css">
+
     <title></title>
   </head>
   <body>
-      <!-- 파일 업로드 -->
-      <input type="file" id="file" name="file">
-      <button type="button" name="button" onclick="fileUp()"></button>
+    <header>
+      <nav id="header" class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <a class="navbar-brand" href="#">
+          <img src="./img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+          공앤유
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav justify-content-end">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">회원가입</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="#" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="login">로그인</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <div class="main-header">
+      <div class="container main-container">
+        <h1 id="status">공유하는 시대</h1>
+        <div class = "signup_form">
+          <div class="form-group">
+            <label for="inputEmail4" class="col-form-label">ID</label> <br/>
+            <!-- 파일 업로드 -->
+            <input type="file" id="file" name="file">
+            <button type="button" onclick="fileUpLoad()" class="btn btn_gray" style="display:inline">사진업로드</button>
+          </div>
+          <div id="holder"class="">
+
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
+  <script src="./js/fileUpLoad.js"></script>
   <script>
     // Initialize Firebase
     var config = {
@@ -30,16 +75,12 @@
     // Create a root reference
     var storageRef = firebase.storage().ref();
 
-    function fileUp(){
-      //파일 업로드
-      // File or Blob named mountains.jpg
+    function fileUpLoad(){
       var file = document.getElementById("file").files[0];
-
       // Create the file metadata
       // var metadata = {
       //   contentType: 'image/jpeg'
       // };
-
       var uploadTask = storageRef.child('images/' + file.name).put(file);
       // var uploadTask = storageRef.child('images/' + file.name).put(file, metadata);
 
@@ -62,11 +103,9 @@
           case 'storage/unauthorized':
             // User doesn't have permission to access the object
             break;
-
           case 'storage/canceled':
             // User canceled the upload
             break;
-
           case 'storage/unknown':
             // Unknown error occurred, inspect error.serverResponse
             break;
@@ -74,8 +113,40 @@
       }, function() {
         // Upload completed successfully, now we can get the download URL
         var downloadURL = uploadTask.snapshot.downloadURL;
+        document.getElementsByClassName("col-form-label").innerHTML = downloadURL;
       });
     }
-
   </script>
+  <script>
+    var upload = document.getElementsByTagName('input')[0],
+        holder = document.getElementById('holder'),
+        state = document.getElementById('status');
+
+    if (typeof window.FileReader === 'undefined') {
+      state.className = 'fail';
+    } else {
+      state.className = 'success';
+      state.innerHTML = 'File API & FileReader available';
+    }
+
+    upload.onchange = function (e) {
+      e.preventDefault();
+
+      var file = upload.files[0],
+          reader = new FileReader();
+      reader.onload = function (event) {
+        var img = new Image();
+        img.src = event.target.result;
+        // note: no onload required since we've got the dataurl...I think! :)
+        if (img.width > 560) { // holder width
+          img.width = 560;
+        }
+        holder.innerHTML = '';
+        holder.appendChild(img);
+      };
+      reader.readAsDataURL(file);
+
+      return false;
+    };
+    </script>
 </html>
