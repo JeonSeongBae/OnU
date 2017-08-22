@@ -5,25 +5,9 @@
     <title></title>
   </head>
   <body>
-      <!-- 메모 등록 -->
-      <form id="memo"class="" action="index.html" method="post">
-
-        <input id="INPUT_MESSAGE" type="text" class="validate">
-        <button id="BTN_WRITE" type="button" class="btn indigo" >메모 작성하기</button>
-        <ul class="collapsible" data-collapsible="expandable" id="READ_MEMO">
-      </form>
-
-      <!-- 파일 업로그 -->
-      <form class="" action="index.html" method="post">
-        <div class="btn">
-          <span>파일선택</span>
-          <input type="file" id="INPUT_FILE">
-        </div>
-        <div class="file-path-wrapper">
-          <input class="file-path validate"type="text">
-        </div>
-      </form>
-      </ul>
+      <!-- 파일 업로드 -->
+      <input type="file" id="file" name="file">
+      <button type="button" name="button" onclick="fileUp()"></button>
   </body>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
@@ -43,71 +27,55 @@
     var database = firebase.database();
     // Get a reference to the storage service, which is used to create references in your storage bucket
     var storage = firebase.storage();
-    //파일 업로드
+    // Create a root reference
+    var storageRef = firebase.storage().ref();
 
+    function fileUp(){
+      //파일 업로드
+      // File or Blob named mountains.jpg
+      var file = document.getElementById("file").files[0];
 
-    // 메모등록
-$("#BTN_WRITE").click(function(){
-    /* DB에 메모내용을 기록 */
-    var new_memo = $("#INPUT_MESSAGE").val();
-    var _filename = _file.name;
-    database.ref('/filememo').set({
-      "memo" : new_memo ,
-      "time" : firebase.database.ServerValue.TIMESTAMP ,
-      "filename" : _filename
-    });
-    $("#memo").each(function() {
-        this.reset();
-    });
-    _file = null;
-    // $("#PROGRESS").hide();
-  });
-    var _file = null;
-    // document.getElementById("INPUT-FILE").addEventListener("change", handleFiles, false);
-    function handleFiles(){
-      _file = (this.files)[0];
+      // Create the file metadata
+      // var metadata = {
+      //   contentType: 'image/jpeg'
+      // };
+
+      var uploadTask = storageRef.child('images/' + file.name).put(file);
+      // var uploadTask = storageRef.child('images/' + file.name).put(file, metadata);
+
+      // Listen for state changes, errors, and completion of the upload.
+      uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+        function(snapshot) {
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log('Upload is ' + progress + '% done');
+          switch (snapshot.state) {
+            case firebase.storage.TaskState.PAUSED: // or 'paused'
+              console.log('Upload is paused');
+              break;
+            case firebase.storage.TaskState.RUNNING: // or 'running'
+              console.log('Upload is running');
+              break;
+          }
+        }, function(error) {
+        switch (error.code) {
+          case 'storage/unauthorized':
+            // User doesn't have permission to access the object
+            break;
+
+          case 'storage/canceled':
+            // User canceled the upload
+            break;
+
+          case 'storage/unknown':
+            // Unknown error occurred, inspect error.serverResponse
+            break;
+        }
+      }, function() {
+        // Upload completed successfully, now we can get the download URL
+        var downloadURL = uploadTask.snapshot.downloadURL;
+      });
     }
 
-    database.ref('/filememo').on('value', function(snapshot){
-      // $("#PROGRESS").show();
-      // $("#READ_MEMO").html("");
-      if (snapshot.val() == null) {
-        $("#READ_MEMO").append('<div class="collapsible-header">아직 등록된 파일이 없습니다.</div>');
-        // $("#PROGRESS").hide();
-        return false;
-      }
-
-      var _keys = Object.keys(snapshot.val());
-
-      for (var i=_keys.length; 0<i; i--) {
-        var child = snapshot.child(_keys[(i-1)]).val();
-        var uploadDate = new Date(child.time*1000);
-        var appendHTML =
-        '<li>'
-        +'<div class="collapsible-header"><i class="material-icons">subject</i>'
-        +child.memo+'</div>'
-        +'<div class="collapsible-body">'
-        +'<p><span class="right"><button data-f="'+child.filename+'"data-k="'+_keys[(i-1)]+'" class="btn red BTN_DELETE">삭제<button>'
-        +'<button data-f="'+child.filename+'" class="btn BTN_DOWNLOAD">다운로드</button>'
-        +'<br></span>파일명 : '+child.filename+'<br>등록일 : '+uploadDate+'</p>'
-        +'</div>'
-        +'</li>';
-          $("#READ_MEMO").append(appendHTML);
-      }
-      $("#PROGRESS").hide();
-
-      $(".BTN_DELETE").off("click");
-      $(".BTN_DELETE").click(function(){
-        var _keys = $(this).data("k");
-        firebase.database().ref('/filememo').child(_key).remove();
-      });
-    });
-
-
-
-
-    // function writeUserStorage() {
-    //
-    // }
   </script>
 </html>
