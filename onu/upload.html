@@ -40,23 +40,9 @@
       <div class="container main-container">
         <h1 id="status">공유하는 시대</h1>
         <div class = "signup_form">
-          <div class="form-group">
-            <!-- 파일 업로드 -->
-            <button type="button" name="button" class="btnfile">
-              <input type="file" class="inputfile" id="file1" name="file" multiple="multiple">
-            </button>
-            <button type="button" name="button" class="btnfile">
-              <input type="file" class="inputfile" id="file2" name="file" multiple="multiple">
-            </button>
-            <button type="button" name="button" class="btnfile">
-              <input type="file" class="inputfile" id="file3" name="file" multiple="multiple">
-            </button>
-            <button type="button" name="button" class="btnfile">
-              <input type="file" class="inputfile" id="file4" name="file" multiple="multiple">
-            </button>
-          </div>
           <div id="holder"class="holder"></div>
-          <button type="button" onclick="fileUpLoad()" class="btn btn_gray" style="display:inline">사진 저장하기</button>
+          <button type="button" class="btn btn_gray" style="display:inline">추가<input type="file" class="inputfile" id="file" name="file" multiple="multiple"></button>
+          <button type="button" onclick="fileUpLoad()" class="btn btn_gray" style="display:inline">저장</button>
         </div>
       </div>
     </div>
@@ -84,9 +70,14 @@
     var storageRef = firebase.storage().ref();
 
     function fileUpLoad(){
-      var file = document.getElementById("file").files[0];
-      var uploadTask = storageRef.child(file.name).put(file);
-      // var uploadTask = storageRef.child('images/' + file.name).put(file, metadata);
+      // var file = document.getElementById("file").files[0];
+      // var uploadTask = storageRef.child(file.name).put(file);
+
+      for (var i = 0; i < upload.files.length; i++) {
+        var file = upload.files[i];
+        var uploadTask = storageRef.child(file.name).put(file);
+      }
+
 
       // Listen for state changes, errors, and completion of the upload.
       uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
@@ -123,7 +114,7 @@
   </script>
 
   <script>
-    var upload = document.getElementsByTagName('input');
+    var upload = document.getElementsByTagName('input')[0];
     var holder = document.getElementById('holder');
     var state = document.getElementById('status');
 
@@ -135,16 +126,17 @@
 
     upload.onchange = function (e) {
       e.preventDefault();
-
-      var file = upload.files[0];
-      var reader = new FileReader();
-      reader.onload = function (event) {
-        var img = new Image();
-        img.src = event.target.result;
-
-        holder.appendChild(img);
-      };
-      reader.readAsDataURL(file);
+      holder.innerHTML='';
+      for (var i = 0; i < upload.files.length; i++) {
+        var file = upload.files[i];
+        var reader = new FileReader();
+        reader.onload = function (event) {
+          var img = new Image();
+          img.src = event.target.result;
+          holder.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      }
 
       return false;
     };
