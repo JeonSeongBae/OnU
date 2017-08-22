@@ -25,7 +25,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav justify-content-end">
             <li class="nav-item active">
-              <a class="nav-link" href="#">회원가입</a>
+              <a class="nav-link" href="signup.html">회원가입</a>
             </li>
             <li class="nav-item active">
               <a class="nav-link" href="#" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="login">로그인</a>
@@ -231,10 +231,10 @@
         typeList = snapshot.val();
       });
 
-      var cityRef = firebase.database().ref('city');
+      var placeRef = firebase.database().ref('place');
       var locationList;
-
-      cityRef.once('value').then(function(snapshot) {
+      var temp;
+      placeRef.once('value').then(function(snapshot) {
         locationList = snapshot.val();
       });
 
@@ -253,6 +253,7 @@
             initButton($('.modal-body'), index++, "공간유형", typeList);
             initButton($('.modal-body'), index++, "지역", locationList);
             initButton($('.modal-body'), index++, "인원", null);
+            initButton($('.modal-body'), index++, "날짜", null);
 
             var btn = document.createElement("button");
             btn.setAttribute("type", "button");
@@ -320,12 +321,6 @@
         }
       });
 
-      $('.dropdown-menu a').click(function() {
-        var item = $(this).text();
-        console.log("124124");
-        $(this).parents('.btn-group').find('.dropdown-toggle').html(item);
-      });
-
 
       function initButton(form, index, name, list) {
         var div = document.createElement("div");
@@ -369,8 +364,7 @@
               bt.setAttribute("type", "button");
               bt.className = "list-group-item";
               bt.innerHTML = j;
-              bt.setAttribute("onclick", "selectItem(" + index + ", this)");
-
+              bt.setAttribute("onclick", "selectItem(this)");
               listDiv.appendChild(bt);
             }
 
@@ -395,6 +389,8 @@
             var text = document.createElement("input");
             text.className = "form-control";
             text.setAttribute("type", "number");
+            text.setAttribute("min", "1");
+            text.setAttribute("max", "1000");
             text.setAttribute("placeholder", "인원 수를 입력해주세요.");
 
             var span = document.createElement("span");
@@ -406,7 +402,35 @@
             bt.className = "btn btn-default";
             bt.innerHTML = "선택하기";
             bt.style.float = "right";
-            bt.setAttribute("onclick", "selectItem(" + index + ", this)");
+            bt.setAttribute("onclick", "selectNumber(this)");
+
+            listDiv.appendChild(text);
+            listDiv.appendChild(span);
+            listDiv.appendChild(bt);
+
+            return listDiv;
+
+          case 3:
+            var listDiv = document.createElement("div");
+            listDiv.className = "input-group";
+
+            var text = document.createElement("input");
+            text.className = "form-control";
+            text.setAttribute("type", "number");
+            text.setAttribute("min", "1");
+            text.setAttribute("max", "1000");
+            text.setAttribute("placeholder", "인원 수를 입력해주세요.");
+
+            var span = document.createElement("span");
+            span.className = "input-group-addon";
+            span.innerHTML = "명";
+
+            var bt = document.createElement("button");
+            bt.setAttribute("type", "button");
+            bt.className = "btn btn-default";
+            bt.innerHTML = "선택하기";
+            bt.style.float = "right";
+            bt.setAttribute("onclick", "selectNumber(this)");
 
             listDiv.appendChild(text);
             listDiv.appendChild(span);
@@ -418,11 +442,46 @@
         }
       }
 
+      function selectItem(item) {
+        var text = $(item).html();
+        var temp = $(item).parents('.form-btn').find('.form-text').html();
+        $(item).parents('.form-btn').find('.form-text').text(temp + " " + text);
+        $('.collapse').removeClass('show');
+      }
+
+      function selectPlace(item) {
+        var text = $(item).html();
+        $('.city').html(text);
+        $(item).parents('.form-btn').find('.form-text').text(text);
+
+        var menu = $('.district').parents('.btn-group').find('.dropdown-menu');
+
+        for(var index in locationList[text]) {
+          var a = document.createElement("a");
+          a.className = "dropdown-item";
+          a.setAttribute("onclick", "selectItem(this)");
+          a.innerHTML = locationList[text][index];
+
+          menu.append(a);
+        }
+      }
+
+      function selectNumber(item) {
+        var text = $(item).parents('.input-group').find('.form-control').val();
+        $(item).parents('.form-btn').find('.form-text').text(text + "명");
+        $('.collapse').removeClass('show');
+      }
+
       function makeDropdown(title, list) {
         var div = document.createElement("div");
         div.className = "btn-group";
         var button = document.createElement("button");
         button.className = "btn btn-secondary dropdown-toggle";
+        if(list != null) {
+          button.className += " city";
+        } else {
+          button.className += " district";
+        }
         button.id = "dropdownMenuButton";
         button.setAttribute("type", "button");
         button.setAttribute("data-toggle", "dropdown");
@@ -434,10 +493,12 @@
         menu.className = "dropdown-menu";
         menu.setAttribute("aria-labelledby", "dropdownMenuButton");
 
+
         for(var index in list) {
           var a = document.createElement("a");
           a.className = "dropdown-item";
-          a.setAttribute("href", "#");
+          a.setAttribute("onclick", "selectPlace(this)");
+
           a.innerHTML = index;
 
           menu.appendChild(a);
