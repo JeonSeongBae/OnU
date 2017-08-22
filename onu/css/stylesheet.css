@@ -6,6 +6,10 @@ body::-webkit-scrollbar {
   display: none;
 }
 
+#login_state{
+  display:none;
+}
+
 .navbar-nav {
   width: 100%;
 }

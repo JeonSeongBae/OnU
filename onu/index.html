@@ -26,10 +26,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav justify-content-end">
             <li class="nav-item active">
-              <a class="nav-link" href="signup.html">회원가입</a>
+              <a id = "signup_hi" class="nav-link" href="signup.html">회원가입</a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link" href="#" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="login">로그인</a>
+              <a id = "login_logout" class="nav-link" href="#" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="login">로그인</a>
             </li>
           </ul>
         </div>
@@ -201,6 +201,18 @@
       };
       firebase.initializeApp(config);
 
+      window.onload = function(){
+        if(firebase.auth().currentUser == null){
+          document.getElementById("signup_hi").innerHTML = "회원가입";
+          document.getElementById("login_logout").innerHTML = "로그인";
+        }
+        else{
+          document.getElementById("signup_hi").innerHTML = firebase.auth().currentUser.email + "님 환영합니다.";
+          document.getElementById("login_logout").innerHTML = "로그아웃";
+        }
+      }
+
+
       $(window).ready(function() {
         var ref = firebase.database().ref('type');
         var content = "현재까지 등록된 공간 수는 ";
@@ -215,7 +227,8 @@
           console.log(content);
           document.getElementById("current").innerHTML = content;
         });
-      })
+
+      });
 
       $(window).scroll(function() {
         console.log($("#header").offset().top);
@@ -329,11 +342,12 @@
         var email = document.getElementById('email').value;
         var password = document.getElementById('password').value;
 
-        firebase.auth().signInWithEmailAndPassword("leein3293@naver.com", "cca06151").catch(function(error) {
+        firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
           // Handle Errors here.
           var errorCode = error.code;
           var errorMessage = error.message;
           alert(errorCode + " " + errorMessage);
+          return;
           // ...
         });
         alert("로그인에 성공하였습니다.");
