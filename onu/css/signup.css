@@ -3,6 +3,10 @@
 /* css reset */
 div,span,body{margin:0;padding:0}
 
+h3{
+  color:white;
+}
+
 #wrap{
   clear:both;
   float:left;
@@ -26,13 +30,39 @@ div,span,body{margin:0;padding:0}
   color:#fff;
   text-decoration:none
 }
+#provider{
+  background-color: #28a745;
+  border-color: #28a745;
+  cursor:pointer;
+}
+
+#consumer{
+  background-color: #868e96;
+  border-color: #868e96;
+  cursor:pointer;
+}
+
+#provider_only{
+  display:none;
+}
+
+.col-4 label {
+  color:#ffffff;
+  font-size: 20px;
+}
+
+.row {
+  margin: 20px 0px;
+}
 
 .input_form{
   width:50%;
 }
 .signup_form{
+  width:100%;
   padding-left: 33%;
   text-align: left;
+  display: inline-block;
 }
 
 .btn_gray{
@@ -41,6 +71,29 @@ div,span,body{margin:0;padding:0}
     border-color: #343a40;
 }
 
+.who_signup{
+  font-size:23px;
+  width:100%;
+  color:white;
+}
+
+.signup_header{
+  background-image: url("../img/signup_background.png");
+  background-size: contain;
+  padding-top: 50px;
+  padding-bottom: 60px;
+  height: 100%;
+}
+
+.duplicate_check{
+  display: inline-block;
+  cursor: pointer;
+}
+
+.user_data{
+  color:white;
+  display:block;
+}
 
 .line{
   clear:both;

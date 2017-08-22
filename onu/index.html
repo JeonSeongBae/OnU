@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="./css/stylesheet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
 
+
   </head>
   <body>
     <header>
@@ -187,6 +188,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script>
       // Initialize Firebase
       var config = {
@@ -313,6 +315,8 @@
             btn.className = "btn btn-primary";
             btn.innerHTML = "로그인";
 
+            btn.setAttribute("onclick", "consumer_login()");
+
             modal.find('.modal-footer').append(btn);
 
             break;
@@ -321,6 +325,28 @@
         }
       });
 
+      function consumer_login(){
+        var email = document.getElementById('email').value;
+        var password = document.getElementById('password').value;
+
+        firebase.auth().signInWithEmailAndPassword("leein3293@naver.com", "cca06151").catch(function(error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          alert(errorCode + " " + errorMessage);
+          // ...
+        });
+        alert("로그인에 성공하였습니다.");
+      }
+
+      function logout(){
+        firebase.auth().signOut().then(function() {
+          // Sign-out successful.
+        }, function(error) {
+          console.log(error);
+          // An error happened.
+        });
+      }
 
       function initButton(form, index, name, list) {
         var div = document.createElement("div");
@@ -414,27 +440,6 @@
             var listDiv = document.createElement("div");
             listDiv.className = "input-group";
 
-            var text = document.createElement("input");
-            text.className = "form-control";
-            text.setAttribute("type", "number");
-            text.setAttribute("min", "1");
-            text.setAttribute("max", "1000");
-            text.setAttribute("placeholder", "인원 수를 입력해주세요.");
-
-            var span = document.createElement("span");
-            span.className = "input-group-addon";
-            span.innerHTML = "명";
-
-            var bt = document.createElement("button");
-            bt.setAttribute("type", "button");
-            bt.className = "btn btn-default";
-            bt.innerHTML = "선택하기";
-            bt.style.float = "right";
-            bt.setAttribute("onclick", "selectNumber(this)");
-
-            listDiv.appendChild(text);
-            listDiv.appendChild(span);
-            listDiv.appendChild(bt);
 
             return listDiv;
           default:
