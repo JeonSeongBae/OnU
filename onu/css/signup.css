@@ -27,6 +27,15 @@ div,span,body{margin:0;padding:0}
   text-decoration:none
 }
 
+.col-4 label {
+  color:#ffffff;
+  font-size: 20px;
+}
+
+.row {
+  margin: 20px 0px;
+}
+
 .input_form{
   width:50%;
 }
