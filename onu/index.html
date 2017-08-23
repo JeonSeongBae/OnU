@@ -9,20 +9,17 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/stylesheet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
-
-
   </head>
   <body>
     <header>
       <nav id="header" class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="./index.html">
           <img src="./img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
           공앤유
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav justify-content-end">
             <li class="nav-item active">
@@ -174,13 +171,7 @@
         </div>
       </div>
     </div>
-
-
-    <footer>
-
-    </footer>
-
-
+    <footer></footer>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -222,8 +213,21 @@
               authdata = user;
               document.getElementById('signup_hi').innerHTML = authdata.email + "님 환영합니다.";
               document.getElementById('login_logout').innerHTML = "로그아웃";
-              document.getElementById('signup_hi').href = "#";
 
+              var data = firebase.database().ref('users/consumer/');
+              data.once('value').then(function(snapshot){
+                var a = snapshot.val();
+                var b = Object.keys(snapshot.val());
+                for (var i = 0; i < b.length; i++) {
+                  if (authdata.email == a[b[i]].email;) {
+                    // provider_Mypage
+                    document.getElementById('signup_hi').href = "./upload.html";
+                  }else {
+                    // consummer_Mypage
+                    document.getElementById('signup_hi').href = "./placeinfo.html";
+                  }
+                }
+              });
             }
             else {
              authdata = null;

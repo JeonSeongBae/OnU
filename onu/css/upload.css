@@ -11,12 +11,31 @@ div,span,body{margin:0;padding:0}
   font-weight: bolder;
 }
 
+.infoUnit{
+  float: left;
+  text-align: left;
+  width: 30%;
+  color: white;
+  font-size: 20px;
+  padding-top: 1%;
+  margin-left: 3%;
+}
+
+.infoInput{
+  width: 95%;
+}
+
+#btn_next{
+  margin-left: 0;
+}
+
 #container{
   clear:both;
   width:800px;
   _border:1px solid #fff;
   margin:3% auto
 }
+
 #container h1{
   clear:both;
   float:left;
@@ -46,10 +65,14 @@ div,span,body{margin:0;padding:0}
   text-align: center;
 }
 
+.btnRow{
+  text-align: center;
+}
+
 .signup_form img{
   width: 24%;
   padding-top: 2%;
-  max-height: 160px;
+  max-height: 130px;
 }
 
 .btn_gray{
@@ -59,10 +82,10 @@ div,span,body{margin:0;padding:0}
   color: #fff;
   background-color: #343a40;
   border-color: #343a40;
-  margin-top: 3%;
+  margin-top: 2%;
   margin-left: 4%;
   margin-right: 4%;
-  width: 30%;
+  width: 24%;
   height: 70px;
 }
 
