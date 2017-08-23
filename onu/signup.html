@@ -156,12 +156,14 @@
       else{
         save_id(email, password, password_compare, tel);
         alert("회원가입이 완료되었습니다.");
+        location.href = "index.html";
       }
     }
 
     function save_id(email, password, password_compare, tel){
       firebase.database().ref('/users/consumer').push({
         email : email,
+        password:password,
         tel: tel,
       });
 
