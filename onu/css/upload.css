@@ -72,7 +72,7 @@ div,span,body{margin:0;padding:0}
 .signup_form img{
   width: 24%;
   padding-top: 2%;
-  max-height: 150px;
+  max-height: 130px;
 }
 
 .btn_gray{
@@ -82,7 +82,7 @@ div,span,body{margin:0;padding:0}
   color: #fff;
   background-color: #343a40;
   border-color: #343a40;
-  margin-top: 3%;
+  margin-top: 2%;
   margin-left: 4%;
   margin-right: 4%;
   width: 24%;
