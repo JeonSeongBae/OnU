@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/stylesheet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="./css/upload.css">
+
+    <title></title>
+  </head>
+  <body>
+    <header>
+      <nav id="header" class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <a class="navbar-brand" href="#">
+          <img src="./img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+          공앤유
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav justify-content-end">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">회원가입</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="#" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="login">로그인</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <div class="main-header">
+      <div class="container main-container">
+        <h1 id="status">장소정보 입력</h1>
+        <hr>
+        <div class = "signup_form">
+          <div class="placeInfo">
+            <div class="infoUnit">
+              장소이름<br>
+              <input type="text" name="" value=""class="infoInput">
+            </div>
+            <div class="infoUnit">
+              사용 목적<br>
+              <input type="text" name="" value=""class="infoInput">
+            </div>
+            <div class="infoUnit">
+              주변 부가시설<br>
+              <input type="text" name="" value=""class="infoInput">
+            </div>
+            <div class="infoUnit">
+              주소<br>
+              <input type="text" name="" value=""class="infoInput">
+            </div>
+            <div class="infoUnit">
+              주의사항<br>
+              <input type="text" name="" value=""class="infoInput">
+            </div>
+            <div class="infoUnit">
+              내부시설<br>
+              <input type="text" name="" value=""class="infoInput">
+            </div>
+            <div class="infoUnit">
+              이용가능 시간<br>
+              <input type="text" name="" value=""class="infoInput">
+            </div>
+            <div class="infoUnit">
+              소개글<br>
+              <input type="text" name="" value=""class="infoInput">
+            </div>
+            <a href="./index.html">
+              <button id="btn_next"type="button" class="btn btn_gray" style="display:inline">저 장</button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
+  <script src="./js/fileUpLoad.js"></script>
+  <script>
+  $(function () {
+    $('#btn-upload').click(function (e) {
+      e.preventDefault();
+      $('#file').click();
+    });
+  });
+  function changeValue(obj){
+    alert(obj.value);
+  }
+  </script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyDxbF57tRwkq5bdMyMPLbG5o9MfhfAHKmg",
+      authDomain: "andu-temp.firebaseapp.com",
+      databaseURL: "https://andu-temp.firebaseio.com",
+      projectId: "andu-temp",
+      storageBucket: "andu-temp.appspot.com",
+      messagingSenderId: "110005684913"
+    };
+    firebase.initializeApp(config);
+
+    // Get a reference to the database service
+    var database = firebase.database();
+    // Get a reference to the storage service, which is used to create references in your storage bucket
+    var storage = firebase.storage();
+    // Create a root reference
+    var storageRef = firebase.storage().ref();
+
+
+  </script>
+</html>
