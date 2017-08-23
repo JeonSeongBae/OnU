@@ -200,22 +200,12 @@
         messagingSenderId: "799401536592"
       };
       firebase.initializeApp(config);
-
-      window.onload = function(){
-        if(firebase.auth().currentUser == null){
-          document.getElementById("signup_hi").innerHTML = "회원가입";
-          document.getElementById("login_logout").innerHTML = "로그인";
-        }
-        else{
-          document.getElementById("signup_hi").innerHTML = firebase.auth().currentUser.email + "님 환영합니다.";
-          document.getElementById("login_logout").innerHTML = "로그아웃";
-        }
-      }
-
+      var authdata;
 
       $(window).ready(function() {
         var ref = firebase.database().ref('type');
         var content = "현재까지 등록된 공간 수는 ";
+
         ref.once('value').then(function(snapshot) {
           var list = snapshot.val();
 
@@ -226,8 +216,22 @@
           content += "입니다.";
           console.log(content);
           document.getElementById("current").innerHTML = content;
-        });
 
+          firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+              authdata = user;
+              document.getElementById('signup_hi').innerHTML = authdata.email + "님 환영합니다.";
+              document.getElementById('login_logout').innerHTML = "로그아웃";
+              document.getElementById('signup_hi').href = "#";
+
+            }
+            else {
+             authdata = null;
+             document.getElementById('signup_hi').innerHTML = "회원가입";
+             document.getElementById('login_logout').innerHTML = "로그인";
+            }
+          });
+        });
       });
 
       $(window).scroll(function() {
@@ -257,6 +261,8 @@
         var button = $(event.relatedTarget);
         var type = button.data('whatever');
 
+
+
         var modal = $(this);
         modal.find('.modal-body').text("");
         modal.find('.modal-footer').text("");
@@ -274,11 +280,25 @@
             btn.setAttribute("type", "button");
             btn.className = "btn btn-primary";
             btn.innerHTML = "신청하기";
+            btn.setAttribute("onclick", "place_request()");
 
             modal.find('.modal-footer').append(btn);
 
             break;
           case 'login':
+
+            if(authdata){
+              firebase.auth().signOut().then(function() {
+                // Sign-out successful.
+                alert("로그아웃 되었습니다.");
+                //이미 속성에 들어가버려서 나오는 창을 닫을 방법을 모르겠음 by 상인
+                return;
+              }, function(error) {
+                alert(error);
+                // An error happened.
+              });
+              return;
+            }
             modal.find('.modal-title').text("로그인");
 
             var div = document.createElement("div");
@@ -338,19 +358,25 @@
         }
       });
 
+      function get_currentUser(){
+        return firebase.auth().currentUser;
+      }
+
       function consumer_login(){
         var email = document.getElementById('email').value;
         var password = document.getElementById('password').value;
 
-        firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+        firebase.auth().signInWithEmailAndPassword(email, password).then(function(firebaseUser) {
           // Handle Errors here.
+          alert("로그인에 성공하였습니다.");
+          location.href = "index.html";
+          // ...
+        }).catch(function(error){
           var errorCode = error.code;
           var errorMessage = error.message;
-          alert(errorCode + " " + errorMessage);
-          return;
-          // ...
+            alert("로그인에 실패하였습니다.\n" + errorCode + " " + errorMessage);
+
         });
-        alert("로그인에 성공하였습니다.");
       }
 
       function logout(){
@@ -375,6 +401,7 @@
 
         var span = document.createElement("span");
         span.className = "form-text";
+        span.id = "data" + index;
 
         type.appendChild(span);
 
@@ -454,6 +481,19 @@
             var listDiv = document.createElement("div");
             listDiv.className = "input-group";
 
+            var input_date = document.createElement("input");
+            input_date.setAttribute("type", "date");
+            input_date.className = "form-control";
+
+            var bt = document.createElement("button");
+            bt.setAttribute("type", "button");
+            bt.className = "btn btn-default";
+            bt.innerHTML = "선택하기";
+            bt.style.float = "right";
+            bt.setAttribute("onclick", "selectDate(this)");
+
+            listDiv.appendChild(input_date);
+            listDiv.appendChild(bt);
 
             return listDiv;
           default:
@@ -488,6 +528,12 @@
       function selectNumber(item) {
         var text = $(item).parents('.input-group').find('.form-control').val();
         $(item).parents('.form-btn').find('.form-text').text(text + "명");
+        $('.collapse').removeClass('show');
+      }
+
+      function selectDate(item){
+        var text = $(item).parents('.input-group').find('.form-control').val();
+        $(item).parents('.form-btn').find('.form-text').text(text + "일");
         $('.collapse').removeClass('show');
       }
 
@@ -547,6 +593,30 @@
 
         form.appendChild(formDiv);
       }
+
+      function place_request(){
+        var type = document.getElementById("data0").innerHTML;
+        var place = document.getElementById("data1").innerHTML;
+        var number = document.getElementById("data2").innerHTML;
+        var date = document.getElementById("data3").innerHTML;
+
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            firebase.database().ref('contract/' + user.uid).set({
+              type:type,
+              place:place,
+              number:number,
+              date:date
+            });
+            alert("신청이 완료되었습니다. 신청하신 내용은 마이페이지에서 확인하실 수 있습니다.");
+            location.href = "index.html";
+          }
+          else{
+            alert("로그인을 해주세요");
+            location.href = "index.html";
+          }
+      });
+    }
 
     </script>
   </body>
