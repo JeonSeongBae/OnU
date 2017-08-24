@@ -26,7 +26,7 @@
     </header>
     <div class="signup_header">
       <div class="container main-container">
-        <h3>장소 제공자 회원가입</h3>
+        <h3>장소 제공자로 로그인</h3>
 
         <div class = "signup_form">
           <div class="form-group">
@@ -45,13 +45,13 @@
             <label for="inputAddress2" class="col-form-label user_data">전화번호</label>
             <input type="text" class="form-control input_form" id="tel" placeholder="전화번호를 입력해주세요">
           </div>
-        </div>
-
-        <div class="form-group">
-          <select class="search" id="sido" name="big" style = "height:30px">
-					</select>
-					<select class="search" id="gugun" name="small" style = "height:30px">
-					</select>
+          <div class="form-group">
+            <label for="inputAddress2" class="col-form-label user_data">제공가능장소</label>
+            <select class="search" id="sido" name="big" style = "height:30px">
+            </select>
+            <select class="search" id="gugun" name="small" style = "height:30px">
+            </select>
+          </div>
         </div>
 
         <button type="button" onclick="make_id()" class="btn btn_gray">회원가입</button>
@@ -83,22 +83,14 @@
     var is_provider = false;
     var email, password, password_compare, tel;
     var sido;
-
-
       $(document).ready(function () {
         var div = document.createElement("div");
         div.className = "introduce-body";
         var img = document.createElement("img");
         img.setAttribute("src", "./images/icon.png");
-
         div.appendChild(img);
-
         $("#introduce-slider").append(div);
-
       });
-
-
-
       //Initialze Firebase
       var config = {
       apiKey: "AIzaSyB5Aji_Ysf6EsI_6cR4kDs3yi9s0bjo9_k",
@@ -109,9 +101,7 @@
       messagingSenderId: "799401536592"
     };
     firebase.initializeApp(config);
-
     var database = firebase.database();
-
     function writeUserData(userID, name, email, imageUrl){
       firebase.database().ref('/users/' + userID).set({
         username : name,
@@ -119,27 +109,20 @@
         profile_picture:imageUrl
       });
     }
-
-
     function make_id(){
-
       email = document.getElementById("email").value;
       password = document.getElementById("password").value;
       password_compare = document.getElementById("password_compare").value;
       tel = document.getElementById("tel").value;
       sido = document.getElementById("sido").value;
       gugun = document.getElementById('gugun').value;
-
       check_form(email, password, password_compare, tel);
-
     }
     function check_form(id, password, password_compare, tel){
       //if 아이디 중복확인 추가 필요
-
       if(email == ""){
         alert("이메일을 입력해주세요.");
       }
-
       else if(password == ""){
         alert("패스워드를 입력해주세요.")
       }
@@ -159,7 +142,6 @@
         save_id(email, password, password_compare, tel, sido, gugun);
       }
     }
-
     function save_id(email, password, password_compare, tel, sido, gugun){
       var place = sido + " " + gugun;
       firebase.auth().createUserWithEmailAndPassword(email, password).then(function(firebaseUser){
@@ -178,10 +160,7 @@
         var errorMessage = error.message;
         alert(errorCode + " " + errorMessage);
       });
-
     }
-
-
     function check_regex(name, regex, message) {
   		if(!regex.test(name)) {
   			if(name != "") {
@@ -189,13 +168,11 @@
   				alert(message);
   				document.getElementById('email').focus();
   			}
-
   			return false;
   		} else {
   			return true;
   		}
   	}
-
     function is_duplicate(){
       var data = database.ref('users/consumer/' + document.getElementById('email').value + '/id');
       data.once('value').then(function(snapshot){
@@ -212,9 +189,7 @@
         console.log(snapshot.val());
       });
     }
-
     function js_select_region(select1, select2) {//시-도를 선택했을 때 해당하는 구-군을 다음 select에 나타냄
-
 			if (!js_select_region_select_sido(select1)) {
 				return;
 			}
@@ -228,30 +203,23 @@
 				js_select_region_select_gugun(select1, select2)
 			}
 		}
-
 		function js_select_region_select_sido(select1) {
       var big_category = firebase.database().ref('place');
-
       big_category.once('value').then(function(snapshot){
         sido = Object.keys(snapshot.val());
         if (!sido) {
           console.log('너구나??');
   				return false;
   			}
-
   			if (select1.tagName != 'SELECT') {
           console.log("너냐");
   				return false;
   			}
-
   			var val = select1.value;
   			var opts = select1.options;
   			select1.length = 0;
-
   			var opt = new Option('대분류', '', (val == ''), (val == ''));
   			opts.add(opt);
-
-
   			for (var i = 0, m = sido.length; i < m; i++) {
   				var opt = new Option(sido[i], sido[i], (val == sido[i]),
   						(val == sido[i]));
@@ -261,12 +229,10 @@
       });
       return true;
 		}
-
 		function js_select_region_select_gugun(select1, select2) {
       var small_category = firebase.database().ref('place/' + select1.value);
       console.log(select1.value);
       var gugun;
-
       small_category.once('value').then(function(snapshot){
         gugun = snapshot.val();
         if (!gugun) {
@@ -281,13 +247,11 @@
           console.log("여기까진오냐3");
   				return false;
   			}
-
   			var val = select2.value;
   			var opts = select2.options;
   			select2.length = 0;
   			var opt = new Option('소분류', '', (val == ''), (val == ''));
   			opts.add(opt);
-
         console.log("여기까진오냐");
   			if (!select1.value) {
   				select2.disabled = true;
@@ -295,12 +259,10 @@
   			} else {
   				select2.disabled = false;
   			}
-
   			//var list = gugun[select1.value];
   			if (!gugun) {
   				return false;
   			}
-
   			for (var i = 0, m = gugun.length; i < m; i++) {
   				var opt = new Option(gugun[i], gugun[i], (val == gugun[i]),
   						(val == gugun[i]));
@@ -310,17 +272,11 @@
       })
       return true;
 		}
-
 		js_select_region(document.getElementById("sido"), document
 				.getElementById("gugun"));
-
     function cancel_signup(){
       location.href = "index.html";
     }
-
-
-
-
     </script>
   </body>
 </html>
