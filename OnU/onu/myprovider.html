@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/stylesheet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="./css/mypage.css">
+
+    <title></title>
+  </head>
+  <body>
+    <header>
+      <nav id="header" class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <a class="navbar-brand" href="./index.html">
+          <img src="./img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+          공앤유
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav justify-content-end">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">회원가입</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="#" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="login">로그인</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <div class="main-header">
+      <div class="container main-container">
+        <h1 id="status">Consumer</h1>
+        <hr>
+        <div class = "signup_form">
+          <div class="placeInfo">
+            <div class="infoUnit">
+              장소이름<br>
+              <input type="text" name="_info0" value=""class="infoInput" placeholder="OO빌라 000호">
+            </div>
+            <div class="infoUnit">
+              사용 목적<br>
+              <input type="text" name="_info1" value=""class="infoInput" placeholder="동아리 모임">
+            </div>
+            <div class="infoUnit">
+              주변 부가시설<br>
+              <input type="text" name="_info2" value=""class="infoInput"placeholder="3분거리 지하철역">
+            </div>
+            <div class="infoUnit">
+              주소<br>
+              <input type="text" name="_info3" value=""class="infoInput"placeholder="유성구 궁동 000-0번지">
+            </div>
+            <div class="infoUnit">
+              주의사항<br>
+              <input type="text" name="_info4" value=""class="infoInput"placeholder="유리문 조심">
+            </div>
+            <div class="infoUnit">
+              내부시설<br>
+              <input type="text" name="_info5" value=""class="infoInput"placeholder="거실1 화장실1 주방1 방2">
+            </div>
+            <div class="infoUnit">
+              이용가능 시간<br>
+              <input type="text" name="_info6" value=""class="infoInput"placeholder="06:00~18:00">
+            </div>
+            <div class="infoUnit">
+              소개글<br>
+              <input type="text" name="_info7" value=""class="infoInput"placeholder="반갑습니다, 감사합니다.">
+            </div>
+            <div class="infoUnit">
+              기타<br>
+              <input type="text" name="_info8" value=""class="infoInput"placeholder="기타사항">
+            </div>
+          </div>
+          <div class="btnRow">
+            <button type="button" class="btn btn_gray" id="btn-upload">사 진 추 가</button>
+            <input type="file" class="inputfile" id="file" name="file" multiple="multiple">
+            <button type="button" onclick="fileUpLoad()" class="btn btn_gray" style="display:inline">정 보 저 장</button>
+            <button type="button" class="btn btn_gray" style="display:inline">홈 으 로</button>
+          </div>
+          <div id="holder"class="holder"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
+  <script src="./js/fileUpLoad.js"></script>
+  <script>
+  $(function () {
+    $('#btn-upload').click(function (e) {
+      e.preventDefault();
+      $('#file').click();
+    });
+  });
+  function changeValue(obj){
+    alert(obj.value);
+  }
+  </script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyDxbF57tRwkq5bdMyMPLbG5o9MfhfAHKmg",
+      authDomain: "andu-temp.firebaseapp.com",
+      databaseURL: "https://andu-temp.firebaseio.com",
+      projectId: "andu-temp",
+      storageBucket: "andu-temp.appspot.com",
+      messagingSenderId: "110005684913"
+    };
+    firebase.initializeApp(config);
+
+    // Get a reference to the database service
+    var database = firebase.database();
+    // Get a reference to the storage service, which is used to create references in your storage bucket
+    var storage = firebase.storage();
+    // Create a root reference
+    var storageRef = firebase.storage().ref();
+
+    function fileUpLoad(){
+      var placeInfo = document.getElementsByTagName('input');
+      database.ref('userId/').set({
+        info0: placeInfo[0].value,
+        info1: placeInfo[1].value,
+        info2: placeInfo[2].value,
+        info3: placeInfo[3].value,
+        info4: placeInfo[4].value,
+        info5: placeInfo[5].value,
+        info6: placeInfo[6].value,
+        info7: placeInfo[7].value,
+        info8: placeInfo[8]
+      });
+
+      // 한 개의 파일 넣기
+      // var file = document.getElementById("file").files[0];
+      // var uploadTask = storageRef.child(file.name).put(file);
+
+      // 여러개의 파일 넣기
+      for (var i = 0; i < upload.files.length; i++) {
+        var file = upload.files[i];
+        var uploadTask = storageRef.child(file.name).put(file);
+      }
+
+      // Listen for state changes, errors, and completion of the upload.
+      uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+        function(snapshot) {
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log('Upload is ' + progress + '% done');
+          switch (snapshot.state) {
+            case firebase.storage.TaskState.PAUSED: // or 'paused'
+              console.log('Upload is paused');
+              break;
+            case firebase.storage.TaskState.RUNNING: // or 'running'
+              console.log('Upload is running');
+              break;
+          }
+        }, function(error) {
+        switch (error.code) {
+          case 'storage/unauthorized':
+            // User doesn't have permission to access the object
+            break;
+          case 'storage/canceled':
+            // User canceled the upload
+            break;
+          case 'storage/unknown':
+            // Unknown error occurred, inspect error.serverResponse
+            break;
+        }
+      }, function() {
+        // Upload completed successfully, now we can get the download URL
+        var downloadURL = uploadTask.snapshot.downloadURL;
+        document.getElementsByClassName("col-form-label").innerHTML = downloadURL;
+      });
+    }
+  </script>
+
+  <script>
+    var upload = document.getElementById('file');
+    var holder = document.getElementById('holder');
+    var state = document.getElementById('status');
+
+    // 상태검사
+    if (typeof window.FileReader === 'undefined') {
+      state.className = 'fail';
+    } else {
+      state.className = 'success';
+    }
+
+    // 새로운 파일을 추가하여 바뀌었을 때
+    upload.onchange = function (e) {
+      e.preventDefault();
+      holder.innerHTML='';
+      // 최대 8개까지의 파일을 화면에 띄워준다.
+      for (var i = 0; i < upload.files.length && i <8; i++) {
+        var file = upload.files[i];
+        var reader = new FileReader();
+        reader.onload = function (event) {
+          var img = new Image();
+          img.src = event.target.result;
+          holder.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      }
+      return false;
+    };
+    // function fileUpLoad(){
+    //   var fileInput = document.getElementById("file1");
+    //
+    //   var file = fileInput.files[0];
+    //
+    //   var formData = new FormData();
+    //
+    //   formData.append("upload_file" , file);
+    //
+    //
+    //
+    //   var xhr = new XMLHttpRequest();
+    //
+    //   xhr.open("POST" , "index.html" , true);
+    //
+    //   xhr.send(formData);
+    // }
+
+
+    </script>
+</html>

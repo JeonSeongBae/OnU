@@ -1,0 +1,129 @@
+@charset "utf-8";
+
+/* css reset */
+div,span,body{margin:0;padding:0}
+
+h3, h5{
+  color:white;
+  margin-bottom: 3%;
+}
+
+#place{
+  display : none;
+}
+
+#wrap{
+  clear:both;
+  float:left;
+  width:100%;
+  background:hotpink
+}
+#container{
+  clear:both;
+  width:800px;
+  _border:1px solid #fff;
+  margin:3% auto
+}
+#container h1{
+  clear:both;
+  float:left;
+  width:100%;
+  text-align:center;
+  color:#fff
+}
+#container h1 a{
+  color:#fff;
+  text-decoration:none
+}
+#provider{
+  background-color: #28a745;
+  border-color: #28a745;
+  cursor:pointer;
+  font-size: 33px;
+}
+
+#consumer{
+  background-color: #868e96;
+  border-color: #868e96;
+  cursor:pointer;
+  font-size: 33px;
+}
+
+.col-4 label {
+  color:#ffffff;
+  font-size: 20px;
+}
+
+.row {
+  margin: 20px 0px;
+}
+
+.input_form{
+  width:50%;
+}
+.signup_form{
+  width:100%;
+  padding-left: 33%;
+  text-align: left;
+  display: inline-block;
+}
+
+.btn_gray{
+  color: #fff;
+    background-color: #343a40;
+    border-color: #343a40;
+}
+
+.who_signup{
+  font-size:23px;
+  width:100%;
+  color:white;
+}
+
+.signup_header{
+  background-image: url("../img/signup_background.png");
+  background-size: contain;
+  padding-top: 50px;
+  padding-bottom: 60px;
+  height: 100%;
+}
+
+.duplicate_check{
+  display: inline-block;
+  cursor: pointer;
+}
+
+.user_data{
+  color:white;
+  display:block;
+}
+
+.line{
+  clear:both;
+  float:left;
+  width:100%;border:1px solid #fff;margin-bottom:3%}
+.line p{float:left;min-width:100px;margin-left:3%;color:#fff}
+.line .inputArea{float:left;}
+.line .inputArea input{float:left;width:370px;height:30px;margin:10px 0 0 0;padding-left:10px}
+.submit{clear:both;float:left;width:100%;height:50px;background:#fff;border:0;font-size:20px;color:hotpink}
+
+.container {
+  height: inherit;
+}
+
+.container h1 {
+  padding: 50px 0px;
+}
+
+.container h4 {
+  color: #ffffff;
+}
+
+.signup-cursor {
+  cursor: pointer;
+}
+
+.google_login{
+  text-align: left;
+  padding-left: 33%;
+}
