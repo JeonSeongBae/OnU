@@ -74,26 +74,32 @@
       messagingSenderId: "799401536592"
     };
     firebase.initializeApp(config);
+
     $(window).ready(function() {
       var authdata;
+
       firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
           authdata = user;
           document.getElementById('signup_hi').innerHTML = authdata.email + "님 환영합니다.";
           document.getElementById('login_logout').innerHTML = "로그아웃";
+
           var uid = authdata.uid;
           var providerRef = firebase.database().ref('users/provider/' + uid);
           var place;
           providerRef.once('value').then(function(snapshot) {
             place = snapshot.val().place;
             console.log(place);
+
             var contractRef = firebase.database().ref('contract/');
             contractRef.orderByChild('place').equalTo(place).once('value').then(function(snapshot) {
               var keys = Object.keys(snapshot.val());
               var data = snapshot.val();
+
               for(var i = 0; i < keys.length; i++) {
                 console.log(data[keys[i]]);
                 var val = data[keys[i]];
+
                 var tr = document.createElement("tr");
                 var td1 = document.createElement("td");
                 td1.innerHTML = val.type;
@@ -108,16 +114,19 @@
                 btn.setAttribute("type", "button");
                 btn.className = "btn btn-light";
                 btn.innerHTML = "신청하기";
-                btn.setAttribute("onclick", "apply('" + keys[i] + "','" + uid + "')");
+                btn.setAttribute("onclick", "apply(this, '" + keys[i] + "','" + uid + "')");
                 td5.appendChild(btn);
+
                 tr.appendChild(td1);
                 tr.appendChild(td2);
                 tr.appendChild(td3);
                 tr.appendChild(td4);
                 tr.appendChild(td5);
+
                 $('.table').find('tbody').append(tr);
               }
             });
+
           });
         }
         else {
@@ -127,7 +136,8 @@
         }
       });
     });
-    function apply(useruid, provideruid) {
+
+    function apply(item, useruid, provideruid) {
       var ref = firebase.database().ref('contract/' + useruid + "/provider");
       ref.once('value').then(function(snapshot) {
         var size;
@@ -136,14 +146,18 @@
         } else {
           size = Object.keys(snapshot.val()).length;
         }
+
         ref.child(size).set(provideruid);
       });
     }
+
     function get_currentUser(){
       return firebase.auth().currentUser;
     }
+
     function detail(key) {
       location.href="detail.html?key=" + key;
     }
+
   </script>
 </html>

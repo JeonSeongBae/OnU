@@ -37,8 +37,23 @@
       </nav>
     </header>
     <div class="main-header">
-      <div id="main" class="container main-container">
+      <div class="container main-container">
+        <div id="tableDiv"></div>
+        <div>
+          <table id="providerTable" class="table">
+            <thead>
+              <tr>
+                <th>장소 이름</th>
+                <th>주소</th>
+                <th>상세보기</th>
+              </tr>
+            </thead>
+            <tbody>
 
+            </tbody>
+          </table>
+
+        </div>
       </div>
     </div>
   </body>
@@ -74,9 +89,10 @@
           document.getElementById('login_logout').innerHTML = "로그아웃";
 
           var uid = authdata.uid;
-          console.log("uid: " + uid);
+          console.log(uid);
           var dataRef = firebase.database().ref('contract/' + uid);
           dataRef.once('value').then(function(snapshot) {
+
             var val = snapshot.val();
             console.log(val);
             var tr = document.createElement("tr");
@@ -97,8 +113,46 @@
             tr.appendChild(td4);
             tr.appendChild(td5);
 
+            $('#tableDiv').find('tbody').html(tr);
 
-    $('#main').load('myconsumer.html .table');
+            var providerList = val.provider;
+            console.log(providerList);
+            var providerRef = firebase.database().ref('users/provider/');
+            for(var i = 0; i < providerList.length; i++) {
+              providerRef.child(providerList[i]).child('info').once('value').then(function(snapshot) {
+                var val = snapshot.val();
+                console.log(val);
+
+                var tr = document.createElement("tr");
+                var td1 = document.createElement("td");
+                td1.innerHTML = val.name;
+                var td2 = document.createElement("td");
+                td2.innerHTML = val.address;
+                var td3 = document.createElement("td");
+                var btn = document.createElement("button");
+                btn.className = "btn btn-light";
+                btn.setAttribute("type", "button");
+                btn.setAttribute("onclick", "showPlace()");
+                btn.innerHTML = "정보 보기";
+                td3.appendChild(btn);
+
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tr.appendChild(td3);
+
+                $('#providerTable').find('tbody').append(tr);
+              });
+            }
+
+          });
+        }
+        else {
+         authdata = null;
+         alert("로그인이 필요합니다");
+         location.href="index.html";
+        }
+      });
+    });
 
   </script>
 </html>
