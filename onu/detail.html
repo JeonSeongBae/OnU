@@ -89,10 +89,9 @@
           document.getElementById('login_logout').innerHTML = "로그아웃";
 
           var uid = authdata.uid;
-          console.log(uid);
+          console.log("uid: " + uid);
           var dataRef = firebase.database().ref('contract/' + uid);
           dataRef.once('value').then(function(snapshot) {
-
             var val = snapshot.val();
             console.log(val);
             var tr = document.createElement("tr");

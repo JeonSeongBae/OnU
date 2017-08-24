@@ -47,7 +47,6 @@
         </button>
       </div>
     </div>
-
     <div class="main-section">
       <div class="container">
         <span>발상의 전환</span>
@@ -63,7 +62,6 @@
             <p>소비자로부터 공급자가 선택하는 방식</p>
           </div>
         </div>
-
       </div>
     </div>
 
@@ -163,10 +161,8 @@
             </button>
           </div>
           <div class="modal-body">
-
           </div>
           <div class="modal-footer">
-
           </div>
         </div>
       </div>
@@ -217,7 +213,9 @@
               document.getElementById('signup_hi').innerHTML = authdata.email + "님 환영합니다.";
               document.getElementById('login_logout').innerHTML = "로그아웃";
 
-              var data = firebase.database().ref('users/consumer/' + authdata.uid);
+              var uid = authdata.uid;
+              console.log("uid: " + uid);
+              var data = firebase.database().ref('users/consumer/' + uid);
               data.once('value').then(function(snapshot) {
                 var val = snapshot.val();
                 if(val == null) {
@@ -238,6 +236,7 @@
               document.getElementById('request').innerHTML = "장소견적 신청하기";
             }
           });
+
         });
       });
 
