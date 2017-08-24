@@ -200,15 +200,8 @@
       var authdata;
       $(window).ready(function() {
         var ref = firebase.database().ref('type');
-        var content = "현재까지 등록된 공간 수는 ";
         ref.once('value').then(function(snapshot) {
-          var list = snapshot.val();
-          for(var i in list) {
-            content += i + " : " + list[i] + "개 ";
-          }
-          content += "입니다.";
-          console.log(content);
-          document.getElementById("current").innerHTML = content;
+
           firebase.auth().onAuthStateChanged(function(user) {
             if(user){
               authdata = user;
@@ -219,7 +212,6 @@
                 if(snapshot.val()) {
                   document.getElementById('signup_hi').href = "./myconsumer.html";//소비자용 마이페이지로 이동
                   document.getElementById('request').setAttribute("data-whatever", "request");
-                  document.getElementById('request').innerHTML = "장소견적 신청하기";
                   document.getElementById('mypage').innerHTML = "마이페이지";
                   document.getElementById('mypage').href = "myconsumer.html";
                 }
@@ -229,7 +221,6 @@
                     if(snapshot.val()) {
                       document.getElementById('signup_hi').href = "./myprovider.html";
                       document.getElementById('request').setAttribute("data-whatever", "array_request");
-                      document.getElementById('request').innerHTML = "견적신청 내역보기";
                       document.getElementById('mypage').innerHTML = "마이페이지";
                       document.getElementById('mypage').href = "myprovider.html";
                     }
@@ -247,13 +238,20 @@
               document.getElementById('signup_hi').innerHTML = "회원가입";
               document.getElementById('signup_hi').href = "signup.html";
               document.getElementById('login_logout').innerHTML = "로그인";
-              document.getElementById('request').innerHTML = "장소견적 신청하기";
               document.getElementById('mypage').innerHTML = "";
             }
           });
         });
       });
-
+      firebase.auth().signOut().then(function() {
+        // Sign-out successful.
+        alert("로그아웃 되었습니다.");
+        location.href="index.html";
+        //이미 속성에 들어가버려서 나오는 창을 닫을 방법을 모르겠음 by 상인
+      }, function(error) {
+        alert(error);
+        // An error happened.
+      });
       $(window).scroll(function() {
         if ($("#header").offset().top > 600) {
           $("#header").addClass("navbar-shrink");
@@ -261,19 +259,16 @@
           $("#header").removeClass("navbar-shrink");
         }
       });
-
       var typeRef = firebase.database().ref('type');
       var typeList;
       typeRef.once('value').then(function(snapshot) {
         typeList = snapshot.val();
       });
-
       var placeRef = firebase.database().ref('place');
       var locationList;
       placeRef.once('value').then(function(snapshot) {
         locationList = snapshot.val();
       });
-
       $('#modal').on('show.bs.modal', function(event) {
         var button = $(event.relatedTarget);
         var type = button.data('whatever');
