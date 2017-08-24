@@ -30,7 +30,7 @@
               <a id = "signup_hi" class="nav-link" href="signup.html">회원가입</a>
             </li>
             <li class="nav-item active">
-              <a id = "login_logout" class="nav-link" href="#" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="login">로그인</a>
+              <span id = "login_logout" class="nav-link" href="#" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="login" style = "cursor:pointer">로그아웃</span>
             </li>
           </ul>
         </div>
@@ -83,6 +83,7 @@
           authdata = user;
           document.getElementById('signup_hi').innerHTML = authdata.email + "님 환영합니다.";
           document.getElementById('login_logout').innerHTML = "로그아웃";
+          document.getElementById('login_logout').setAttribute("onclick", "logout()");
 
           var uid = authdata.uid;
           var providerRef = firebase.database().ref('users/provider/' + uid);
@@ -131,8 +132,6 @@
         }
         else {
          authdata = null;
-         alert("로그인이 필요합니다");
-         location.href="index.html";
         }
       });
     });
@@ -157,6 +156,18 @@
 
     function detail(key) {
       location.href="detail.html?key=" + key;
+    }
+
+    function logout(){
+      firebase.auth().signOut().then(function() {
+        // Sign-out successful.
+        alert("로그아웃 되었습니다.");
+        location.href="index.html";
+        //이미 속성에 들어가버려서 나오는 창을 닫을 방법을 모르겠음 by 상인
+      }, function(error) {
+        alert(error);
+        // An error happened.
+      });
     }
 
   </script>
