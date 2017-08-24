@@ -634,11 +634,12 @@
 
         firebase.auth().onAuthStateChanged(function(user) {
           if (user) {
-            firebase.database().ref('contract/' + user.uid).set({
+            firebase.database().ref('contract/' + user.uid).push({
               type:type,
               place:place,
               number:number,
-              date:date
+              date:date,
+              completed: 'false'
             });
             alert("신청이 완료되었습니다. 신청하신 내용은 마이페이지에서 확인하실 수 있습니다.");
             location.href = "index.html";
