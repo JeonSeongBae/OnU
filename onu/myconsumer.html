@@ -91,31 +91,38 @@
             var uid = authdata.uid;
             var dataRef = firebase.database().ref('contract/' + uid);
             dataRef.once('value').then(function(snapshot) {
-              console.log(snapshot.val());
               var val = snapshot.val();
+              var list = Object.keys(val);
 
               var tr = document.createElement("tr");
-              var td1 = document.createElement("td");
-              td1.innerHTML = val.type;
-              var td2 = document.createElement("td");
-              td2.innerHTML = val.place;
-              var td3 = document.createElement("td");
-              td3.innerHTML = val.number;
-              var td4 = document.createElement("td");
-              td4.innerHTML = val.date;
-              var td5 = document.createElement("td");
-              var btn = document.createElement("button");
-              btn.innerHTML = "상세보기";
-              btn.setAttribute("type", "button");
-              btn.className = "btn btn-light";
-              btn.setAttribute("onclick", "detail('" + uid + "')");
-              td5.appendChild(btn);
+              for(var index in list) {
+                var key = list[index];
+                var td1 = document.createElement("td");
+                td1.innerHTML = val[key].type;
+                var td2 = document.createElement("td");
+                td2.innerHTML = val[key].place;
+                var td3 = document.createElement("td");
+                td3.innerHTML = val[key].number;
+                var td4 = document.createElement("td");
+                td4.innerHTML = val[key].date;
+                var td5 = document.createElement("td");
+                if(val[key].completed == 'false') {
+                  var btn = document.createElement("button");
+                  btn.setAttribute("type", "button");
+                  btn.className = "btn btn-light";
+                  btn.innerHTML = "상세보기";
+                  btn.setAttribute("onclick", "detail('" + key + "')");
+                  td5.appendChild(btn);
+                } else {
+                  td5.innerHTML = "완료";
+                }
 
-              tr.appendChild(td1);
-              tr.appendChild(td2);
-              tr.appendChild(td3);
-              tr.appendChild(td4);
-              tr.appendChild(td5);
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tr.appendChild(td3);
+                tr.appendChild(td4);
+                tr.appendChild(td5);
+              }
 
               $('.table').find('tbody').html(tr);
             });
