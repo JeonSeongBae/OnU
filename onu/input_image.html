@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+      <!-- <div class="temp"onclick="writeUserData()">
+        JeonSeongBae
+      </div>
+      <input type="file" id="inputFileId"name="inputFileName"> -->
+      <input id="INPUT_MESSAGE" type="text" class="validate">
+      <button id="BTN_WRITE" type="button" class="btn indigo" >메모 작성하기</button>
+      <ul class="collapsible" data-collapsible="expandable" id="READ_MEMO">
+
+      </ul>
+  </body>
+
+  <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyDxbF57tRwkq5bdMyMPLbG5o9MfhfAHKmg",
+      authDomain: "andu-temp.firebaseapp.com",
+      databaseURL: "https://andu-temp.firebaseio.com",
+      projectId: "andu-temp",
+      storageBucket: "",
+      messagingSenderId: "110005684913"
+    };
+    firebase.initializeApp(config);
+
+    // Get a reference to the database service
+    var database = firebase.database();
+    // Get a reference to the storage service, which is used to create references in your storage bucket
+    var storage = firebase.storage();
+
+    /* DB에 메모내용을 기록 */
+    var new_memo = $("INPUT_MESSAGE").val();
+    var _filename = "unknown";
+    database.ref('/filememo').push({
+      "memo" : new_memo ,
+      "time" : firebase.database.ServerValue.TIMESTAMP ,
+      "filename" : _filename
+    });
+
+    $("form").each(function() {
+        this.reset();
+    });
+    $("#PROGRESS").hide();
+
+    database.ref('./filememo').on('value', function(snapshot){
+      $("#PROGRESS").show();
+        return true;
+      $("#PROGRESS").hide();
+        return false;
+    });
+    
+    // function writeUserStorage() {
+    //
+    // }
+  </script>
+</html>
