@@ -38,7 +38,8 @@
     </header>
     <div class="main-header">
       <div class="container main-container">
-        <h1>견적 내용</h1>
+        <h2>견적 내용</h2>
+        <hr>
         <table class="table">
           <thead>
             <tr>
@@ -110,6 +111,31 @@
               btn.className = "btn btn-light";
               btn.setAttribute("onclick", "detail('" + uid + "')");
               td5.appendChild(btn);
+
+              tr.appendChild(td1);
+              tr.appendChild(td2);
+              tr.appendChild(td3);
+              tr.appendChild(td4);
+              tr.appendChild(td5);
+
+              $('.table').find('tbody').html(tr);
+            });
+
+            var completedRef = firebase.database().ref('completed/' + uid);
+            completedRef.once('value').then(function(snapshot) {
+              var val = snapshot.val();
+
+              var tr = document.createElement("tr");
+              var td1 = document.createElement("td");
+              td1.innerHTML = val.type;
+              var td2 = document.createElement("td");
+              td2.innerHTML = val.place;
+              var td3 = document.createElement("td");
+              td3.innerHTML = val.number;
+              var td4 = document.createElement("td");
+              td4.innerHTML = val.date;
+              var td5 = document.createElement("td");
+              td5.innerHTML = "완료";
 
               tr.appendChild(td1);
               tr.appendChild(td2);
