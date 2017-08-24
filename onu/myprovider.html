@@ -130,7 +130,7 @@
         var ref = database.ref('users/provider/' + authData.uid + "/info");
         ref.once('value').then(function(snapshot) {
           if(snapshot.val() != null) {
-            var val = snapshot.val();
+            var val = snapshot.val();``
             var input = document.getElementsByClassName('infoInput');
             input[0].value = val.name;
             input[1].value = val.purpose;
@@ -203,6 +203,7 @@
         // Upload completed successfully, now we can get the download URL
         var downloadURL = uploadTask.snapshot.downloadURL;
         document.getElementsByClassName("col-form-label").innerHTML = downloadURL;
+        alert("정보 저장 완료!");
       });
     }
   </script>

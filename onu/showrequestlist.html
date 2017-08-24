@@ -138,17 +138,22 @@
     });
 
     function apply(item, useruid, provideruid) {
-      var ref = firebase.database().ref('contract/' + useruid + "/provider");
-      ref.once('value').then(function(snapshot) {
-        var size;
-        if(snapshot.val() == null) {
-          size = 0;
-        } else {
-          size = Object.keys(snapshot.val()).length;
-        }
-
-        ref.child(size).set(provideruid);
-      });
+      if (confirm("신청하시겠습니까?")) {
+        item.innerHTML = "신청중";
+        item.setAttribute("onclick", "location.href='chat.html'"); // 대화를 위한 페이지 이동
+        item.style.backgroundColor = "#3930E2";
+        item.style.color = "#fff";
+        var ref = firebase.database().ref('contract/' + useruid + "/provider");
+        ref.once('value').then(function(snapshot) {
+          var size;
+          if(snapshot.val() == null) {
+            size = 0;
+          } else {
+            size = Object.keys(snapshot.val()).length;
+          }
+          // ref.child(size).set(provideruid);
+        });
+      }
     }
 
     function get_currentUser(){
