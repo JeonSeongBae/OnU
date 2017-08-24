@@ -37,8 +37,23 @@
       </nav>
     </header>
     <div class="main-header">
-      <div id="main" class="container main-container">
+      <div class="container main-container">
+        <div id="tableDiv"></div>
+        <div>
+          <table id="providerTable" class="table">
+            <thead>
+              <tr>
+                <th>장소 이름</th>
+                <th>주소</th>
+                <th>상세보기</th>
+              </tr>
+            </thead>
+            <tbody>
 
+            </tbody>
+          </table>
+
+        </div>
       </div>
     </div>
   </body>
@@ -50,12 +65,66 @@
   <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
   <script>
-    var temp = location.href.split("?");
-    var parameters = temp[1].split("=");
-    var key = parameters[1];
+    var config = {
+      apiKey: "AIzaSyB5Aji_Ysf6EsI_6cR4kDs3yi9s0bjo9_k",
+      authDomain: "andu-3f6db.firebaseapp.com",
+      databaseURL: "https://andu-3f6db.firebaseio.com",
+      projectId: "andu-3f6db",
+      storageBucket: "andu-3f6db.appspot.com",
+      messagingSenderId: "799401536592"
+    };
+    firebase.initializeApp(config);
 
+    $(window).ready(function() {
+      var temp = location.href.split("?");
+      var parameters = temp[1].split("=");
+      var key = parameters[1];
 
-    $('#main').load('myconsumer.html .table');
+      $('#tableDiv').load('myconsumer.html .table');
+
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          authdata = user;
+          document.getElementById('signup_hi').innerHTML = authdata.email + "님 환영합니다.";
+          document.getElementById('login_logout').innerHTML = "로그아웃";
+
+          var uid = authdata.uid;
+          console.log(uid);
+          var dataRef = firebase.database().ref('contract/' + uid);
+          dataRef.once('value').then(function(snapshot) {
+
+            var val = snapshot.val();
+            console.log(val);
+            var tr = document.createElement("tr");
+            var td1 = document.createElement("td");
+            td1.innerHTML = val.type;
+            var td2 = document.createElement("td");
+            td2.innerHTML = val.place;
+            var td3 = document.createElement("td");
+            td3.innerHTML = val.number;
+            var td4 = document.createElement("td");
+            td4.innerHTML = val.date;
+            var td5 = document.createElement("td");
+            td5.innerHTML = "진행중";
+
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            tr.appendChild(td3);
+            tr.appendChild(td4);
+            tr.appendChild(td5);
+
+            $('#tableDiv').find('tbody').html(tr);
+
+            var providerList = val.provider;
+          });
+        }
+        else {
+         authdata = null;
+         alert("로그인이 필요합니다");
+         location.href="index.html";
+        }
+      });
+    });
 
   </script>
 </html>
