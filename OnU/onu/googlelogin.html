@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link rel="stylesheet" href="./css/stylesheet.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+  <link rel="stylesheet" href="./css/signup.css">
+
+</head>
+<body>
+  <header>
+    <nav id="header" class="navbar navbar-expand-lg navbar-dark fixed-top">
+      <a class="navbar-brand" href="index.html">
+        <img src="./img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+        공앤유
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </nav>
+  </header>
+  <div class="signup_header">
+    <div class="container main-container">
+      <h3>구글 아이디로 로그인 하기 위해서 추가적인 정보가 필요합니다.</h3>
+      <h5>가입시 설정한 회원종류는 수정이 불가능합니다.</h5>
+      <span id = "consumer" onclick = "login_change('consumer')">일반 회원으로 로그인</span>
+      <span id = "provider" onclick = "login_change('provider')">장소 제공자로 로그인</span>
+      <div class = "signup_form">
+
+        <div class="form-group">
+          <label for="inputAddress2" class="col-form-label user_data">전화번호</label>
+          <input type="text" class="form-control input_form" id="tel" placeholder="전화번호를 입력해주세요">
+        </div>
+
+        <div id = "place" class="form-group">
+          <label for="inputAddress2" class="col-form-label user_data">제공가능장소</label>
+          <select class="search" id="sido" name="big" style = "height:30px">
+          </select>
+          <select class="search" id="gugun" name="small" style = "height:30px">
+          </select>
+        </div>
+      </div>
+
+      <button type="button" onclick="google_login()" class="btn btn_gray">계속</button>
+      <button type="button" onclick = "cancel_signup()" class= "btn btn_gray">취소</button>
+    </div>
+  </div>
+
+
+  <footer>
+
+  </footer>
+
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
+  <script>
+
+    var sido;
+    var is_consumer = false;
+    var config = {
+      apiKey: "AIzaSyB5Aji_Ysf6EsI_6cR4kDs3yi9s0bjo9_k",
+      authDomain: "andu-3f6db.firebaseapp.com",
+      databaseURL: "https://andu-3f6db.firebaseio.com",
+      projectId: "andu-3f6db",
+      storageBucket: "andu-3f6db.appspot.com",
+      messagingSenderId: "799401536592"
+    };
+    firebase.initializeApp(config);
+
+    var database = firebase.database();
+
+    js_select_region(document.getElementById("sido"), document.getElementById("gugun"));
+
+
+    function js_select_region(select1, select2) {//시-도를 선택했을 때 해당하는 구-군을 다음 select에 나타냄
+
+      if (!js_select_region_select_sido(select1)) {
+        return;
+      }
+      if (!js_select_region_select_gugun(select1, select2)) {
+        return;
+      }
+      select1.onchange = function() {
+        select2.value = '';
+        js_select_region_select_gugun(select1, select2)
+      }
+    }
+
+    function js_select_region_select_sido(select1) {
+      var big_category = firebase.database().ref('place');
+
+      big_category.once('value').then(function(snapshot){
+        sido = Object.keys(snapshot.val());
+        if (!sido) {
+          return false;
+        }
+
+        if (select1.tagName != 'SELECT') {
+          return false;
+        }
+
+        var val = select1.value;
+        var opts = select1.options;
+        select1.length = 0;
+
+        var opt = new Option('대분류', '', (val == ''), (val == ''));
+        opts.add(opt);
+
+
+        for (var i = 0, m = sido.length; i < m; i++) {
+          var opt = new Option(sido[i], sido[i], (val == sido[i]),
+              (val == sido[i]));
+          opts.add(opt);
+        }
+        return true;
+      });
+      return true;
+    }
+
+    function js_select_region_select_gugun(select1, select2) {
+      var small_category = firebase.database().ref('place/' + select1.value);
+      console.log(select1.value);
+      var gugun;
+
+      small_category.once('value').then(function(snapshot){
+        gugun = snapshot.val();
+        if (!gugun) {
+          return true;
+        }
+        if (select1.tagName != 'SELECT') {
+          return false;
+        }
+        if (select2.tagName != 'SELECT') {
+          return false;
+        }
+
+        var val = select2.value;
+        var opts = select2.options;
+        select2.length = 0;
+        var opt = new Option('소분류', '', (val == ''), (val == ''));
+        opts.add(opt);
+
+        if (!select1.value) {
+          select2.disabled = true;
+          return true;
+        } else {
+          select2.disabled = false;
+        }
+
+        //var list = gugun[select1.value];
+        if (!gugun) {
+          return false;
+        }
+
+        for (var i = 0, m = gugun.length; i < m; i++) {
+          var opt = new Option(gugun[i], gugun[i], (val == gugun[i]),
+              (val == gugun[i]));
+          opts.add(opt);
+        }
+        return true;
+      })
+      return true;
+    }
+
+    function login_change(who){
+      if(who == 'provider'){
+        document.getElementById('place').style = "display:block";
+        is_consumer = false;
+      }
+      else{
+        document.getElementById('place').style = "display:none";
+        is_consumer = true;
+      }
+    }
+
+
+    function cancel_signup(){
+      firebase.auth().signOut().then(function() {
+        // Sign-out successful.
+        location.href="index.html";
+        //이미 속성에 들어가버려서 나오는 창을 닫을 방법을 모르겠음 by 상인
+      }, function(error) {
+        alert(error);
+        // An error happened.
+      });
+      location.href = "index.html";
+    }
+
+    function google_login(){
+      var authdata = firebase.auth().currentUser;
+      var tel = document.getElementById('tel').value;
+      var sido = document.getElementById('sido').value;
+      var gugun = document.getElementById('gugun').value;
+      var place = sido + " " + gugun;
+      console.log(is_consumer + 'is');
+      console.log(authdata.email)
+      if(is_consumer){
+        var userRef = firebase.database().ref('users/consumer/' + authdata.uid);
+        userRef.once('value').then(function(snapshot){
+          userRef.set({
+            email : authdata.email,
+            password: 'googleUser',
+            tel: tel
+          });
+          alert("로그인이 완료되었습니다.");
+          location.href = "index.html";
+        });
+      }
+      else{
+        var userRef = firebase.database().ref('users/provider/' + authdata.uid);
+        userRef.once('value').then(function(snapshot){
+          userRef.set({
+            email : authdata.email,
+            password:'googleUser',
+            tel: tel,
+            place:place
+          });
+          alert("로그인이 완료되었습니다.");
+          location.href = "index.html";
+        });
+      }
+    }
+
+
+  </script>
+
+  </body>
+</html>
