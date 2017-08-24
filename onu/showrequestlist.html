@@ -114,7 +114,7 @@
                 btn.setAttribute("type", "button");
                 btn.className = "btn btn-light";
                 btn.innerHTML = "신청하기";
-                btn.setAttribute("onclick", "apply('" + keys[i] + "','" + uid + "')");
+                btn.setAttribute("onclick", "apply(this, '" + keys[i] + "','" + uid + "')");
                 td5.appendChild(btn);
 
                 tr.appendChild(td1);
@@ -137,7 +137,7 @@
       });
     });
 
-    function apply(useruid, provideruid) {
+    function apply(item, useruid, provideruid) {
       var ref = firebase.database().ref('contract/' + useruid + "/provider");
       ref.once('value').then(function(snapshot) {
         var size;
