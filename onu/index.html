@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
   </head>
   <body>
+
     <header>
       <nav id="header" class="navbar navbar-expand-lg navbar-dark fixed-top">
         <a class="navbar-brand" href="./index.html">
@@ -174,6 +175,14 @@
         </div>
       </div>
     </div>
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/ko_KR/sdk.js#xfbml=1&version=v2.10&appId=669803516558727";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
 
     <footer>
       <button type="button" name="button" class ="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever = "sample"> sample </button>
@@ -197,7 +206,11 @@
         messagingSenderId: "799401536592"
       };
       firebase.initializeApp(config);
+
+
       var authdata;
+
+
       $(window).ready(function() {
         var ref = firebase.database().ref('type');
         var content = "현재까지 등록된 공간 수는 ";
@@ -330,12 +343,42 @@
               rightDiv.className = "col-4";
               var p = document.createElement("p");
               p.innerHTML = "간편 로그인";
+
               var btnDiv = document.createElement("div");
+
               var googlebtn = document.createElement("button");
-              googlebtn.innerHTML = "구글로그인 자리";
+              var google_span = document.createElement("span");
+              var google_img = document.createElement("img");
+              google_img.setAttribute('src', './img/google.svg');
+              google_img.style = "height:100%";
+              google_span.appendChild(google_img);
+              google_span.innerHTML += " Login With Google";
+              googlebtn.appendChild(google_span);
+              googlebtn.style = "background-color:white;border:white";
               googlebtn.setAttribute('onclick', "google_login()");
+
+
+              // var facebookbtn = document.createElement("div");
+              // facebookbtn.className = "fb-login-button";
+              // facebookbtn.setAttribute("data-max-rows", "1");
+              // facebookbtn.setAttribute("data-size", "large");
+              // facebookbtn.setAttribute("data-button-type", "login_with");
+              // facebookbtn.setAttribute("data-show-faces", "false");
+              // facebookbtn.setAttribute("data-auto-logout-link", "false");
+              // facebookbtn.setAttribute("data-use-continue-as", "false");
+
               var facebookbtn = document.createElement("button");
-              facebookbtn.innerHTML = "페이스북 자리";
+              var facebook_span = document.createElement("span");
+              var facebook_img = document.createElement("img");
+              facebook_img.setAttribute('src', './img/facebook.svg');
+              facebook_img.style = "height:100%";
+              facebook_span.appendChild(facebook_img);
+              facebook_span.innerHTML += " Login With Facebook";
+              facebookbtn.appendChild(facebook_span);
+              facebookbtn.style = "background-color:white;border:white";
+              facebookbtn.setAttribute('onclick', "facebook_login()");
+
+
               var kakaobtn = document.createElement("button");
               kakaobtn.innerHTML = "카카오 자리";
               btnDiv.appendChild(googlebtn);
@@ -570,6 +613,13 @@
           'login_hint': 'user@example.com'
         });
         firebase.auth().signInWithRedirect(provider);
+      }
+
+      function facebook_login(){
+        var provider = new firebase.auth.FacebookAuthProvider();
+        provider.addScope('user_tel');
+        firebase.auth().signInWithRedirect(provider);
+
       }
     </script>
   </body>

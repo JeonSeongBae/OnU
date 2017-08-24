@@ -30,10 +30,8 @@
               <a id = "signup_hi" class="nav-link" href="signup.html"></a>
             </li>
             <li class="nav-item active">
-              <a id = "mypage" class="nav-link" href="signup.html"></a>
-            </li>
-            <li class="nav-item active">
-              <a id = "login_logout" class="nav-link" href="#" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="login"></a>
+              <span id = "login_logout" class="nav-link" href="#" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="login" style = "cursor:pointer">로그아웃</span>
+
             </li>
           </ul>
         </div>
@@ -90,6 +88,7 @@
 
           document.getElementById('signup_hi').href = "";
           document.getElementById('login_logout').innerHTML = "로그아웃";
+          document.getElementById('login_logout').setAttribute("onclick", "logout()");
 
           document.getElementById('mypage').innerHTML = "마이페이지";
           document.getElementById('mypage').href = "myprovider.html";
@@ -141,8 +140,6 @@
         }
         else {
          authdata = null;
-         alert("로그인이 필요합니다");
-         location.href="index.html";
         }
       });
     });
