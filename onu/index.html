@@ -42,7 +42,7 @@
           <span id="current"></span>
           <hr>
         </div>
-        <button type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="request">
+        <button type="button" id = "request" class="btn btn-default btn-lg" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="request">
           장소견적 신청하기
         </button>
       </div>
@@ -171,7 +171,9 @@
         </div>
       </div>
     </div>
-    <footer></footer>
+    <footer>
+      <button type="button" name="button" class ="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever = "sample"> sample </button>
+    </footer>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -213,36 +215,39 @@
               authdata = user;
               document.getElementById('signup_hi').innerHTML = authdata.email + "님 환영합니다.";
               document.getElementById('login_logout').innerHTML = "로그아웃";
-              check_consumer();
+
+              var data = firebase.database().ref('users/consumer/');
+              data.once('value').then(function(snapshot){//consumer 아이디를  currentUser와 비교
+                var a = snapshot.val();
+                var b = Object.keys(snapshot.val());
+                for (var i = 0; i < b.length; i++) {
+                  if (authdata.email == a[b[i]].email) {//consumer안에 있는 아이디라면
+                    // provider_Mypage
+                    document.getElementById('signup_hi').href = "./upload.html";//소비자용 마이페이지로 이동
+                    document.getElementById('request').setAttribute("data-whatever", "request");
+                    document.getElementById('request').innerHTML = "장소견적 신청하기";
+                  }else {
+                    // consummer_Mypage
+                    document.getElementById('signup_hi').href = "./placeinfo.html";
+                    document.getElementById('request').setAttribute("data-whatever", "array_request");
+                    document.getElementById('request').innerHTML = "견적신청 내역보기";
+                  }
+                }
+              });
             }
             else {
              authdata = null;
              document.getElementById('signup_hi').innerHTML = "회원가입";
              document.getElementById('signup_hi').href = "signup.html";
              document.getElementById('login_logout').innerHTML = "로그인";
+             document.getElementById('request').innerHTML = "장소견적 신청하기";
             }
           });
         });
       });
-      function check_consumer(){
-        var data = firebase.database().ref('users/consumer/');
-        data.once('value').then(function(snapshot){
-          var randomList = snapshot.val();
-          var randomKey = Object.keys(snapshot.val());
-          for (var i = 0; i < randomKey.length; i++) {
-            if (authdata.email == randomList[randomKey[i]].email) {
-              // consumer
-              document.getElementById('signup_hi').href='./myconsumer.html';
-              return;
-            }
-          }
-          // provider
-          document.getElementById('signup_hi').href='./myprovider.html';
-        });
-      }
 
       $(window).scroll(function() {
-        console.log($("#header").offset().top);
+
         if ($("#header").offset().top > 600) {
           $("#header").addClass("navbar-shrink");
         } else {
@@ -269,7 +274,6 @@
         var type = button.data('whatever');
 
 
-
         var modal = $(this);
         modal.find('.modal-body').text("");
         modal.find('.modal-footer').text("");
@@ -291,6 +295,26 @@
 
             modal.find('.modal-footer').append(btn);
 
+            break;
+          case 'array_request':
+            var request_Ref = firebase.database().ref('contract');
+            var provider_list = firebase.database().ref('users/provider');
+
+            var myplace;
+
+            console.log(authdata.email);
+
+            provider_list.once('value').then(function(snapshot){
+              var userList = snapshot.val();
+              var provider_keys = Object.keys(snapshot.val());
+
+              for(var i = 0;i < provider_keys.length; i++){
+                if(authdata.email == userList[provider_keys[i]].email){
+                  myplace = userList[provider_keys[i]].place;
+                }
+              }
+              console.log(myplace);
+            });
             break;
           case 'login':
 

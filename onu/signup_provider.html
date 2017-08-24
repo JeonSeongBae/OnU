@@ -162,14 +162,14 @@
 
     function save_id(email, password, password_compare, tel, sido, gugun){
       var place = sido + " " + gugun;
-      firebase.database().ref('/users/provider').push({
-        email : email,
-        password:password,
-        tel: tel,
-        place: place
-      });
-
       firebase.auth().createUserWithEmailAndPassword(email, password).then(function(firebaseUser){
+        console.log(firebaseUser.uid);
+        firebase.database().ref('/users/provider/' + firebaseUser.uid).set({
+          email : email,
+          password:password,
+          tel: tel,
+          place: place
+        });
         alert("회원가입이 완료되었습니다.");
         location.href = "index.html";
       }).catch(function(error) {
@@ -181,13 +181,6 @@
 
     }
 
-    function temp(){
-      var data = database.ref('users/leein93/name');
-      data.on('value', function(data){
-        //child_added 등과 같이 DB에 변화가 있을 때 콜백 할 수도 있다.(오른쪽 함수를 콜백)
-        console.log(data.val());
-      });
-    }
 
     function check_regex(name, regex, message) {
   		if(!regex.test(name)) {
