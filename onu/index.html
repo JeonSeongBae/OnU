@@ -296,26 +296,7 @@
             modal.find('.modal-footer').append(btn);
 
             break;
-          case 'array_request':
-            var request_Ref = firebase.database().ref('contract');
-            var provider_list = firebase.database().ref('users/provider');
-
-            var myplace;
-
-            console.log(authdata.email);
-
-            provider_list.once('value').then(function(snapshot){
-              var userList = snapshot.val();
-              var provider_keys = Object.keys(snapshot.val());
-
-              for(var i = 0;i < provider_keys.length; i++){
-                if(authdata.email == userList[provider_keys[i]].email){
-                  myplace = userList[provider_keys[i]].place;
-                }
-              }
-              console.log(myplace);
-            });
-            break;
+          
           case 'login':
 
             if(authdata){
