@@ -27,10 +27,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav justify-content-end">
             <li class="nav-item active">
-              <a id = "signup_hi" class="nav-link" href="signup.html"></a>
+              <a id = "signup_hi" class="nav-link" href="#">회원가입</a>
             </li>
             <li class="nav-item active">
-              <a id = "login_logout" class="nav-link" href="#" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="login"></a>
+              <span class="nav-link" id = "login_logout" href="#" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="login" style = "cursor:pointer">로그아웃</span>
             </li>
           </ul>
         </div>
@@ -94,6 +94,7 @@
   <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
   <script src="./js/fileUpLoad.js"></script>
   <script>
+
   $(function () {
     $('#btn-upload').click(function (e) {
       e.preventDefault();
@@ -146,6 +147,14 @@
     firebase.auth().onAuthStateChanged(function(user) {
       authData = user;
       storageRef = storage.ref(user.uid);
+
+      if (user) {
+        authdata = user;
+        document.getElementById('signup_hi').innerHTML = authdata.email + "님 환영합니다.";
+        document.getElementById('login_logout').innerHTML = "로그아웃";
+        document.getElementById('login_logout').setAttribute("onclick", "logout()");
+      }
+
       if(authData != null) {
         var ref = database.ref('users/provider/' + authData.uid + "/info");
         ref.once('value').then(function(snapshot) {
@@ -181,10 +190,6 @@
         introduce: placeInfo[7].value,
         etc: placeInfo[8].value
       });
-
-      // 한 개의 파일 넣기
-      // var file = document.getElementById("file").files[0];
-      // var uploadTask = storageRef.child(file.name).put(file);
 
       // 여러개의 파일 넣기
       for (var i = 0; i < upload.files.length; i++) {
@@ -256,13 +261,11 @@
       }
       return false;
     };
-
     function logout(){
       firebase.auth().signOut().then(function() {
         // Sign-out successful.
         alert("로그아웃 되었습니다.");
         location.href="index.html";
-        //이미 속성에 들어가버려서 나오는 창을 닫을 방법을 모르겠음 by 상인
       }, function(error) {
         alert(error);
         // An error happened.
