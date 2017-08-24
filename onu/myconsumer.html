@@ -107,7 +107,7 @@
             authdata = user;
             document.getElementById('signup_hi').innerHTML = authdata.email + "님 환영합니다.";
             document.getElementById('login_logout').innerHTML = "로그아웃";
-            check_consumer();
+            updateContract();
           }
           else {
            authdata = null;
@@ -118,7 +118,7 @@
       });
     });
 
-    function check_consumer(){
+    function updateContract(){
       var data = firebase.database().ref('contract/');
       data.once('value').then(function(snapshot){
         var randomList = snapshot.val();
