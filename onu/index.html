@@ -298,7 +298,24 @@
             break;
 
           case 'array_request':
-            location.href="showrequestlist.html";
+            var request_Ref = firebase.database().ref('contract');
+            var provider_list = firebase.database().ref('users/provider');
+
+            var myplace;
+
+            console.log(authdata.email);
+
+            provider_list.once('value').then(function(snapshot){
+              var userList = snapshot.val();
+              var provider_keys = Object.keys(snapshot.val());
+
+              for(var i = 0;i < provider_keys.length; i++){
+                if(authdata.email == userList[provider_keys[i]].email){
+                  myplace = userList[provider_keys[i]].place;
+                }
+              }
+              console.log(myplace);
+            });
             break;
             
           case 'login':
@@ -619,11 +636,12 @@
 
         firebase.auth().onAuthStateChanged(function(user) {
           if (user) {
-            firebase.database().ref('contract/' + user.uid).set({
+            firebase.database().ref('contract/' + user.uid).push({
               type:type,
               place:place,
               number:number,
-              date:date
+              date:date,
+              completed: 'false'
             });
             alert("신청이 완료되었습니다. 신청하신 내용은 마이페이지에서 확인하실 수 있습니다.");
             location.href = "index.html";
