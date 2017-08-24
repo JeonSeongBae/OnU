@@ -31,7 +31,6 @@
             </li>
             <li class="nav-item active">
               <span id = "login_logout" class="nav-link" href="#" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="login" style = "cursor:pointer">로그아웃</span>
-
             </li>
           </ul>
         </div>
@@ -88,10 +87,6 @@
 
           document.getElementById('signup_hi').href = "";
           document.getElementById('login_logout').innerHTML = "로그아웃";
-          document.getElementById('login_logout').setAttribute("onclick", "logout()");
-
-          document.getElementById('mypage').innerHTML = "마이페이지";
-          document.getElementById('mypage').href = "myprovider.html";
           var uid = authdata.uid;
           var providerRef = firebase.database().ref('users/provider/' + uid);
           var place;

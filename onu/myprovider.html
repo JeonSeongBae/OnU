@@ -31,7 +31,6 @@
             </li>
             <li class="nav-item active">
               <span class="nav-link" id = "login_logout" href="#" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="login" style = "cursor:pointer">로그아웃</span>
-
             </li>
           </ul>
         </div>
@@ -124,6 +123,26 @@
     var storageRef;
 
     var authData;
+    $(window).ready(function() {
+      var ref = firebase.database().ref('type');
+      ref.once('value').then(function(snapshot) {
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            authdata = user;
+            document.getElementById('login_logout').setAttribute("onclick", "logout()");
+            document.getElementById('signup_hi').innerHTML = authdata.email + "님 환영합니다.";
+
+            document.getElementById('signup_hi').href = "";
+            document.getElementById('login_logout').innerHTML = "로그아웃";
+          }
+          else {
+           authdata = null;
+           alert("로그인이 필요합니다");
+           location.href="index.html";
+          }
+        });
+      });
+    });
 
     firebase.auth().onAuthStateChanged(function(user) {
       authData = user;
@@ -247,7 +266,6 @@
         // Sign-out successful.
         alert("로그아웃 되었습니다.");
         location.href="index.html";
-        //이미 속성에 들어가버려서 나오는 창을 닫을 방법을 모르겠음 by 상인
       }, function(error) {
         alert(error);
         // An error happened.

@@ -90,10 +90,6 @@
 
             document.getElementById('signup_hi').href = "";
             document.getElementById('login_logout').innerHTML = "로그아웃";
-            document.getElementById('login_logout').setAttribute("onclick", "logout()");
-
-            document.getElementById('mypage').innerHTML = "마이페이지";
-            document.getElementById('mypage').href = "myconsumer.html";
             var uid = authdata.uid;
             var dataRef = firebase.database().ref('contract/' + uid);
             dataRef.once('value').then(function(snapshot) {
