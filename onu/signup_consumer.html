@@ -25,22 +25,29 @@
       </nav>
     </header>
     <div class="signup_header">
-      <div class="container">
-        <h1>유형을 선택해주세요.</h1>
-        <div class="row">
-          <div class="col-6 signup-cursor" onclick="location.href='signup_consumer.html'">
-            <div class="main-container">
-              <h4>회원가입</h4>
-              <h1>일반인</h1>
-            </div>
+      <div class="container main-container">
+        <h3>일반인 회원가입</h3>
+
+        <div class = "signup_form">
+          <div class="form-group">
+            <label for="inputEmail4" class="col-form-label user_data">이메일</label>
+            <input type="email" class="form-control input_form" style="display:inline-block" id="email" placeholder="ID">
           </div>
-          <div class="col-6 signup-cursor" onclick="location.href='signup_provider.html'">
-            <div class="main-container">
-              <h4>회원가입</h4>
-              <h1>임대인</h1>
-            </div>
+          <div class="form-group">
+            <label for="inputPassword4" class="col-form-label user_data">비밀번호</label>
+            <input type="password" class="form-control input_form" id="password" placeholder="Password">
+          </div>
+          <div class="form-group">
+            <label for="inputAddress" class="col-form-label user_data">비밀번호확인</label>
+            <input type="text" class="form-control input_form" id="password_compare" placeholder="Password_cmp">
+          </div>
+          <div class="form-group">
+            <label for="inputAddress2" class="col-form-label user_data">전화번호</label>
+            <input type="text" class="form-control input_form" id="tel" placeholder="전화번호를 입력해주세요">
           </div>
         </div>
+        <button type="button" onclick="make_id()" class="btn btn_gray">회원가입</button>
+        <button type="button" onclick = "cancel_signup()" class= "btn btn_gray">취소</button>
       </div>
     </div>
 
