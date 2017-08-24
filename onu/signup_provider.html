@@ -26,7 +26,7 @@
     </header>
     <div class="signup_header">
       <div class="container main-container">
-        <h3>일반인 회원가입</h3>
+        <h3>장소 제공자 회원가입</h3>
 
         <div class = "signup_form">
           <div class="form-group">
@@ -84,6 +84,7 @@
     var email, password, password_compare, tel;
     var sido;
 
+
       $(document).ready(function () {
         var div = document.createElement("div");
         div.className = "introduce-body";
@@ -119,20 +120,6 @@
       });
     }
 
-    function signup_change(provider){
-      is_provider = provider;
-      var index = 0;
-
-      if(is_provider){//공급자 회원가입
-        document.getElementById("provider_only").style.display = "block";
-
-
-      }
-      else{
-        document.getElementById("provider_only").style.display = "none";
-      }
-    }
-
 
     function make_id(){
 
@@ -140,7 +127,8 @@
       password = document.getElementById("password").value;
       password_compare = document.getElementById("password_compare").value;
       tel = document.getElementById("tel").value;
-
+      sido = document.getElementById("sido").value;
+      gugun = document.getElementById('gugun').value;
 
       check_form(email, password, password_compare, tel);
 
@@ -164,33 +152,35 @@
       else if(password != password_compare){
         alert("입력한 비밀번호가 서로 일치하지 않습니다.");
       }
+      else if(sido == null || gugun == null){
+        alert("장소를 선택해주세요");
+      }
       else{
-        save_id(email, password, password_compare, tel);
-        alert("회원가입이 완료되었습니다.");
+        save_id(email, password, password_compare, tel, sido, gugun);
       }
     }
 
-    function save_id(email, password, password_compare, tel){
-      firebase.database().ref('/users/consumer').push({
-        email : email,
-        tel: tel,
-      });
-
-      firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+    function save_id(email, password, password_compare, tel, sido, gugun){
+      var place = sido + " " + gugun;
+      firebase.auth().createUserWithEmailAndPassword(email, password).then(function(firebaseUser){
+        console.log(firebaseUser.uid);
+        firebase.database().ref('/users/provider/' + firebaseUser.uid).set({
+          email : email,
+          password:password,
+          tel: tel,
+          place: place
+        });
+        alert("회원가입이 완료되었습니다.");
+        location.href = "index.html";
+      }).catch(function(error) {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
         alert(errorCode + " " + errorMessage);
       });
+
     }
 
-    function temp(){
-      var data = database.ref('users/leein93/name');
-      data.on('value', function(data){
-        //child_added 등과 같이 DB에 변화가 있을 때 콜백 할 수도 있다.(오른쪽 함수를 콜백)
-        console.log(data.val());
-      });
-    }
 
     function check_regex(name, regex, message) {
   		if(!regex.test(name)) {
@@ -226,7 +216,6 @@
     function js_select_region(select1, select2) {//시-도를 선택했을 때 해당하는 구-군을 다음 select에 나타냄
 
 			if (!js_select_region_select_sido(select1)) {
-        console.log("리턴된거임 ㅄ아");
 				return;
 			}
 			if (!js_select_region_select_gugun(select1, select2)) {

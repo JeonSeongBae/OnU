@@ -98,7 +98,7 @@
 
     $(window).ready(function() {
       var ref = firebase.database().ref('type');
-      var content = "현재까지 등록된 공간 수는 ";
+      //var content = "현재까지 등록된 공간 수는 ";
 
       ref.once('value').then(function(snapshot) {
 

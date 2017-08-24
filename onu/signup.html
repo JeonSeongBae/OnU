@@ -155,17 +155,22 @@
       }
       else{
         save_id(email, password, password_compare, tel);
-        alert("회원가입이 완료되었습니다.");
+
       }
     }
 
     function save_id(email, password, password_compare, tel){
-      firebase.database().ref('/users/consumer').push({
-        email : email,
-        tel: tel,
-      });
 
-      firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+      firebase.auth().createUserWithEmailAndPassword(email, password).then(function(firebaseUser){
+        console.log(firebaseUser.uid);
+        firebase.database().ref('/users/consumer/' + firebaseUser.uid).set({
+          email : email,
+          password:password,
+          tel: tel,
+        });
+        alert("회원가입이 완료되었습니다.");
+        location.href = "index.html";
+      }).catch(function(error) {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
