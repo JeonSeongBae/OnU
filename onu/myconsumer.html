@@ -38,34 +38,21 @@
     </header>
     <div class="main-header">
       <div class="container main-container">
-        <h1 id="status">나의 견적서</h1>
-        <hr>
-        <div class = "signup_form">
-          <div class="placeInfo">
-            <div class="infoUnit">
-              공간유형<br>
-              <input id="info0"type="text" name="" value=""class="infoInput" disabled>
-            </div>
-            <div class="infoUnit">
-              지역<br>
-              <input id="info1"type="text" name="" value=""class="infoInput" disabled>
-            </div>
-            <div class="infoUnit">
-              인원<br>
-              <input id="info2"type="text" name="" value=""class="infoInput" disabled>
-            </div>
-            <div class="infoUnit">
-              날짜<br>
-              <input id="info3"type="text" name="" value=""class="infoInput" disabled>
-            </div>
-            <a href="./confirm.html">
-              <button id="btn_next"type="button" class="btn btn_gray" style="display:inline">견 적 확 인 하 기</button>
-            </a>
-            <a href="./index.html">
-              <button id="btn_next"type="button" class="btn btn_gray" style="display:inline">홈 으 로</button>
-            </a>
-          </div>
-        </div>
+        <h1>견적 내용</h1>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>공간 유형</th>
+              <th>지역</th>
+              <th>인원</th>
+              <th>날짜</th>
+              <th>상태</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
       </div>
     </div>
   </body>
@@ -89,13 +76,6 @@
     firebase.initializeApp(config);
     var authdata;
 
-    // Get a reference to the database service
-    var database = firebase.database();
-    // Get a reference to the storage service, which is used to create references in your storage bucket
-    var storage = firebase.storage();
-    // Create a root reference
-    var storageRef = firebase.storage().ref();
-
     $(window).ready(function() {
       var ref = firebase.database().ref('type');
       //var content = "현재까지 등록된 공간 수는 ";
@@ -107,38 +87,61 @@
             authdata = user;
             document.getElementById('signup_hi').innerHTML = authdata.email + "님 환영합니다.";
             document.getElementById('login_logout').innerHTML = "로그아웃";
-            updateContract();
+
+            var uid = authdata.uid;
+            var dataRef = firebase.database().ref('contract/' + uid);
+            dataRef.once('value').then(function(snapshot) {
+              var val = snapshot.val();
+              var list = Object.keys(val);
+
+              var tr = document.createElement("tr");
+              for(var index in list) {
+                var key = list[index];
+                var td1 = document.createElement("td");
+                td1.innerHTML = val[key].type;
+                var td2 = document.createElement("td");
+                td2.innerHTML = val[key].place;
+                var td3 = document.createElement("td");
+                td3.innerHTML = val[key].number;
+                var td4 = document.createElement("td");
+                td4.innerHTML = val[key].date;
+                var td5 = document.createElement("td");
+                if(val[key].completed == 'false') {
+                  var btn = document.createElement("button");
+                  btn.setAttribute("type", "button");
+                  btn.className = "btn btn-light";
+                  btn.innerHTML = "상세보기";
+                  btn.setAttribute("onclick", "detail('" + key + "')");
+                  td5.appendChild(btn);
+                } else {
+                  td5.innerHTML = "완료";
+                }
+
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tr.appendChild(td3);
+                tr.appendChild(td4);
+                tr.appendChild(td5);
+              }
+
+              $('.table').find('tbody').html(tr);
+            });
           }
           else {
            authdata = null;
-           document.getElementById('signup_hi').innerHTML = "회원가입";
-           document.getElementById('login_logout').innerHTML = "로그인";
+           alert("로그인이 필요합니다");
+           location.href="index.html";
           }
         });
       });
     });
 
-    function updateContract(){
-      var data = firebase.database().ref('contract/');
-      data.once('value').then(function(snapshot){
-        var randomList = snapshot.val();
-        var randomKey = Object.keys(snapshot.val());
-        console.log(authdata.uid);
-        for (var i = 0; i < randomKey.length; i++) {
-          if (authdata.uid == randomKey[i]) {
-            // consumer
-            document.getElementById("info0").value = randomList[randomKey[i]].type;
-            document.getElementById("info1").value = randomList[randomKey[i]].place;
-            document.getElementById("info2").value = randomList[randomKey[i]].number;
-            document.getElementById("info3").value = randomList[randomKey[i]].date;
-          }
-        }
-        // provider
-      });
-    }
-
     function get_currentUser(){
       return firebase.auth().currentUser;
+    }
+
+    function detail(key) {
+      location.href="detail.html?key=" + key;
     }
 
   </script>
