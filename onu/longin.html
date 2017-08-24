@@ -1,0 +1,158 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/stylesheet.css" rel="stylesheet">
+    <link href="css/signup_form.css" rel="stypesheet">
+
+    <!-- IE8 에서 HTML5 요소와 미디어 쿼리를 위한 HTML5 shim 와 Respond.js -->
+        <!-- WARNING: Respond.js 는 당신이 file:// 을 통해 페이지를 볼 때는 동작하지 않습니다. -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+  </head>
+
+  <body>
+
+    <header>
+    <nav id="header" class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+        <a class="nav-logo" href="#"><img src="images/icon.png"></img><span>   </span>공앤유</a>
+      </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">회원가입</a></li>
+            <li><a href="#">로그인</a></li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+
+  </header>
+
+  <main>
+
+    <div class="main-header">
+      <div class="container main-container">
+        <h1>공유하는 시대</h1>
+        <table class = "signup_form">
+      <thead>
+        <tr>
+          <th><input type="checkbox" name="agree">약관에 동의합니다.</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ID</td><td><input type = "text" name = "id"><button class = "ID_check" name="button">중복 체크</button><br></td>
+        </tr>
+        <tr>
+          <td>password</td><td><input type = "text" name = "password"><br></td>
+        </tr>
+        <tr>
+          <td>password확인</td><td><input type = "text" name = "password_compare"><br></td>
+        </tr>
+        <tr>
+          <td>이름</td><td><input type = "text" name = "name"><br></td>
+        </tr>
+        <tr>
+          <td>전화번호</td><td><input type = "text" name = "tel"><br></td>
+        </tr>
+        <tr>
+          <td>생년월일</td><td><input type = "date" name = "date"><br></td>
+        </tr>
+      </tbody>
+    </table>
+    <input type="submit" name="submit" value="제출하기">
+      </div>
+    </div>
+
+    <div class="main-section">
+      <div class="container">
+        <img src="images/maincontent1.png" alt="발상의 전환">
+      </div>
+    </div>
+
+    <div class="main-section main-content">
+      <div class="container">
+        <span>공앤유를 사용하면?</span>
+        <hr>
+        <div id="introduce-slider" class="introduce-slider">
+
+        </div>
+      </div>
+    </div>
+
+    <div class="main-section main-guide">
+      <div class="container">
+        <span>공앤유의 이용방법</span>
+        <hr>
+        <img src="images/maincontent2.png" alt="이용방법">
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+
+  </footer>
+
+    <!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/script.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        var div = document.createElement("div");
+        div.className = "introduce-body";
+        var img = document.createElement("img");
+        img.setAttribute("src", "./images/icon.png");
+
+        div.appendChild(img);
+
+        $("#introduce-slider").append(div);
+
+      });
+
+      //Initialze Firebase
+      var config = {
+      apiKey: "AIzaSyB5Aji_Ysf6EsI_6cR4kDs3yi9s0bjo9_k",
+      authDomain: "andu-3f6db.firebaseapp.com",
+      databaseURL: "https://andu-3f6db.firebaseio.com",
+      projectId: "andu-3f6db",
+      storageBucket: "andu-3f6db.appspot.com",
+      messagingSenderId: "799401536592"
+    };
+    firebase.initializeApp(config);
+
+    var database = firebase.database();
+
+    function writeUserData(userID, name, email, imageUrl){
+      firebase.database().ref('andu-3f6db/' + userID).set({
+        username : name,
+        email: email,
+        profile_picture:imageUrl
+      });
+    }
+    writeUserData("a", "b", "c", "d");
+    </script>
+
+  </body>
+</html>
