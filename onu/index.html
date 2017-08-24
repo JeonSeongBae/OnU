@@ -213,21 +213,7 @@
               authdata = user;
               document.getElementById('signup_hi').innerHTML = authdata.email + "님 환영합니다.";
               document.getElementById('login_logout').innerHTML = "로그아웃";
-
-              var data = firebase.database().ref('users/consumer/');
-              data.once('value').then(function(snapshot){
-                var a = snapshot.val();
-                var b = Object.keys(snapshot.val());
-                for (var i = 0; i < b.length; i++) {
-                  if (authdata.email == a[b[i]].email;) {
-                    // provider_Mypage
-                    document.getElementById('signup_hi').href = "./upload.html";
-                  }else {
-                    // consummer_Mypage
-                    document.getElementById('signup_hi').href = "./placeinfo.html";
-                  }
-                }
-              });
+              check_consumer();
             }
             else {
              authdata = null;
@@ -238,6 +224,22 @@
           });
         });
       });
+      function check_consumer(){
+        var data = firebase.database().ref('users/consumer/');
+        data.once('value').then(function(snapshot){
+          var randomList = snapshot.val();
+          var randomKey = Object.keys(snapshot.val());
+          for (var i = 0; i < randomKey.length; i++) {
+            if (authdata.email == randomList[randomKey[i]].email) {
+              // consumer
+              document.getElementById('signup_hi').href='./myconsumer.html';
+              return;
+            }
+          }
+          // provider
+          document.getElementById('signup_hi').href='./myprovider.html';
+        });
+      }
 
       $(window).scroll(function() {
         console.log($("#header").offset().top);
