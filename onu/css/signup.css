@@ -3,13 +3,8 @@
 /* css reset */
 div,span,body{margin:0;padding:0}
 
-h3, h5{
+h3{
   color:white;
-  margin-bottom: 3%;
-}
-
-#place{
-  display : none;
 }
 
 #wrap{
@@ -39,14 +34,16 @@ h3, h5{
   background-color: #28a745;
   border-color: #28a745;
   cursor:pointer;
-  font-size: 33px;
 }
 
 #consumer{
   background-color: #868e96;
   border-color: #868e96;
   cursor:pointer;
-  font-size: 33px;
+}
+
+#provider_only{
+  display:none;
 }
 
 .col-4 label {
@@ -121,9 +118,4 @@ h3, h5{
 
 .signup-cursor {
   cursor: pointer;
-}
-
-.google_login{
-  text-align: left;
-  padding-left: 33%;
 }

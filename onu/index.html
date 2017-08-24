@@ -26,9 +26,6 @@
               <a id = "signup_hi" class="nav-link" href="signup.html"></a>
             </li>
             <li class="nav-item active">
-              <a id = "mypage" class="nav-link" href="signup.html"></a>
-            </li>
-            <li class="nav-item active">
               <a id = "login_logout" class="nav-link" href="#" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="login"></a>
             </li>
           </ul>
@@ -214,60 +211,35 @@
           console.log(content);
           document.getElementById("current").innerHTML = content;
 
-
-
           firebase.auth().onAuthStateChanged(function(user) {
-            if(user){
+            if (user) {
               authdata = user;
               document.getElementById('signup_hi').innerHTML = authdata.email + "님 환영합니다.";
               document.getElementById('login_logout').innerHTML = "로그아웃";
 
-              var data = firebase.database().ref('users/consumer');
-              data.orderByKey().equalTo(authdata.uid).once('value').then(function(snapshot) {
-                if(snapshot.val()) {
+              var data = firebase.database().ref('users/consumer/' + authdata.uid);
+              data.once('value').then(function(snapshot) {
+                var val = snapshot.val();
+                if(val == null) {
+                  document.getElementById('signup_hi').href = "./myprovider.html";
+                  document.getElementById('request').setAttribute("data-whatever", "array_request");
+                  document.getElementById('request').innerHTML = "견적신청 내역보기";
+                } else {
                   document.getElementById('signup_hi').href = "./myconsumer.html";//소비자용 마이페이지로 이동
                   document.getElementById('request').setAttribute("data-whatever", "request");
                   document.getElementById('request').innerHTML = "장소견적 신청하기";
-                  document.getElementById('mypage').innerHTML = "마이페이지";
-                  document.getElementById('mypage').href = "myconsumer.html";
                 }
-                else{
-                  var data = firebase.database().ref('users/provider');
-                  data.orderByKey().equalTo(authdata.uid).once('value').then(function(snapshot) {
-                    if(snapshot.val()) {
-                      document.getElementById('signup_hi').href = "./myprovider.html";
-                      document.getElementById('request').setAttribute("data-whatever", "array_request");
-                      document.getElementById('request').innerHTML = "견적신청 내역보기";
-                      document.getElementById('mypage').innerHTML = "마이페이지";
-                      document.getElementById('mypage').href = "myprovider.html";
-                    }
-                    else{
-                      location.href = "googlelogin.html";
-                    }
-                    console.log('provider : ' + snapshot.val());
-                  });
-                }
-                console.log('consumer : ' + snapshot.val());
               });
-            }
-            else {
+            } else {
               authdata = null;
               document.getElementById('signup_hi').innerHTML = "회원가입";
               document.getElementById('signup_hi').href = "signup.html";
               document.getElementById('login_logout').innerHTML = "로그인";
               document.getElementById('request').innerHTML = "장소견적 신청하기";
-              document.getElementById('mypage').innerHTML = "";
             }
           });
         });
       });
-
-      function temp(){
-        var ref = firebase.database().ref('users/provider');
-        ref.orderByKey().equalTo(authdata.uid).once('value').then(function(snapshot) {
-          console.log(snapshot.val());
-        });
-      }
 
       $(window).scroll(function() {
 
@@ -287,6 +259,7 @@
 
       var placeRef = firebase.database().ref('place');
       var locationList;
+      var temp;
       placeRef.once('value').then(function(snapshot) {
         locationList = snapshot.val();
       });
@@ -323,29 +296,11 @@
             }
 
             break;
+
           case 'array_request':
-            var request_Ref = firebase.database().ref('contract');
-            var authdata_Ref = firebase.database().ref('users/provider/' + authdata.uid);
-
-            // authdata_Ref.once('value').then(function(snapshot){
-            //   var myplace = snapshot.val().place;
-            //   request_Ref.once('value').then(function(snapshot){
-            //     var contract = snapshot.val();
-            //     var user_keylist = Object.keys(contract);
-            //     console.log(myplace);
-            //     for(var i = 0; i < user_keylist.length; i++){
-            //       console.log(user_keylist[i]);
-            //       console.log(contract);
-            //       if(myplace == contract[user_keylist[i]].place){
-            //         console.log(contract[user_keylist[i]]);
-            //       }
-            //     }
-            //   });
-            // });
-
-
-
+            location.href="showrequestlist.html";
             break;
+            
           case 'login':
 
             if(authdata){
@@ -384,7 +339,6 @@
 
               var googlebtn = document.createElement("button");
               googlebtn.innerHTML = "구글로그인 자리";
-              googlebtn.setAttribute('onclick', "google_login()");
 
               var facebookbtn = document.createElement("button");
               facebookbtn.innerHTML = "페이스북 자리";
@@ -409,7 +363,7 @@
               btn.className = "btn btn-primary";
               btn.innerHTML = "로그인";
 
-              btn.setAttribute("onclick", "OnU_login()");
+              btn.setAttribute("onclick", "consumer_login()");
 
               modal.find('.modal-footer').append(btn);
             }
@@ -425,7 +379,7 @@
         return firebase.auth().currentUser;
       }
 
-      function OnU_login(){
+      function consumer_login(){
         var email = document.getElementById('email').value;
         var password = document.getElementById('password').value;
 
@@ -678,17 +632,8 @@
             alert("로그인을 해주세요");
             location.href = "index.html";
           }
-        });
-      }
-      function google_login(){
-        var provider = new firebase.auth.GoogleAuthProvider();
-
-        provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-        provider.setCustomParameters({
-          'login_hint': 'user@example.com'
-        });
-        firebase.auth().signInWithRedirect(provider);
-      }
+      });
+    }
 
     </script>
   </body>
