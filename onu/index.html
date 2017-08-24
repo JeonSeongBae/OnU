@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
   </head>
   <body>
+
     <header>
       <nav id="header" class="navbar navbar-expand-lg navbar-dark fixed-top">
         <a class="navbar-brand" href="./index.html">
@@ -174,6 +175,14 @@
         </div>
       </div>
     </div>
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/ko_KR/sdk.js#xfbml=1&version=v2.10&appId=669803516558727";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
 
     <footer>
     </footer>
@@ -196,7 +205,11 @@
         messagingSenderId: "799401536592"
       };
       firebase.initializeApp(config);
+
+
       var authdata;
+
+
       $(window).ready(function() {
         var ref = firebase.database().ref('users/provider');
         var content = "현재 ";
@@ -249,12 +262,7 @@
           });
         });
       });
-      function temp(){
-        var ref = firebase.database().ref('users/provider');
-        ref.orderByKey().equalTo(authdata.uid).once('value').then(function(snapshot) {
-          console.log(snapshot.val());
-        });
-      }
+
       $(window).scroll(function() {
         if ($("#header").offset().top > 600) {
           $("#header").addClass("navbar-shrink");
@@ -262,16 +270,19 @@
           $("#header").removeClass("navbar-shrink");
         }
       });
+
       var typeRef = firebase.database().ref('type');
       var typeList;
       typeRef.once('value').then(function(snapshot) {
         typeList = snapshot.val();
       });
+
       var placeRef = firebase.database().ref('place');
       var locationList;
       placeRef.once('value').then(function(snapshot) {
         locationList = snapshot.val();
       });
+
       $('#modal').on('show.bs.modal', function(event) {
         var button = $(event.relatedTarget);
         var type = button.data('whatever');
@@ -328,12 +339,42 @@
               rightDiv.className = "col-4";
               var p = document.createElement("p");
               p.innerHTML = "간편 로그인";
+
               var btnDiv = document.createElement("div");
+
               var googlebtn = document.createElement("button");
-              googlebtn.innerHTML = "구글로그인 자리";
+              var google_span = document.createElement("span");
+              var google_img = document.createElement("img");
+              google_img.setAttribute('src', './img/google.svg');
+              google_img.style = "height:100%";
+              google_span.appendChild(google_img);
+              google_span.innerHTML += " Login With Google";
+              googlebtn.appendChild(google_span);
+              googlebtn.style = "background-color:white;border:white";
               googlebtn.setAttribute('onclick', "google_login()");
+
+
+              // var facebookbtn = document.createElement("div");
+              // facebookbtn.className = "fb-login-button";
+              // facebookbtn.setAttribute("data-max-rows", "1");
+              // facebookbtn.setAttribute("data-size", "large");
+              // facebookbtn.setAttribute("data-button-type", "login_with");
+              // facebookbtn.setAttribute("data-show-faces", "false");
+              // facebookbtn.setAttribute("data-auto-logout-link", "false");
+              // facebookbtn.setAttribute("data-use-continue-as", "false");
+
               var facebookbtn = document.createElement("button");
-              facebookbtn.innerHTML = "페이스북 자리";
+              var facebook_span = document.createElement("span");
+              var facebook_img = document.createElement("img");
+              facebook_img.setAttribute('src', './img/facebook.svg');
+              facebook_img.style = "height:100%";
+              facebook_span.appendChild(facebook_img);
+              facebook_span.innerHTML += " Login With Facebook";
+              facebookbtn.appendChild(facebook_span);
+              facebookbtn.style = "background-color:white;border:white";
+              facebookbtn.setAttribute('onclick', "facebook_login()");
+
+
               var kakaobtn = document.createElement("button");
               kakaobtn.innerHTML = "카카오 자리";
               btnDiv.appendChild(googlebtn);
@@ -355,15 +396,12 @@
           default:
         }
       });
-      function get_currentUser(){
-        return firebase.auth().currentUser;
-      }
+
       function OnU_login(){
         var email = document.getElementById('email').value;
         var password = document.getElementById('password').value;
         firebase.auth().signInWithEmailAndPassword(email, password).then(function(firebaseUser) {
           // Handle Errors here.
-          alert("로그인에 성공하였습니다.");
           location.href = "index.html";
           // ...
         }).catch(function(error){
@@ -372,14 +410,7 @@
             alert("로그인에 실패하였습니다.\n" + errorCode + " " + errorMessage);
         });
       }
-      function logout(){
-        firebase.auth().signOut().then(function() {
-          // Sign-out successful.
-        }, function(error) {
-          console.log(error);
-          // An error happened.
-        });
-      }
+
       function initButton(form, index, name, list) {
         var div = document.createElement("div");
         div.className = "form-btn";
@@ -403,6 +434,7 @@
         div.appendChild(typeDiv);
         form.append(div);
       }
+
       function setList(index, list) {
         switch (index) {
           case 0:
@@ -465,12 +497,14 @@
           default:
         }
       }
+
       function selectItem(item) {
         var text = $(item).html();
         var temp = $(item).parents('.form-btn').find('.form-text').html();
         $(item).parents('.form-btn').find('.form-text').text(temp + " " + text);
         $('.collapse').removeClass('show');
       }
+
       function selectPlace(item) {
         var text = $(item).html();
         $('.city').html(text);
@@ -484,16 +518,19 @@
           menu.append(a);
         }
       }
+
       function selectNumber(item) {
         var text = $(item).parents('.input-group').find('.form-control').val();
         $(item).parents('.form-btn').find('.form-text').text(text + "명");
         $('.collapse').removeClass('show');
       }
+
       function selectDate(item){
         var text = $(item).parents('.input-group').find('.form-control').val();
         $(item).parents('.form-btn').find('.form-text').text(text + "일");
         $('.collapse').removeClass('show');
       }
+
       function makeDropdown(title, list) {
         var div = document.createElement("div");
         div.className = "btn-group";
@@ -524,6 +561,7 @@
         div.appendChild(menu);
         return div;
       }
+
       function makeForm(form, text, id, type) {
         var formDiv = document.createElement("div");
         formDiv.className = "form-group";
@@ -539,6 +577,7 @@
         formDiv.appendChild(input);
         form.appendChild(formDiv);
       }
+
       function place_request(){
         var type = document.getElementById("data0").innerHTML;
         var place = document.getElementById("data1").innerHTML;
@@ -561,6 +600,7 @@
           }
         });
       }
+
       function google_login(){
         var provider = new firebase.auth.GoogleAuthProvider();
         provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
@@ -568,6 +608,13 @@
           'login_hint': 'user@example.com'
         });
         firebase.auth().signInWithRedirect(provider);
+      }
+
+      function facebook_login(){
+        var provider = new firebase.auth.FacebookAuthProvider();
+        provider.addScope('user_tel');
+        firebase.auth().signInWithRedirect(provider);
+
       }
     </script>
   </body>

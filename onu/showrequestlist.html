@@ -27,10 +27,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav justify-content-end">
             <li class="nav-item active">
-              <a id = "signup_hi" class="nav-link" href="signup.html">회원가입</a>
+              <a id = "signup_hi" class="nav-link" href="signup.html"></a>
             </li>
             <li class="nav-item active">
-              <a id = "login_logout" class="nav-link" href="#" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="login">로그인</a>
+              <span id = "login_logout" class="nav-link" href="#" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="login" style = "cursor:pointer">로그아웃</span>
             </li>
           </ul>
         </div>
@@ -75,15 +75,18 @@
     };
     firebase.initializeApp(config);
 
+    var authdata;
     $(window).ready(function() {
-      var authdata;
-
+      var ref = firebase.database().ref('type');
+      ref.once('value').then(function(snapshot) {
       firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
           authdata = user;
+          document.getElementById('login_logout').setAttribute("onclick", "logout()");
           document.getElementById('signup_hi').innerHTML = authdata.email + "님 환영합니다.";
-          document.getElementById('login_logout').innerHTML = "로그아웃";
 
+          document.getElementById('signup_hi').href = "";
+          document.getElementById('login_logout').innerHTML = "로그아웃";
           var uid = authdata.uid;
           var providerRef = firebase.database().ref('users/provider/' + uid);
           var place;
@@ -115,6 +118,7 @@
                 btn.className = "btn btn-light";
                 btn.innerHTML = "신청하기";
                 btn.setAttribute("onclick", "apply(this, '" + keys[i] + "','" + uid + "')");
+
                 td5.appendChild(btn);
 
                 tr.appendChild(td1);
@@ -122,33 +126,51 @@
                 tr.appendChild(td3);
                 tr.appendChild(td4);
                 tr.appendChild(td5);
-
                 $('.table').find('tbody').append(tr);
+
+                updateList(btn, keys[i], uid);
               }
             });
-
           });
         }
         else {
          authdata = null;
-         alert("로그인이 필요합니다");
-         location.href="index.html";
         }
       });
     });
-
-    function apply(item, useruid, provideruid) {
-      var ref = firebase.database().ref('contract/' + useruid + "/provider");
+  });
+    function updateList(btn, key, uid){
+      var ref = firebase.database().ref('contract/' + key + "/provider");
       ref.once('value').then(function(snapshot) {
-        var size;
-        if(snapshot.val() == null) {
-          size = 0;
-        } else {
-          size = Object.keys(snapshot.val()).length;
+        var a = snapshot.val();
+        // var b = Object.keys(snapshot.val());
+        for (var i = 0; a != null && i < a.length; i++) {
+          if (a[i]==uid) {
+            btn.innerHTML = "신청중";
+            btn.setAttribute("onclick", "location.href='chat.html'"); // 대화를 위한 페이지 이동
+            btn.style.backgroundColor = "#3930E2";
+            btn.style.color = "#fff";
+          }
         }
-
-        ref.child(size).set(provideruid);
       });
+    }
+    function apply(item, useruid, provideruid) {
+      if (confirm("신청하시겠습니까?")) {
+        item.innerHTML = "신청중";
+        item.setAttribute("onclick", "location.href='chat.html'"); // 대화를 위한 페이지 이동
+        item.style.backgroundColor = "#3930E2";
+        item.style.color = "#fff";
+        var ref = firebase.database().ref('contract/' + useruid + "/provider");
+        ref.once('value').then(function(snapshot) {
+          var size;
+          if(snapshot.val() == null) {
+            size = 0;
+          } else {
+            size = Object.keys(snapshot.val()).length;
+          }
+          ref.child(size).set(provideruid);
+        });
+      }
     }
 
     function get_currentUser(){
@@ -157,6 +179,18 @@
 
     function detail(key) {
       location.href="detail.html?key=" + key;
+    }
+
+    function logout(){
+      firebase.auth().signOut().then(function() {
+        // Sign-out successful.
+        alert("로그아웃 되었습니다.");
+        location.href="index.html";
+        //이미 속성에 들어가버려서 나오는 창을 닫을 방법을 모르겠음 by 상인
+      }, function(error) {
+        alert(error);
+        // An error happened.
+      });
     }
 
   </script>

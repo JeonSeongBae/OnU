@@ -74,18 +74,23 @@
       messagingSenderId: "799401536592"
     };
     firebase.initializeApp(config);
+    var authdata;
 
     $(window).ready(function() {
       var temp = location.href.split("?");
       var parameters = temp[1].split("=");
       var key = parameters[1];
-
       $('#tableDiv').load('myconsumer.html .table');
-
+      var ref = firebase.database().ref('type');
+      ref.once('value').then(function(snapshot) {
+        var list = snapshot.val();
       firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
           authdata = user;
+          document.getElementById('login_logout').setAttribute("onclick", "logout()");
           document.getElementById('signup_hi').innerHTML = authdata.email + "님 환영합니다.";
+
+          document.getElementById('signup_hi').href = "";
           document.getElementById('login_logout').innerHTML = "로그아웃";
 
           var uid = authdata.uid;
@@ -172,6 +177,8 @@
         }
       });
     });
+      
+   });
 
     function showPlace(provideruid) {
       location.href = "showPlace.html?uid=" + provideruid;
@@ -187,6 +194,20 @@
         completedRef.set(val);
       });
     }
+      
+    function logout(){
+      firebase.auth().signOut().then(function() {
+        // Sign-out successful.
+        alert("로그아웃 되었습니다.");
+        location.href="index.html";
+        //이미 속성에 들어가버려서 나오는 창을 닫을 방법을 모르겠음 by 상인
+      }, function(error) {
+        alert(error);
+        // An error happened.
+      });
+    } 
 
+ 
+    
   </script>
 </html>

@@ -27,10 +27,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav justify-content-end">
             <li class="nav-item active">
-              <a class="nav-link" href="#">회원가입</a>
+              <a id = "signup_hi" class="nav-link" href="#">회원가입</a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link" href="#" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="login">로그인</a>
+              <span class="nav-link" id = "login_logout" href="#" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="login" style = "cursor:pointer">로그아웃</span>
             </li>
           </ul>
         </div>
@@ -83,7 +83,7 @@
             <button type="button" class="btn btn_gray" id="btn-upload">사 진 추 가</button>
             <input type="file" class="inputfile" id="file" name="file" multiple="multiple">
             <button type="button" onclick="fileUpLoad()" class="btn btn_gray" style="display:inline">정 보 저 장</button>
-            <button type="button" class="btn btn_gray" style="display:inline">홈 으 로</button>
+            <button type="button" onclick="location.href='index.html'"class="btn btn_gray" style="display:inline">홈 으 로</button>
           </div>
           <div id="holder"class="holder"></div>
         </div>
@@ -94,6 +94,7 @@
   <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
   <script src="./js/fileUpLoad.js"></script>
   <script>
+
   $(function () {
     $('#btn-upload').click(function (e) {
       e.preventDefault();
@@ -122,15 +123,43 @@
     var storageRef;
 
     var authData;
+    $(window).ready(function() {
+      var ref = firebase.database().ref('type');
+      ref.once('value').then(function(snapshot) {
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            authdata = user;
+            document.getElementById('login_logout').setAttribute("onclick", "logout()");
+            document.getElementById('signup_hi').innerHTML = authdata.email + "님 환영합니다.";
+
+            document.getElementById('signup_hi').href = "";
+            document.getElementById('login_logout').innerHTML = "로그아웃";
+          }
+          else {
+           authdata = null;
+           alert("로그인이 필요합니다");
+           location.href="index.html";
+          }
+        });
+      });
+    });
+
     firebase.auth().onAuthStateChanged(function(user) {
       authData = user;
       storageRef = storage.ref(user.uid);
+
+      if (user) {
+        authdata = user;
+        document.getElementById('signup_hi').innerHTML = authdata.email + "님 환영합니다.";
+        document.getElementById('login_logout').innerHTML = "로그아웃";
+        document.getElementById('login_logout').setAttribute("onclick", "logout()");
+      }
 
       if(authData != null) {
         var ref = database.ref('users/provider/' + authData.uid + "/info");
         ref.once('value').then(function(snapshot) {
           if(snapshot.val() != null) {
-            var val = snapshot.val();
+            var val = snapshot.val();``
             var input = document.getElementsByClassName('infoInput');
             input[0].value = val.name;
             input[1].value = val.purpose;
@@ -147,7 +176,6 @@
     });
 
     // Create a root reference
-
     function fileUpLoad(){
       var placeInfo = document.getElementsByClassName("infoInput");
       var userRef = database.ref('users/provider/' + authData.uid + "/info");
@@ -162,10 +190,6 @@
         introduce: placeInfo[7].value,
         etc: placeInfo[8].value
       });
-
-      // 한 개의 파일 넣기
-      // var file = document.getElementById("file").files[0];
-      // var uploadTask = storageRef.child(file.name).put(file);
 
       // 여러개의 파일 넣기
       for (var i = 0; i < upload.files.length; i++) {
@@ -203,6 +227,7 @@
         // Upload completed successfully, now we can get the download URL
         var downloadURL = uploadTask.snapshot.downloadURL;
         document.getElementsByClassName("col-form-label").innerHTML = downloadURL;
+        alert("정보 저장 완료!");
       });
     }
   </script>
@@ -236,24 +261,15 @@
       }
       return false;
     };
-    // function fileUpLoad(){
-    //   var fileInput = document.getElementById("file1");
-    //
-    //   var file = fileInput.files[0];
-    //
-    //   var formData = new FormData();
-    //
-    //   formData.append("upload_file" , file);
-    //
-    //
-    //
-    //   var xhr = new XMLHttpRequest();
-    //
-    //   xhr.open("POST" , "index.html" , true);
-    //
-    //   xhr.send(formData);
-    // }
-
-
+    function logout(){
+      firebase.auth().signOut().then(function() {
+        // Sign-out successful.
+        alert("로그아웃 되었습니다.");
+        location.href="index.html";
+      }, function(error) {
+        alert(error);
+        // An error happened.
+      });
+    }
     </script>
 </html>
