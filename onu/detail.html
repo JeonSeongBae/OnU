@@ -37,23 +37,8 @@
       </nav>
     </header>
     <div class="main-header">
-      <div class="container main-container">
-        <div id="tableDiv"></div>
-        <div>
-          <table id="providerTable" class="table">
-            <thead>
-              <tr>
-                <th>장소 이름</th>
-                <th>주소</th>
-                <th>상세보기</th>
-              </tr>
-            </thead>
-            <tbody>
+      <div id="main" class="container main-container">
 
-            </tbody>
-          </table>
-
-        </div>
       </div>
     </div>
   </body>
@@ -112,18 +97,8 @@
             tr.appendChild(td4);
             tr.appendChild(td5);
 
-            $('#tableDiv').find('tbody').html(tr);
 
-            var providerList = val.provider;
-          });
-        }
-        else {
-         authdata = null;
-         alert("로그인이 필요합니다");
-         location.href="index.html";
-        }
-      });
-    });
+    $('#main').load('myconsumer.html .table');
 
   </script>
 </html>

@@ -198,22 +198,30 @@
       };
       firebase.initializeApp(config);
       var authdata;
+
       $(window).ready(function() {
         var ref = firebase.database().ref('type');
         var content = "현재까지 등록된 공간 수는 ";
+
         ref.once('value').then(function(snapshot) {
           var list = snapshot.val();
+
           for(var i in list) {
             content += i + " : " + list[i] + "개 ";
           }
+
           content += "입니다.";
           console.log(content);
           document.getElementById("current").innerHTML = content;
+
+
+
           firebase.auth().onAuthStateChanged(function(user) {
             if(user){
               authdata = user;
               document.getElementById('signup_hi').innerHTML = authdata.email + "님 환영합니다.";
               document.getElementById('login_logout').innerHTML = "로그아웃";
+
               var data = firebase.database().ref('users/consumer');
               data.orderByKey().equalTo(authdata.uid).once('value').then(function(snapshot) {
                 if(snapshot.val()) {
@@ -253,35 +261,45 @@
           });
         });
       });
+
       function temp(){
         var ref = firebase.database().ref('users/provider');
         ref.orderByKey().equalTo(authdata.uid).once('value').then(function(snapshot) {
           console.log(snapshot.val());
         });
       }
+
       $(window).scroll(function() {
+
         if ($("#header").offset().top > 600) {
           $("#header").addClass("navbar-shrink");
         } else {
           $("#header").removeClass("navbar-shrink");
         }
       });
+
       var typeRef = firebase.database().ref('type');
       var typeList;
+
       typeRef.once('value').then(function(snapshot) {
         typeList = snapshot.val();
       });
+
       var placeRef = firebase.database().ref('place');
       var locationList;
       placeRef.once('value').then(function(snapshot) {
         locationList = snapshot.val();
       });
+
       $('#modal').on('show.bs.modal', function(event) {
         var button = $(event.relatedTarget);
         var type = button.data('whatever');
+
+
         var modal = $(this);
         modal.find('.modal-body').text("");
         modal.find('.modal-footer').text("");
+
         switch (type) {
           case 'request':
             if(authdata == null) {
@@ -294,38 +312,42 @@
               initButton($('.modal-body'), index++, "지역", locationList);
               initButton($('.modal-body'), index++, "인원", null);
               initButton($('.modal-body'), index++, "날짜", null);
+
               var btn = document.createElement("button");
               btn.setAttribute("type", "button");
               btn.className = "btn btn-primary";
               btn.innerHTML = "신청하기";
               btn.setAttribute("onclick", "place_request()");
+
               modal.find('.modal-footer').append(btn);
             }
-            break;
 
+            break;
           case 'array_request':
             var request_Ref = firebase.database().ref('contract');
+            var authdata_Ref = firebase.database().ref('users/provider/' + authdata.uid);
 
-            var provider_list = firebase.database().ref('users/provider');
+            // authdata_Ref.once('value').then(function(snapshot){
+            //   var myplace = snapshot.val().place;
+            //   request_Ref.once('value').then(function(snapshot){
+            //     var contract = snapshot.val();
+            //     var user_keylist = Object.keys(contract);
+            //     console.log(myplace);
+            //     for(var i = 0; i < user_keylist.length; i++){
+            //       console.log(user_keylist[i]);
+            //       console.log(contract);
+            //       if(myplace == contract[user_keylist[i]].place){
+            //         console.log(contract[user_keylist[i]]);
+            //       }
+            //     }
+            //   });
+            // });
 
-            var myplace;
 
-            console.log(authdata.email);
 
-            provider_list.once('value').then(function(snapshot){
-              var userList = snapshot.val();
-              var provider_keys = Object.keys(snapshot.val());
-
-              for(var i = 0;i < provider_keys.length; i++){
-                if(authdata.email == userList[provider_keys[i]].email){
-                  myplace = userList[provider_keys[i]].place;
-                }
-              }
-              console.log(myplace);
-            });
             break;
-            
           case 'login':
+
             if(authdata){
               firebase.auth().signOut().then(function() {
                 // Sign-out successful.
@@ -338,51 +360,75 @@
               });
             } else {
               modal.find('.modal-title').text("로그인");
+
               var div = document.createElement("div");
               div.className = "row";
+
               var leftDiv = document.createElement("div");
               leftDiv.className = "col-8";
+
               var form = document.createElement("form");
+
               makeForm(form, "Email", "email", "email");
               makeForm(form, "비밀번호", "password", "password");
+
               leftDiv.appendChild(form);
+
               var rightDiv = document.createElement("div");
               rightDiv.className = "col-4";
+
               var p = document.createElement("p");
               p.innerHTML = "간편 로그인";
+
               var btnDiv = document.createElement("div");
+
               var googlebtn = document.createElement("button");
               googlebtn.innerHTML = "구글로그인 자리";
               googlebtn.setAttribute('onclick', "google_login()");
+
               var facebookbtn = document.createElement("button");
               facebookbtn.innerHTML = "페이스북 자리";
+
               var kakaobtn = document.createElement("button");
               kakaobtn.innerHTML = "카카오 자리";
+
               btnDiv.appendChild(googlebtn);
               btnDiv.appendChild(facebookbtn);
               btnDiv.appendChild(kakaobtn);
+
               rightDiv.appendChild(p);
               rightDiv.appendChild(btnDiv);
+
               div.appendChild(leftDiv);
               div.appendChild(rightDiv);
+
               modal.find('.modal-body').append(div);
+
               var btn = document.createElement("button");
               btn.setAttribute("type", "button");
               btn.className = "btn btn-primary";
               btn.innerHTML = "로그인";
+
               btn.setAttribute("onclick", "OnU_login()");
+
               modal.find('.modal-footer').append(btn);
             }
+
+
             break;
           default:
+
         }
       });
+
       function get_currentUser(){
         return firebase.auth().currentUser;
       }
+
       function OnU_login(){
         var email = document.getElementById('email').value;
         var password = document.getElementById('password').value;
+
         firebase.auth().signInWithEmailAndPassword(email, password).then(function(firebaseUser) {
           // Handle Errors here.
           alert("로그인에 성공하였습니다.");
@@ -392,8 +438,10 @@
           var errorCode = error.code;
           var errorMessage = error.message;
             alert("로그인에 실패하였습니다.\n" + errorCode + " " + errorMessage);
+
         });
       }
+
       function logout(){
         firebase.auth().signOut().then(function() {
           // Sign-out successful.
@@ -402,34 +450,45 @@
           // An error happened.
         });
       }
+
       function initButton(form, index, name, list) {
         var div = document.createElement("div");
         div.className = "form-btn";
+
         var type = document.createElement("button");
         type.setAttribute("type", "button");
         type.className = "btn btn-info";
         type.setAttribute("data-toggle", "collapse");
         type.setAttribute("data-target", "#formElement" + index);
         type.innerHTML = name;
+
         var span = document.createElement("span");
         span.className = "form-text";
         span.id = "data" + index;
+
         type.appendChild(span);
+
         var typeDiv = document.createElement("div");
         typeDiv.id = "formElement" + index;
         typeDiv.className = "collapse";
+
         var listDiv = setList(index, list);
         $('.selectpicker').selectpicker();
+
         typeDiv.appendChild(listDiv);
+
         div.appendChild(type);
         div.appendChild(typeDiv);
+
         form.append(div);
       }
+
       function setList(index, list) {
         switch (index) {
           case 0:
             var listDiv = document.createElement("div");
             listDiv.className = "list-group";
+
             for(var j in list) {
               var bt = document.createElement("button");
               bt.setAttribute("type", "button");
@@ -438,84 +497,109 @@
               bt.setAttribute("onclick", "selectItem(this)");
               listDiv.appendChild(bt);
             }
+
             return listDiv;
+
           case 1:
             var listDiv = document.createElement("div");
             listDiv.className = "input-group";
+
             var city = makeDropdown("지역", list);
             var district = makeDropdown("선택해주세요", null);
+
             listDiv.appendChild(city);
             listDiv.appendChild(district);
+
             return listDiv;
+
           case 2:
             var listDiv = document.createElement("div");
             listDiv.className = "input-group";
+
             var text = document.createElement("input");
             text.className = "form-control";
             text.setAttribute("type", "number");
             text.setAttribute("min", "1");
             text.setAttribute("max", "1000");
             text.setAttribute("placeholder", "인원 수를 입력해주세요.");
+
             var span = document.createElement("span");
             span.className = "input-group-addon";
             span.innerHTML = "명";
+
             var bt = document.createElement("button");
             bt.setAttribute("type", "button");
             bt.className = "btn btn-default";
             bt.innerHTML = "선택하기";
             bt.style.float = "right";
             bt.setAttribute("onclick", "selectNumber(this)");
+
             listDiv.appendChild(text);
             listDiv.appendChild(span);
             listDiv.appendChild(bt);
+
             return listDiv;
+
           case 3:
             var listDiv = document.createElement("div");
             listDiv.className = "input-group";
+
             var input_date = document.createElement("input");
             input_date.setAttribute("type", "date");
             input_date.className = "form-control";
+
             var bt = document.createElement("button");
             bt.setAttribute("type", "button");
             bt.className = "btn btn-default";
             bt.innerHTML = "선택하기";
             bt.style.float = "right";
             bt.setAttribute("onclick", "selectDate(this)");
+
             listDiv.appendChild(input_date);
             listDiv.appendChild(bt);
+
             return listDiv;
           default:
+
         }
       }
+
       function selectItem(item) {
         var text = $(item).html();
         var temp = $(item).parents('.form-btn').find('.form-text').html();
         $(item).parents('.form-btn').find('.form-text').text(temp + " " + text);
         $('.collapse').removeClass('show');
       }
+
       function selectPlace(item) {
         var text = $(item).html();
         $('.city').html(text);
         $(item).parents('.form-btn').find('.form-text').text(text);
+
         var menu = $('.district').parents('.btn-group').find('.dropdown-menu');
+
         for(var index in locationList[text]) {
           var a = document.createElement("a");
           a.className = "dropdown-item";
           a.setAttribute("onclick", "selectItem(this)");
           a.innerHTML = locationList[text][index];
+
           menu.append(a);
         }
       }
+
       function selectNumber(item) {
         var text = $(item).parents('.input-group').find('.form-control').val();
         $(item).parents('.form-btn').find('.form-text').text(text + "명");
         $('.collapse').removeClass('show');
       }
+
       function selectDate(item){
         var text = $(item).parents('.input-group').find('.form-control').val();
         $(item).parents('.form-btn').find('.form-text').text(text + "일");
         $('.collapse').removeClass('show');
       }
+
       function makeDropdown(title, list) {
         var div = document.createElement("div");
         div.className = "btn-group";
@@ -532,23 +616,33 @@
         button.setAttribute("aria-haspopup", "true");
         button.setAttribute("aria-expanded", "false");
         button.innerHTML = title;
+
         var menu = document.createElement("div");
         menu.className = "dropdown-menu";
         menu.setAttribute("aria-labelledby", "dropdownMenuButton");
+
+
         for(var index in list) {
           var a = document.createElement("a");
           a.className = "dropdown-item";
           a.setAttribute("onclick", "selectPlace(this)");
+
           a.innerHTML = index;
+
           menu.appendChild(a);
         }
+
+
         div.appendChild(button);
         div.appendChild(menu);
+
         return div;
       }
+
       function makeForm(form, text, id, type) {
         var formDiv = document.createElement("div");
         formDiv.className = "form-group";
+
         var label = document.createElement("label");
         label.setAttribute("for", id);
         label.innerHTML = text;
@@ -559,21 +653,23 @@
         input.setAttribute("placeholder", text + "를 입력해주세요");
         formDiv.appendChild(label);
         formDiv.appendChild(input);
+
         form.appendChild(formDiv);
       }
+
       function place_request(){
         var type = document.getElementById("data0").innerHTML;
         var place = document.getElementById("data1").innerHTML;
         var number = document.getElementById("data2").innerHTML;
         var date = document.getElementById("data3").innerHTML;
+
         firebase.auth().onAuthStateChanged(function(user) {
           if (user) {
-            firebase.database().ref('contract/' + user.uid).push({
+            firebase.database().ref('contract/' + user.uid).set({
               type:type,
               place:place,
               number:number,
-              date:date,
-              completed: 'false'
+              date:date
             });
             alert("신청이 완료되었습니다. 신청하신 내용은 마이페이지에서 확인하실 수 있습니다.");
             location.href = "index.html";
@@ -586,12 +682,14 @@
       }
       function google_login(){
         var provider = new firebase.auth.GoogleAuthProvider();
+
         provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
         provider.setCustomParameters({
           'login_hint': 'user@example.com'
         });
         firebase.auth().signInWithRedirect(provider);
       }
+
     </script>
   </body>
 </html>
