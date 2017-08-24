@@ -10,6 +10,10 @@ body::-webkit-scrollbar {
   display: none;
 }
 
+.main-container {
+  color: white;
+}
+
 #login_state{
   display:none;
 }
@@ -77,6 +81,31 @@ body::-webkit-scrollbar {
 #calendar {
   width:100%;
   height:200px;
+}
+
+#title {
+  margin-bottom: 20px;
+  border-bottom: 1px solid white;
+  padding-bottom: 20px;
+}
+
+.place-container {
+  margin-top: -50px;
+}
+
+.place-container span {
+  color: #ffffff;
+  font-size: 20px;
+}
+
+.table tr td button {
+  margin: 0px 10px;
+}
+
+#map {
+  width: 100%;
+  height: 400px;
+  background-color: grey;
 }
 
 /*
