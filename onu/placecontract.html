@@ -49,7 +49,7 @@
               <th>상태</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="tbody">
 
           </tbody>
         </table>
@@ -83,58 +83,43 @@
       ref.once('value').then(function(snapshot) {
 
         firebase.auth().onAuthStateChanged(function(user) {
+
           if (user) {
             authdata = user;
             document.getElementById('signup_hi').innerHTML = authdata.email + "님 환영합니다.";
             document.getElementById('login_logout').innerHTML = "로그아웃";
-
             var uid = authdata.uid;
-            var dataRef = firebase.database().ref('contract/');
+            var dataRef = firebase.database().ref('contract/' + uid);
             dataRef.once('value').then(function(snapshot) {
-
-              dataRef.orderByChild("place") .equalTo('서울특별시 강북구').on("value", function(data) {
-                var data;
-
-                console.log("Equal to filter: " + data.val() .name);
-              });
-
-
-              var val = snapshot.val();
-              var list = Object.keys(val);
-              var tr = document.createElement("tr");
-
-
-
-              for(var index in list) {
-                var key = list[index];
-                var td1 = document.createElement("td");
-                td1.innerHTML = val[key].type;
-                var td2 = document.createElement("td");
-                td2.innerHTML = val[key].place;
-                var td3 = document.createElement("td");
-                td3.innerHTML = val[key].number;
-                var td4 = document.createElement("td");
-                td4.innerHTML = val[key].date;
-                var td5 = document.createElement("td");
-                if(val[key].completed == 'false') {
-                  var btn = document.createElement("button");
-                  btn.setAttribute("type", "button");
-                  btn.className = "btn btn-light";
-                  btn.innerHTML = "상세보기";
-                  btn.setAttribute("onclick", "detail('" + key + "')");
-                  td5.appendChild(btn);
-                } else {
-                  td5.innerHTML = "완료";
-                }
-                tr.appendChild(td1);
-                tr.appendChild(td2);
-                tr.appendChild(td3);
-                tr.appendChild(td4);
-                tr.appendChild(td5);
+              temp();
+              function temp(){
+                var ref = firebase.database().ref('contract/');
+                ref.orderByChild('place').equalTo("대전광역시 유성구").once('value').then(function(snapshot) {
+                  console.log(snapshot.val());
+                  var contractList = snapshot.val(); //{516a5dfadf}
+                  var a = Object.keys(contractList); //["516a5dfadf"]
+                  for (var i = 0; i < a.length; i++) {
+                    var tr = document.createElement("tr");
+                    var c = contractList[a[i]].place;
+                    var td1 = document.createElement("td");
+                    td1.innerHTML = contractList[a[i]].type;
+                    var td2 = document.createElement("td");
+                    td2.innerHTML = contractList[a[i]].place;
+                    var td3 = document.createElement("td");
+                    td3.innerHTML = contractList[a[i]].number;
+                    var td4 = document.createElement("td");
+                    td4.innerHTML = contractList[a[i]].date;
+                    var td5 = document.createElement("td");
+                    td5.innerHTML = "진행중";
+                    tr.appendChild(td1);
+                    tr.appendChild(td2);
+                    tr.appendChild(td3);
+                    tr.appendChild(td4);
+                    tr.appendChild(td5);
+                    document.getElementById("tbody").appendChild(tr);
+                  }
+                });
               }
-
-
-              $('.table').find('tbody').html(tr);
             });
           }
           else {
