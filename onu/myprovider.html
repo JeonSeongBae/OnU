@@ -38,7 +38,7 @@
     </header>
     <div class="main-header">
       <div class="container main-container">
-        <h1 id="status">Consumer</h1>
+        <h1 id="status">Provider_장소정보 입력</h1>
         <hr>
         <div class = "signup_form">
           <div class="placeInfo">
@@ -107,34 +107,60 @@
   <script>
     // Initialize Firebase
     var config = {
-      apiKey: "AIzaSyDxbF57tRwkq5bdMyMPLbG5o9MfhfAHKmg",
-      authDomain: "andu-temp.firebaseapp.com",
-      databaseURL: "https://andu-temp.firebaseio.com",
-      projectId: "andu-temp",
-      storageBucket: "andu-temp.appspot.com",
-      messagingSenderId: "110005684913"
+      apiKey: "AIzaSyB5Aji_Ysf6EsI_6cR4kDs3yi9s0bjo9_k",
+      authDomain: "andu-3f6db.firebaseapp.com",
+      databaseURL: "https://andu-3f6db.firebaseio.com",
+      projectId: "andu-3f6db",
+      storageBucket: "andu-3f6db.appspot.com",
+      messagingSenderId: "799401536592"
     };
     firebase.initializeApp(config);
-
     // Get a reference to the database service
     var database = firebase.database();
     // Get a reference to the storage service, which is used to create references in your storage bucket
     var storage = firebase.storage();
+    var storageRef;
+
+    var authData;
+    firebase.auth().onAuthStateChanged(function(user) {
+      authData = user;
+      storageRef = storage.ref(user.uid);
+
+      if(authData != null) {
+        var ref = database.ref('users/provider/' + authData.uid + "/info");
+        ref.once('value').then(function(snapshot) {
+          if(snapshot.val() != null) {
+            var val = snapshot.val();
+            var input = document.getElementsByClassName('infoInput');
+            input[0].value = val.name;
+            input[1].value = val.purpose;
+            input[2].value = val.around;
+            input[3].value = val.address;
+            input[4].value = val.notice;
+            input[5].value = val.facilities;
+            input[6].value = val.time;
+            input[7].value = val.introduce;
+            input[8].value = val.etc;
+          }
+        });
+      }
+    });
+
     // Create a root reference
-    var storageRef = firebase.storage().ref();
 
     function fileUpLoad(){
-      var placeInfo = document.getElementsByTagName('input');
-      database.ref('userId/').set({
-        info0: placeInfo[0].value,
-        info1: placeInfo[1].value,
-        info2: placeInfo[2].value,
-        info3: placeInfo[3].value,
-        info4: placeInfo[4].value,
-        info5: placeInfo[5].value,
-        info6: placeInfo[6].value,
-        info7: placeInfo[7].value,
-        info8: placeInfo[8]
+      var placeInfo = document.getElementsByClassName("infoInput");
+      var userRef = database.ref('users/provider/' + authData.uid + "/info");
+      userRef.set({
+        name: placeInfo[0].value,
+        purpose: placeInfo[1].value,
+        around: placeInfo[2].value,
+        address: placeInfo[3].value,
+        notice: placeInfo[4].value,
+        facilities: placeInfo[5].value,
+        time: placeInfo[6].value,
+        introduce: placeInfo[7].value,
+        etc: placeInfo[8].value
       });
 
       // 한 개의 파일 넣기
@@ -177,7 +203,9 @@
         // Upload completed successfully, now we can get the download URL
         var downloadURL = uploadTask.snapshot.downloadURL;
         document.getElementsByClassName("col-form-label").innerHTML = downloadURL;
+        alert("정보가 저장되었습니다.");
       });
+
     }
   </script>
 
