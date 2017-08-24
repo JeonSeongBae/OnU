@@ -38,7 +38,7 @@
     </header>
     <div class="main-header">
       <div class="container main-container">
-        <h1>견적 내용</h1>
+        <h1>주변 견적 리스트</h1>
         <table class="table">
           <thead>
             <tr>
@@ -74,60 +74,82 @@
       messagingSenderId: "799401536592"
     };
     firebase.initializeApp(config);
-    var authdata;
 
     $(window).ready(function() {
-      var ref = firebase.database().ref('type');
-      //var content = "현재까지 등록된 공간 수는 ";
+      var authdata;
 
-      ref.once('value').then(function(snapshot) {
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          authdata = user;
+          document.getElementById('signup_hi').innerHTML = authdata.email + "님 환영합니다.";
+          document.getElementById('login_logout').innerHTML = "로그아웃";
 
-        firebase.auth().onAuthStateChanged(function(user) {
-          if (user) {
-            authdata = user;
-            document.getElementById('signup_hi').innerHTML = authdata.email + "님 환영합니다.";
-            document.getElementById('login_logout').innerHTML = "로그아웃";
+          var uid = authdata.uid;
+          var providerRef = firebase.database().ref('users/provider/' + uid);
+          var place;
+          providerRef.once('value').then(function(snapshot) {
+            place = snapshot.val().place;
+            console.log(place);
 
-            var uid = authdata.uid;
-            var dataRef = firebase.database().ref('contract/' + uid);
-            dataRef.once('value').then(function(snapshot) {
-              console.log(snapshot.val());
-              var val = snapshot.val();
+            var contractRef = firebase.database().ref('contract/');
+            contractRef.orderByChild('place').equalTo(place).once('value').then(function(snapshot) {
+              var keys = Object.keys(snapshot.val());
+              var data = snapshot.val();
 
-              var tr = document.createElement("tr");
-              var td1 = document.createElement("td");
-              td1.innerHTML = val.type;
-              var td2 = document.createElement("td");
-              td2.innerHTML = val.place;
-              var td3 = document.createElement("td");
-              td3.innerHTML = val.number;
-              var td4 = document.createElement("td");
-              td4.innerHTML = val.date;
-              var td5 = document.createElement("td");
-              var btn = document.createElement("button");
-              btn.innerHTML = "상세보기";
-              btn.setAttribute("type", "button");
-              btn.className = "btn btn-light";
-              btn.setAttribute("onclick", "detail('" + uid + "')");
-              td5.appendChild(btn);
+              for(var i = 0; i < keys.length; i++) {
+                console.log(data[keys[i]]);
+                var val = data[keys[i]];
 
-              tr.appendChild(td1);
-              tr.appendChild(td2);
-              tr.appendChild(td3);
-              tr.appendChild(td4);
-              tr.appendChild(td5);
+                var tr = document.createElement("tr");
+                var td1 = document.createElement("td");
+                td1.innerHTML = val.type;
+                var td2 = document.createElement("td");
+                td2.innerHTML = val.place;
+                var td3 = document.createElement("td");
+                td3.innerHTML = val.number;
+                var td4 = document.createElement("td");
+                td4.innerHTML = val.date;
+                var td5 = document.createElement("td");
+                var btn = document.createElement("button");
+                btn.setAttribute("type", "button");
+                btn.className = "btn btn-light";
+                btn.innerHTML = "신청하기";
+                btn.setAttribute("onclick", "apply('" + keys[i] + "','" + uid + "')");
+                td5.appendChild(btn);
 
-              $('.table').find('tbody').html(tr);
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tr.appendChild(td3);
+                tr.appendChild(td4);
+                tr.appendChild(td5);
+
+                $('.table').find('tbody').append(tr);
+              }
             });
-          }
-          else {
-           authdata = null;
-           alert("로그인이 필요합니다");
-           location.href="index.html";
-          }
-        });
+
+          });
+        }
+        else {
+         authdata = null;
+         alert("로그인이 필요합니다");
+         location.href="index.html";
+        }
       });
     });
+
+    function apply(useruid, provideruid) {
+      var ref = firebase.database().ref('contract/' + useruid + "/provider");
+      ref.once('value').then(function(snapshot) {
+        var size;
+        if(snapshot.val() == null) {
+          size = 0;
+        } else {
+          size = Object.keys(snapshot.val()).length;
+        }
+
+        ref.child(size).set(provideruid);
+      });
+    }
 
     function get_currentUser(){
       return firebase.auth().currentUser;
