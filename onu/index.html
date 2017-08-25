@@ -593,12 +593,11 @@
         var date = document.getElementById("data3").innerHTML;
         firebase.auth().onAuthStateChanged(function(user) {
           if (user) {
-            firebase.database().ref('contract/' + user.uid).push({
+            firebase.database().ref('contract/' + user.uid).set({
               type:type,
               place:place,
               number:number,
               date:date,
-              completed: 'false'
             });
             alert("신청이 완료되었습니다. 신청하신 내용은 마이페이지에서 확인하실 수 있습니다.");
             location.href = "index.html";

@@ -6,7 +6,15 @@ div,span,body{margin:0;padding:0}
 h3{
   color:white;
 }
+#googlelogin_form{
+  padding-left: 15%;
+}
+#tel_div, #place{
+  margin-top:10%;
+  width:50%;
+  float:left;
 
+}
 #wrap{
   clear:both;
   float:left;
@@ -30,6 +38,22 @@ h3{
   color:#fff;
   text-decoration:none
 }
+.g-btn{
+  margin-left: 4%;
+  margin-right: 4%;
+  margin-top: 4%;
+  font-size: 30px;
+  width: 150px;
+  height: 70px;
+}
+.loginrow{
+  text-align: center;
+}
+#provider, #consumer{
+  margin-left: 2%;
+  margin-right: 2%;
+}
+
 #provider{
   background-color: #28a745;
   border-color: #28a745;

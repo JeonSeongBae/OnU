@@ -28,11 +28,14 @@
     <div class="container main-container">
       <h3>구글 아이디로 로그인 하기 위해서 추가적인 정보가 필요합니다.</h3>
       <h5>가입시 설정한 회원종류는 수정이 불가능합니다.</h5>
-      <span id = "consumer" onclick = "login_change('consumer')">일반 회원으로 로그인</span>
-      <span id = "provider" onclick = "login_change('provider')">장소 제공자로 로그인</span>
-      <div class = "signup_form">
+      <div class="loginrow">
+        <span id = "consumer" onclick = "login_change('consumer')">일반회원 로그인</span>
+        <span id = "provider" onclick = "login_change('provider')">장소제공자 로그인</span>
 
-        <div class="form-group">
+      </div>
+      <div id = "googlelogin_form" class = "signup_form">
+
+        <div id = "tel_div" class="form-grllsoup">
           <label for="inputAddress2" class="col-form-label user_data">전화번호</label>
           <input type="text" class="form-control input_form" id="tel" placeholder="전화번호를 입력해주세요">
         </div>
@@ -46,8 +49,8 @@
         </div>
       </div>
 
-      <button type="button" onclick="google_login()" class="btn btn_gray">계속</button>
-      <button type="button" onclick = "cancel_signup()" class= "btn btn_gray">취소</button>
+      <button type="button" onclick="google_login()" class="btn btn_gray g-btn">계속</button>
+      <button type="button" onclick = "cancel_signup()" class= "btn btn_gray g-btn">취소</button>
     </div>
   </div>
 
