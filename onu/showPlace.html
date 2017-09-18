@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/stylesheet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="./css/mypage.css">
+
+    <title></title>
+  </head>
+  <body>
+    <header>
+      <nav id="header" class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <a class="navbar-brand" href="./index.html">
+          <img src="./img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+          공앤유
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav justify-content-end">
+            <li class="nav-item active">
+              <a id = "signup_hi" class="nav-link" href="signup.html">회원가입</a>
+            </li>
+            <li class="nav-item active">
+              <a id = "login_logout" class="nav-link" href="#" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="login">로그인</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <div class="main-header">
+      <div class="main-container place-container">
+        <h3 id="title"></h3>
+        <div class="row">
+          <div class="col-6" style="border-right:1px solid white; display:grid;">
+            <span class="content">주소 : <span id="address"></span></span><br>
+            <span class="content">사용 용도 : <span id="purpose"></span></span><br>
+            <span class="content">이용 가능 시간 : <span id="time"></span></span><br>
+            <span class="content">내부 시설 : <span id="facilities"></span></span><br>
+            <span class="content">주변 시설 : <span id="around"></span></span><br>
+            <span class="content">소개 글 : <span id="introduce"></span></span><br>
+            <span class="content">기타 사항 : <span id="etc"></span></span>
+            <div class="row" style="margin: 20px 0px; display: inline-block">
+              <button type="button" class="btn btn-info">대화하기</button>
+              <button type="button" class="btn btn-light" onclick="history.back();">돌아가기</button>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div id="map"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyiN7gBLBgWgVMwkBRZ4YvFB27wwF_Yh4&libraries=visualization"></script>
+  <script>
+    var config = {
+      apiKey: "AIzaSyB5Aji_Ysf6EsI_6cR4kDs3yi9s0bjo9_k",
+      authDomain: "andu-3f6db.firebaseapp.com",
+      databaseURL: "https://andu-3f6db.firebaseio.com",
+      projectId: "andu-3f6db",
+      storageBucket: "andu-3f6db.appspot.com",
+      messagingSenderId: "799401536592"
+    };
+    firebase.initializeApp(config);
+    var address;
+
+    $(window).ready(function() {
+      var temp = location.href.split("?");
+      var parameters = temp[1].split("=");
+      var uid = parameters[1];
+
+      var ref = firebase.database().ref('users/provider/' + uid + "/info");
+      ref.once('value').then(function(snapshot) {
+        var val = snapshot.val();
+        address = val.address;
+
+        document.getElementById("title").innerHTML = val.name;
+        document.getElementById("address").innerHTML = val.address;
+        document.getElementById("purpose").innerHTML = val.purpose;
+        document.getElementById("time").innerHTML = val.time;
+        document.getElementById("facilities").innerHTML = val.facilities;
+        document.getElementById("around").innerHTML = val.around;
+        document.getElementById("introduce").innerHTML = val.introduce;
+        document.getElementById("etc").innerHTML = val.etc;
+
+        initMap();
+      });
+    });
+
+    function initMap() {
+      console.log(address);
+      $.ajax({
+        type: 'post',
+        url: 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address + '&key=AIzaSyCyiN7gBLBgWgVMwkBRZ4YvFB27wwF_Yh4',
+        dataType: 'json',
+        success: function(data) {
+          var geometry = data.results[0].geometry;
+          var lat = geometry.location.lat;
+          var lng = geometry.location.lng;
+
+          var data = {lat: lat, lng: lng};
+          console.log(data);
+          var map = new google.maps.Map(document.getElementById('map'), {
+            zoom:15,
+            center: data
+          });
+
+          var marker = new google.maps.Marker({
+            position: data,
+            map: map
+          });
+        }
+      });
+    }
+
+  </script>
+</html>

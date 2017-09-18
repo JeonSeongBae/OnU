@@ -87,7 +87,10 @@
       firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
           authdata = user;
+          document.getElementById('login_logout').setAttribute("onclick", "logout()");
           document.getElementById('signup_hi').innerHTML = authdata.email + "님 환영합니다.";
+
+          document.getElementById('signup_hi').href = "";
           document.getElementById('login_logout').innerHTML = "로그아웃";
 
           var uid = authdata.uid;
@@ -120,31 +123,50 @@
             var providerList = val.provider;
             console.log(providerList);
             var providerRef = firebase.database().ref('users/provider/');
-            for(var i = 0; i < providerList.length; i++) {
-              providerRef.child(providerList[i]).child('info').once('value').then(function(snapshot) {
-                var val = snapshot.val();
-                console.log(val);
+            if(providerList != null) {
+              for(var i = 0; i < providerList.length; i++) {
+                var pro = providerList[i];
+                providerRef.child(providerList[i]).child('info').once('value').then(function(snapshot) {
+                  var val = snapshot.val();
+                  console.log(val);
 
-                var tr = document.createElement("tr");
-                var td1 = document.createElement("td");
-                td1.innerHTML = val.name;
-                var td2 = document.createElement("td");
-                td2.innerHTML = val.address;
-                var td3 = document.createElement("td");
-                var btn = document.createElement("button");
-                btn.className = "btn btn-light";
-                btn.setAttribute("type", "button");
-                btn.setAttribute("onclick", "showPlace()");
-                btn.innerHTML = "정보 보기";
-                td3.appendChild(btn);
+                  var tr = document.createElement("tr");
+                  var td1 = document.createElement("td");
+                  td1.innerHTML = val.name;
+                  var td2 = document.createElement("td");
+                  td2.innerHTML = val.address;
+                  var td3 = document.createElement("td");
+                  var btn = document.createElement("button");
+                  btn.className = "btn btn-light";
+                  btn.setAttribute("type", "button");
+                  btn.setAttribute("onclick", "showPlace('" + pro + "')");
+                  btn.innerHTML = "정보 보기";
+                  var select = document.createElement("button");
+                  select.className = "btn btn-info";
+                  select.innerHTML = "선택하기";
+                  select.setAttribute("type", "button");
+                  select.setAttribute("onclick", "selectPlace('" + uid + "')");
 
-                tr.appendChild(td1);
-                tr.appendChild(td2);
-                tr.appendChild(td3);
+                  td3.appendChild(btn);
+                  td3.appendChild(select);
 
-                $('#providerTable').find('tbody').append(tr);
-              });
+                  tr.appendChild(td1);
+                  tr.appendChild(td2);
+                  tr.appendChild(td3);
+
+                  $('#providerTable').find('tbody').append(tr);
+                });
+              }
+            } else {
+              var tr = document.createElement("tr");
+              var td = document.createElement("td");
+              td.setAttribute("colspan", "3");
+              td.innerHTML = "견적서가 아직 도착하지 않았습니다!";
+              tr.appendChild(td);
+
+              $('#providerTable').find('tbody').append(tr);
             }
+
 
           });
         }
@@ -155,6 +177,37 @@
         }
       });
     });
-        });
+      
+   });
+
+    function showPlace(provideruid) {
+      location.href = "showPlace.html?uid=" + provideruid;
+    }
+
+    function selectPlace(useruid) {
+      var ref = firebase.database().ref('contract/' + useruid);
+      ref.once('value').then(function(snapshot) {
+        var val = snapshot.val();
+        ref.set(null);
+
+        var completedRef = firebase.database().ref('completed/' + useruid);
+        completedRef.set(val);
+      });
+    }
+      
+    function logout(){
+      firebase.auth().signOut().then(function() {
+        // Sign-out successful.
+        alert("로그아웃 되었습니다.");
+        location.href="index.html";
+        //이미 속성에 들어가버려서 나오는 창을 닫을 방법을 모르겠음 by 상인
+      }, function(error) {
+        alert(error);
+        // An error happened.
+      });
+    } 
+
+ 
+    
   </script>
 </html>

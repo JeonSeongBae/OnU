@@ -185,7 +185,6 @@
     }(document, 'script', 'facebook-jssdk'));</script>
 
     <footer>
-      <button type="button" name="button" class ="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever = "sample"> sample </button>
     </footer>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -212,15 +211,12 @@
 
 
       $(window).ready(function() {
-        var ref = firebase.database().ref('type');
-        var content = "현재까지 등록된 공간 수는 ";
+        var ref = firebase.database().ref('users/provider');
+        var content = "현재 ";
         ref.once('value').then(function(snapshot) {
-          var list = snapshot.val();
-          for(var i in list) {
-            content += i + " : " + list[i] + "개 ";
-          }
-          content += "입니다.";
-          console.log(content);
+          var count = Object.keys(snapshot.val()).length;
+          content += count +"개의 장소가 당신의 선택을 기다리고 있습니다.";
+
           document.getElementById("current").innerHTML = content;
           firebase.auth().onAuthStateChanged(function(user) {
             if(user){
