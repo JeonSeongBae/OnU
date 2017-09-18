@@ -74,14 +74,16 @@
       messagingSenderId: "799401536592"
     };
     firebase.initializeApp(config);
+    var authdata;
 
     $(window).ready(function() {
       var temp = location.href.split("?");
       var parameters = temp[1].split("=");
       var key = parameters[1];
-
       $('#tableDiv').load('myconsumer.html .table');
-
+      var ref = firebase.database().ref('type');
+      ref.once('value').then(function(snapshot) {
+        var list = snapshot.val();
       firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
           authdata = user;
@@ -153,6 +155,6 @@
         }
       });
     });
-
+        });
   </script>
 </html>

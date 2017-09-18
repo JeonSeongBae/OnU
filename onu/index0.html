@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
   </head>
   <body>
-
     <header>
       <nav id="header" class="navbar navbar-expand-lg navbar-dark fixed-top">
         <a class="navbar-brand" href="./index.html">
@@ -175,14 +174,6 @@
         </div>
       </div>
     </div>
-    <div id="fb-root"></div>
-    <script>(function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/ko_KR/sdk.js#xfbml=1&version=v2.10&appId=669803516558727";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));</script>
 
     <footer>
       <button type="button" name="button" class ="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever = "sample"> sample </button>
@@ -206,22 +197,11 @@
         messagingSenderId: "799401536592"
       };
       firebase.initializeApp(config);
-
-
       var authdata;
-
-
       $(window).ready(function() {
         var ref = firebase.database().ref('type');
-        var content = "현재까지 등록된 공간 수는 ";
         ref.once('value').then(function(snapshot) {
-          var list = snapshot.val();
-          for(var i in list) {
-            content += i + " : " + list[i] + "개 ";
-          }
-          content += "입니다.";
-          console.log(content);
-          document.getElementById("current").innerHTML = content;
+
           firebase.auth().onAuthStateChanged(function(user) {
             if(user){
               authdata = user;
@@ -232,7 +212,6 @@
                 if(snapshot.val()) {
                   document.getElementById('signup_hi').href = "./myconsumer.html";//소비자용 마이페이지로 이동
                   document.getElementById('request').setAttribute("data-whatever", "request");
-                  document.getElementById('request').innerHTML = "장소견적 신청하기";
                   document.getElementById('mypage').innerHTML = "마이페이지";
                   document.getElementById('mypage').href = "myconsumer.html";
                 }
@@ -242,7 +221,6 @@
                     if(snapshot.val()) {
                       document.getElementById('signup_hi').href = "./myprovider.html";
                       document.getElementById('request').setAttribute("data-whatever", "array_request");
-                      document.getElementById('request').innerHTML = "견적신청 내역보기";
                       document.getElementById('mypage').innerHTML = "마이페이지";
                       document.getElementById('mypage').href = "myprovider.html";
                     }
@@ -260,13 +238,20 @@
               document.getElementById('signup_hi').innerHTML = "회원가입";
               document.getElementById('signup_hi').href = "signup.html";
               document.getElementById('login_logout').innerHTML = "로그인";
-              document.getElementById('request').innerHTML = "장소견적 신청하기";
               document.getElementById('mypage').innerHTML = "";
             }
           });
         });
       });
-
+      firebase.auth().signOut().then(function() {
+        // Sign-out successful.
+        alert("로그아웃 되었습니다.");
+        location.href="index.html";
+        //이미 속성에 들어가버려서 나오는 창을 닫을 방법을 모르겠음 by 상인
+      }, function(error) {
+        alert(error);
+        // An error happened.
+      });
       $(window).scroll(function() {
         if ($("#header").offset().top > 600) {
           $("#header").addClass("navbar-shrink");
@@ -274,19 +259,16 @@
           $("#header").removeClass("navbar-shrink");
         }
       });
-
       var typeRef = firebase.database().ref('type');
       var typeList;
       typeRef.once('value').then(function(snapshot) {
         typeList = snapshot.val();
       });
-
       var placeRef = firebase.database().ref('place');
       var locationList;
       placeRef.once('value').then(function(snapshot) {
         locationList = snapshot.val();
       });
-
       $('#modal').on('show.bs.modal', function(event) {
         var button = $(event.relatedTarget);
         var type = button.data('whatever');
@@ -343,42 +325,12 @@
               rightDiv.className = "col-4";
               var p = document.createElement("p");
               p.innerHTML = "간편 로그인";
-
               var btnDiv = document.createElement("div");
-
               var googlebtn = document.createElement("button");
-              var google_span = document.createElement("span");
-              var google_img = document.createElement("img");
-              google_img.setAttribute('src', './img/google.svg');
-              google_img.style = "height:100%";
-              google_span.appendChild(google_img);
-              google_span.innerHTML += " Login With Google";
-              googlebtn.appendChild(google_span);
-              googlebtn.style = "background-color:white;border:white";
+              googlebtn.innerHTML = "구글로그인 자리";
               googlebtn.setAttribute('onclick', "google_login()");
-
-
-              // var facebookbtn = document.createElement("div");
-              // facebookbtn.className = "fb-login-button";
-              // facebookbtn.setAttribute("data-max-rows", "1");
-              // facebookbtn.setAttribute("data-size", "large");
-              // facebookbtn.setAttribute("data-button-type", "login_with");
-              // facebookbtn.setAttribute("data-show-faces", "false");
-              // facebookbtn.setAttribute("data-auto-logout-link", "false");
-              // facebookbtn.setAttribute("data-use-continue-as", "false");
-
               var facebookbtn = document.createElement("button");
-              var facebook_span = document.createElement("span");
-              var facebook_img = document.createElement("img");
-              facebook_img.setAttribute('src', './img/facebook.svg');
-              facebook_img.style = "height:100%";
-              facebook_span.appendChild(facebook_img);
-              facebook_span.innerHTML += " Login With Facebook";
-              facebookbtn.appendChild(facebook_span);
-              facebookbtn.style = "background-color:white;border:white";
-              facebookbtn.setAttribute('onclick', "facebook_login()");
-
-
+              facebookbtn.innerHTML = "페이스북 자리";
               var kakaobtn = document.createElement("button");
               kakaobtn.innerHTML = "카카오 자리";
               btnDiv.appendChild(googlebtn);
@@ -589,11 +541,12 @@
         var date = document.getElementById("data3").innerHTML;
         firebase.auth().onAuthStateChanged(function(user) {
           if (user) {
-            firebase.database().ref('contract/' + user.uid).set({
+            firebase.database().ref('contract/' + user.uid).push({
               type:type,
               place:place,
               number:number,
               date:date,
+              completed: 'false'
             });
             alert("신청이 완료되었습니다. 신청하신 내용은 마이페이지에서 확인하실 수 있습니다.");
             location.href = "index.html";
@@ -612,13 +565,6 @@
           'login_hint': 'user@example.com'
         });
         firebase.auth().signInWithRedirect(provider);
-      }
-
-      function facebook_login(){
-        var provider = new firebase.auth.FacebookAuthProvider();
-        provider.addScope('user_tel');
-        firebase.auth().signInWithRedirect(provider);
-
       }
     </script>
   </body>
