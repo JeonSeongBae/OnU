@@ -39,7 +39,7 @@
     <div class="main-header">
       <div class="main-container place-container">
         <h3 id="title"></h3>
-        <div class="row">
+        <div class="imgRow">
           <img class="myimg"src="" alt="">
           <img class="myimg"src="" alt="">
           <img class="myimg"src="" alt="">
@@ -74,25 +74,25 @@
       var storageRef = storage.ref();
       var img = document.getElementsByClassName('myimg');
       // Create a reference to the file we want to download
-      var starsRef = storageRef.child('vZZUMvxdJqW4LEKjmQXcioJoxx73/image0');
+      var starsRef = storageRef.child('vZZUMvxdJqW4LEKjmQXcioJoxx73/image0.png');
       // Get the download URL
       starsRef.getDownloadURL().then(function(url) {
         // Insert url into an <img> tag to "download"
         img[0].src = url;
       });
-      var starsRef = storageRef.child('vZZUMvxdJqW4LEKjmQXcioJoxx73/image1');
+      var starsRef = storageRef.child('vZZUMvxdJqW4LEKjmQXcioJoxx73/image1.png');
       // Get the download URL
       starsRef.getDownloadURL().then(function(url) {
         // Insert url into an <img> tag to "download"
         img[1].src = url;
       });
-      var starsRef = storageRef.child('vZZUMvxdJqW4LEKjmQXcioJoxx73/image2');
+      var starsRef = storageRef.child('vZZUMvxdJqW4LEKjmQXcioJoxx73/image2.png');
       // Get the download URL
       starsRef.getDownloadURL().then(function(url) {
         // Insert url into an <img> tag to "download"
         img[2].src = url;
       });
-      var starsRef = storageRef.child('vZZUMvxdJqW4LEKjmQXcioJoxx73/image3');
+      var starsRef = storageRef.child('vZZUMvxdJqW4LEKjmQXcioJoxx73/image3.png');
       // Get the download URL
       starsRef.getDownloadURL().then(function(url) {
         // Insert url into an <img> tag to "download"
