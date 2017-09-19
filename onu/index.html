@@ -16,7 +16,7 @@
       <nav id="header" class="navbar navbar-expand-lg navbar-dark fixed-top">
         <a class="navbar-brand" href="./index.html">
           <img src="./img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
-          공앤유
+          COPLA
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -36,7 +36,7 @@
         </div>
       </nav>
     </header>
-    <div class="main-header">
+    <div class="main-header" style = "padding-top:10%">
       <div class="container main-container">
         <h1>공유하는 시대</h1>
         <h1>나눠쓰자 나의공간</h1>
@@ -46,7 +46,7 @@
           <span id="current"></span>
           <hr>
         </div>
-        <button type="button" id = "request" class="btn btn-default btn-lg" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="request">
+        <button type="button" id = "request" class="btn btn-default btn-lg" style = "background-color:#eee" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="request">
           장소견적 신청하기
         </button>
       </div>
@@ -221,7 +221,7 @@
           firebase.auth().onAuthStateChanged(function(user) {
             if(user){
               authdata = user;
-              document.getElementById('signup_hi').innerHTML = authdata.email + "님 환영합니다.";
+
               document.getElementById('login_logout').innerHTML = "로그아웃";
               var data = firebase.database().ref('users/consumer');
               data.orderByKey().equalTo(authdata.uid).once('value').then(function(snapshot) {
@@ -231,6 +231,11 @@
                   document.getElementById('request').innerHTML = "장소견적 신청하기";
                   document.getElementById('mypage').innerHTML = "마이페이지";
                   document.getElementById('mypage').href = "myconsumer.html";
+                  var auth_dataRef = firebase.database().ref("users/consumer/" + authdata.uid);
+                  auth_dataRef.once('value').then(function(snapshot){
+                    console.log(snapshot.val().name);
+                    document.getElementById('signup_hi').innerHTML = snapshot.val().name + "님 환영합니다.";
+                  });
                 }
                 else{
                   var data = firebase.database().ref('users/provider');
@@ -241,6 +246,11 @@
                       document.getElementById('request').innerHTML = "견적신청 내역보기";
                       document.getElementById('mypage').innerHTML = "마이페이지";
                       document.getElementById('mypage').href = "myprovider.html";
+                      var auth_dataRef = firebase.database().ref("users/provider/" + authdata.uid);
+                      auth_dataRef.once('value').then(function(snapshot){
+                        console.log(snapshot.val());
+                          document.getElementById('signup_hi').innerHTML = snapshot.val().name + "님 환영합니다.";
+                      });
                     }
                     else{
                       location.href = "googlelogin.html";

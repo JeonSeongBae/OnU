@@ -19,7 +19,7 @@
       <nav id="header" class="navbar navbar-expand-lg navbar-dark fixed-top">
         <a class="navbar-brand" href="./index.html">
           <img src="./img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
-          공앤유
+          COPLA
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -49,7 +49,7 @@
             <span class="content">소개 글 : <span id="introduce"></span></span><br>
             <span class="content">기타 사항 : <span id="etc"></span></span>
             <div class="row" style="margin: 20px 0px; display: inline-block">
-              <button type="button" class="btn btn-info">대화하기</button>
+              <button type="button" class="btn btn-info" onclick = "chatting()">대화하기</button>
               <button type="button" class="btn btn-light" onclick="history.back();">돌아가기</button>
             </div>
           </div>
@@ -128,6 +128,10 @@
           });
         }
       });
+    }
+
+    function chatting(){
+      location.href = "chatting.html"
     }
 
   </script>
