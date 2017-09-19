@@ -2,7 +2,12 @@
 
 /* css reset */
 div,span,body{margin:0;padding:0}
-
+.imgRow{
+  text-align: center;
+}
+/*.myimg{
+  text-align: center;
+}*/
 #status{
   text-align: center;
   font-family: 'mainFont' !important;
