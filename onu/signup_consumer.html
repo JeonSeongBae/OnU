@@ -17,7 +17,7 @@
       <nav id="header" class="navbar navbar-expand-lg navbar-dark fixed-top">
         <a class="navbar-brand" href="index.html">
           <img src="./img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
-          공앤유
+          COPLA
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -40,6 +40,10 @@
           <div class="form-group">
             <label for="inputAddress" class="col-form-label user_data">비밀번호확인</label>
             <input type="text" class="form-control input_form" id="password_compare" placeholder="Password_cmp">
+          </div>
+          <div class="form-group">
+            <label for="inputAddress2" class="col-form-label user_data">이름</label>
+            <input type="text" class="form-control input_form" id="name" placeholder="전화번호를 입력해주세요">
           </div>
           <div class="form-group">
             <label for="inputAddress2" class="col-form-label user_data">전화번호</label>
@@ -128,7 +132,9 @@
       email = document.getElementById("email").value;
       password = document.getElementById("password").value;
       password_compare = document.getElementById("password_compare").value;
+      name = document.getElementById("name").value;
       tel = document.getElementById("tel").value;
+
 
 
       check_form(email, password, password_compare, tel);
@@ -166,6 +172,7 @@
         firebase.database().ref('/users/consumer/' + firebaseUser.uid).set({
           email : email,
           password:password,
+          name:name,
           tel: tel,
         });
         alert("회원가입이 완료되었습니다.");

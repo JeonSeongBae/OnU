@@ -19,7 +19,7 @@
       <nav id="header" class="navbar navbar-expand-lg navbar-dark fixed-top">
         <a class="navbar-brand" href="./index.html">
           <img src="./img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
-          공앤유
+          COPLA
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -40,13 +40,13 @@
       <div class="container main-container">
         <h1>주변 견적 리스트</h1>
         <table class="table">
-          <thead>
+          <thead style = "width = 100%">
             <tr>
-              <th>공간 유형</th>
-              <th>지역</th>
-              <th>인원</th>
-              <th>날짜</th>
-              <th>상태</th>
+              <th style = "padding:1%">공간 유형</th>
+              <th style = "padding:1%">지역</th>
+              <th style = "padding:1%">인원</th>
+              <th style = "padding:1%">날짜</th>
+              <th style = "padding:1%">상태</th>
             </tr>
           </thead>
           <tbody>
@@ -117,6 +117,8 @@
                 btn.setAttribute("type", "button");
                 btn.className = "btn btn-light";
                 btn.innerHTML = "신청하기";
+                btn.style.width = "80%";
+
                 btn.setAttribute("onclick", "apply(this, '" + keys[i] + "','" + uid + "')");
 
                 td5.appendChild(btn);

@@ -17,7 +17,7 @@
       <nav id="header" class="navbar navbar-expand-lg navbar-dark fixed-top">
         <a class="navbar-brand" href="index.html">
           <img src="./img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
-          공앤유
+          COPLA
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -39,7 +39,11 @@
           </div>
           <div class="form-group">
             <label for="inputAddress" class="col-form-label user_data">비밀번호확인</label>
-            <input type="text" class="form-control input_form" id="password_compare" placeholder="Password_cmp">
+            <input type="password" class="form-control input_form" id="password_compare" placeholder="Password_cmp">
+          </div>
+          <div class="form-group">
+            <label for="inputAddress2" class="col-form-label user_data">이름</label>
+            <input type="text" class="form-control input_form" id="name" placeholder="전화번호를 입력해주세요">
           </div>
           <div class="form-group">
             <label for="inputAddress2" class="col-form-label user_data">전화번호</label>
@@ -81,7 +85,7 @@
     var reg_email = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
     var duple_check = false;
     var is_provider = false;
-    var email, password, password_compare, tel;
+
     var sido;
       $(document).ready(function () {
         var div = document.createElement("div");
@@ -102,23 +106,18 @@
     };
     firebase.initializeApp(config);
     var database = firebase.database();
-    function writeUserData(userID, name, email, imageUrl){
-      firebase.database().ref('/users/' + userID).set({
-        username : name,
-        email: email,
-        profile_picture:imageUrl
-      });
-    }
+
     function make_id(){
-      email = document.getElementById("email").value;
-      password = document.getElementById("password").value;
-      password_compare = document.getElementById("password_compare").value;
-      tel = document.getElementById("tel").value;
-      sido = document.getElementById("sido").value;
-      gugun = document.getElementById('gugun').value;
-      check_form(email, password, password_compare, tel);
+      var email = document.getElementById("email").value;
+      var password = document.getElementById("password").value;
+      var password_compare = document.getElementById("password_compare").value;
+      var name = document.getElementById("name").value;
+      var tel = document.getElementById("tel").value;
+      var sido = document.getElementById("sido").value;
+      var gugun = document.getElementById('gugun').value;
+      check_form(email, password, password_compare, name,  tel, sido, gugun);
     }
-    function check_form(id, password, password_compare, tel){
+    function check_form(email, password, password_compare, name, tel, sido, gugun){
       //if 아이디 중복확인 추가 필요
       if(email == ""){
         alert("이메일을 입력해주세요.");
@@ -139,16 +138,19 @@
         alert("장소를 선택해주세요");
       }
       else{
-        save_id(email, password, password_compare, tel, sido, gugun);
+        save_id(email, password, password_compare, tel, name, sido, gugun);
       }
     }
-    function save_id(email, password, password_compare, tel, sido, gugun){
+    function save_id(email, password, password_compare, tel, name, sido, gugun){
       var place = sido + " " + gugun;
+      console.log("name" + name);
       firebase.auth().createUserWithEmailAndPassword(email, password).then(function(firebaseUser){
         console.log(firebaseUser.uid);
+        console.log("name" + name);
         firebase.database().ref('/users/provider/' + firebaseUser.uid).set({
           email : email,
           password:password,
+          name:name,
           tel: tel,
           place: place
         });
@@ -173,22 +175,7 @@
   			return true;
   		}
   	}
-    function is_duplicate(){
-      var data = database.ref('users/consumer/' + document.getElementById('email').value + '/id');
-      data.once('value').then(function(snapshot){
-        if(snapshot.val()){
-          alert('이미 존재하는 아이디입니다.');
-        }
-        else if(!check_regex(document.getElementById("email"), reg_email, "이메일 형식을 지켜주세요")){
-          return;
-        }
-        else{
-          duple_check = true;
-          alert('사용 가능한 아이디입니다.');
-        }
-        console.log(snapshot.val());
-      });
-    }
+
     function js_select_region(select1, select2) {//시-도를 선택했을 때 해당하는 구-군을 다음 select에 나타냄
 			if (!js_select_region_select_sido(select1)) {
 				return;
