@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/stylesheet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="./css/mypage.css">
+
+    <title></title>
+  </head>
+  <body>
+    <header>
+      <nav id="header" class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <a class="navbar-brand" href="./index.html">
+          <img src="./img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+          공앤유
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav justify-content-end">
+            <li class="nav-item active">
+              <a id = "signup_hi" class="nav-link" href="signup.html">회원가입</a>
+            </li>
+            <li class="nav-item active">
+              <a id = "login_logout" class="nav-link" href="#" data-toggle="modal" data-target=".bd-example-modal-lg" data-whatever="login">로그인</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <div class="main-header">
+      <div class="main-container place-container">
+        <h3 id="title"></h3>
+        <div class="row">
+          <img class="myimg"src="" alt="">
+          <img class="myimg"src="" alt="">
+          <img class="myimg"src="" alt="">
+          <img class="myimg"src="" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyiN7gBLBgWgVMwkBRZ4YvFB27wwF_Yh4&libraries=visualization"></script>
+  <script>
+    var config = {
+      apiKey: "AIzaSyB5Aji_Ysf6EsI_6cR4kDs3yi9s0bjo9_k",
+      authDomain: "andu-3f6db.firebaseapp.com",
+      databaseURL: "https://andu-3f6db.firebaseio.com",
+      projectId: "andu-3f6db",
+      storageBucket: "andu-3f6db.appspot.com",
+      messagingSenderId: "799401536592"
+    };
+    firebase.initializeApp(config);
+    var address;
+    var storage = firebase.storage();
+
+    function insertImage(){
+      var storageRef = storage.ref();
+      var img = document.getElementsByClassName('myimg');
+      // Create a reference to the file we want to download
+      var starsRef = storageRef.child('vZZUMvxdJqW4LEKjmQXcioJoxx73/image0');
+      // Get the download URL
+      starsRef.getDownloadURL().then(function(url) {
+        // Insert url into an <img> tag to "download"
+        img[0].src = url;
+      });
+      var starsRef = storageRef.child('vZZUMvxdJqW4LEKjmQXcioJoxx73/image1');
+      // Get the download URL
+      starsRef.getDownloadURL().then(function(url) {
+        // Insert url into an <img> tag to "download"
+        img[1].src = url;
+      });
+      var starsRef = storageRef.child('vZZUMvxdJqW4LEKjmQXcioJoxx73/image2');
+      // Get the download URL
+      starsRef.getDownloadURL().then(function(url) {
+        // Insert url into an <img> tag to "download"
+        img[2].src = url;
+      });
+      var starsRef = storageRef.child('vZZUMvxdJqW4LEKjmQXcioJoxx73/image3');
+      // Get the download URL
+      starsRef.getDownloadURL().then(function(url) {
+        // Insert url into an <img> tag to "download"
+        img[3].src = url;
+      });
+    }
+    var storageRef;
+
+    var authData;
+    $(window).ready(function() {
+      var ref = firebase.database().ref('type');
+      ref.once('value').then(function(snapshot) {
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            authdata = user;
+            document.getElementById('login_logout').setAttribute("onclick", "logout()");
+            document.getElementById('signup_hi').innerHTML = authdata.email + "님 환영합니다.";
+
+            document.getElementById('signup_hi').href = "";
+            document.getElementById('login_logout').innerHTML = "로그아웃";
+          }
+          else {
+           authdata = null;
+           alert("로그인이 필요합니다");
+           location.href="index.html";
+          }
+        });
+      });
+      insertImage();
+    });
+
+/////////////////////////
+
+
+
+  </script>
+</html>
