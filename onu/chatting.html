@@ -18,8 +18,8 @@
     <header>
       <nav id="header" class="navbar navbar-expand-lg navbar-dark fixed-top">
         <a class="navbar-brand" href="./index.html">
-          <img src="./img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
-          COPLA
+          <img src="./img/home.png" width="30" height="30" class="d-inline-block align-top" alt="">
+          BORROW PLACE
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -37,18 +37,18 @@
       </nav>
     </header>
     <div class="main-header">
-      <div class="container main-container">
+      <div class="container main-container" style = "width:50%; margin:auto">
         <h1>실시간 채팅</h1>
       </div>
       <div class="chatting_div" style = "height:100%">
-        <div class="last_chat_div" style = "height:70%">
+        <div class="last_chat_div" style = "height:70%; width:50%; margin:auto; background-color:#333">
           <table id = "chat_list">
 
           </table>
         </div>
-        <div class="current_chat" style = "width:100%">
-          <input type="text" name="" id = "current_chat" style = "width:85%">
-          <button onclick = "send_message()">전송</button>
+        <div class="current_chat" style = "width:50%; margin:auto;">
+          <input type="text" name="" id = "current_chat" style = "width:92.5%">
+          <button onclick = "send_message()" style = "background-color:#ffff00; border:#ffff00">전송</button>
         </div>
       </div>
     </div>
@@ -112,7 +112,7 @@
           document.getElementById('signup_hi').href = "";
           document.getElementById('login_logout').innerHTML = "로그아웃";
           var uid = authdata.uid;
-          var dataRef = firebase.database().ref('contract/' + uid +'/message');
+          var dataRef = firebase.database().ref('contract/9iZ99zYoDHNYp8TnRw1Ze7bxzOE3/message');//하나만됨
           dataRef.on('child_added', function(data){
             var keys = Object.keys(data.val());
             console.log(keys);
@@ -159,7 +159,7 @@
               var user_dataRef = firebase.database().ref('users/consumer/' + uid);
               user_dataRef.once('value').then(function(snapshot){
                 var name = snapshot.val().name;
-                var dataRef = firebase.database().ref('contract/' + uid + '/message');
+                var dataRef = firebase.database().ref('contract/9iZ99zYoDHNYp8TnRw1Ze7bxzOE3/message');
                 dataRef.push({
                   auth:name,
                   chat:user_chat
@@ -169,10 +169,10 @@
             }
             else{
 
-              var user_dataRef = firebase.database().ref('users/consumer/' + uid);
+              var user_dataRef = firebase.database().ref('users/provider/' + uid);
               user_dataRef.once('value').then(function(snapshot){
                 var name = snapshot.val().name;
-                var dataRef = firebase.database().ref('contract/' + uid + '/message');
+                var dataRef = firebase.database().ref('contract/9iZ99zYoDHNYp8TnRw1Ze7bxzOE3/message');
                 dataRef.push({
                   auth:name,
                   chat:user_chat

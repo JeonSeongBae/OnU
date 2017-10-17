@@ -18,8 +18,8 @@
     <header>
       <nav id="header" class="navbar navbar-expand-lg navbar-dark fixed-top">
         <a class="navbar-brand" href="./index.html">
-          <img src="./img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
-          공앤유
+          <img src="./img/home.png" width="40" height="35" class="d-inline-block align-top" alt="">
+          BORROW PLACE
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -124,11 +124,13 @@
             console.log(providerList);
             var providerRef = firebase.database().ref('users/provider/');
             if(providerList != null) {
+              var tmp = 0;
+              var pro = [];
               for(var i = 0; i < providerList.length; i++) {
-                var pro = providerList[i];
+                pro[i] = providerList[i];
                 providerRef.child(providerList[i]).child('info').once('value').then(function(snapshot) {
                   var val = snapshot.val();
-                  console.log(val);
+                  console.log(snapshot);
 
                   var tr = document.createElement("tr");
                   var td1 = document.createElement("td");
@@ -139,15 +141,14 @@
                   var btn = document.createElement("button");
                   btn.className = "btn btn-light";
                   btn.setAttribute("type", "button");
-                  btn.setAttribute("onclick", "showPlace('" + pro + "')");
+                  btn.setAttribute("onclick", "showPlace('" + pro[tmp++] + "')");
                   btn.innerHTML = "정보 보기";
 
                   var btn1 = document.createElement("button");
-                  btn1.className = "btn btn-light";
-                  btn1.setAttribute("type", "button");
-                  btn1.setAttribute("onclick", "showPicture('" + uid + "')");
-                  btn1.innerHTML = "사진 보기";
-
+                 btn1.className = "btn btn-light";
+                 btn1.setAttribute("type", "button");
+                 btn1.setAttribute("onclick", "showPicture('" + uid + "')");
+                 btn1.innerHTML = "사진 보기";
                   var select = document.createElement("button");
                   select.className = "btn btn-info";
                   select.innerHTML = "선택하기";
@@ -155,12 +156,11 @@
                   select.setAttribute("onclick", "selectPlace('" + uid + "')");
 
                   td3.appendChild(btn);
-                  td3.appendChild(btn1);
-                  td3.appendChild(select);
-
-                  tr.appendChild(td1);
-                  tr.appendChild(td2);
-                  tr.appendChild(td3);
+                   td3.appendChild(btn1);
+                   td3.appendChild(select);
+                   tr.appendChild(td1);
+                   tr.appendChild(td2);
+                   tr.appendChild(td3);
 
                   $('#providerTable').find('tbody').append(tr);
                 });
@@ -191,6 +191,7 @@
     function showPlace(provideruid) {
       location.href = "showPlace.html?uid=" + provideruid;
     }
+
     function showPicture(provideruid) {
       location.href = "showPicture.html?uid=" + provideruid;
     }
@@ -203,6 +204,9 @@
 
         var completedRef = firebase.database().ref('completed/' + useruid);
         completedRef.set(val);
+
+        alert("선택이 완료되었습니다");
+        location.href="myconsumer.html";
       });
     }
 
