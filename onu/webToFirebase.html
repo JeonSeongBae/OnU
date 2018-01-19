@@ -18,6 +18,13 @@
       <button onclick="writeUserData()" id="setButton">SET SAVE</button>
       <button onclick="writeNewPost()" id="postButton">POST SAVE</button>
     </div>
+
+    <div>name</div>
+    <div id="loadname"></div>
+    <div>email</div>
+    <div id="loademail"></div>
+    <div>number</div>
+    <div id="loadnumber"></div>
   </body>
   <!-- firebase를 연동하기 위한 script -->
   <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
@@ -50,25 +57,33 @@
         });
       }
 
-      function writeNewPost() {
-        var name = document.getElementById("name").value;
-        var email = document.getElementById("email").value;
-        var number = document.getElementById("number").value;
-        // A post entry.
-        var postData = {
-          username: name,
-          useremail: email,
-          usernumber: number
-        };
+    function writeNewPost() {
+      var name = document.getElementById("name").value;
+      var email = document.getElementById("email").value;
+      var number = document.getElementById("number").value;
+      // A post entry.
+      var postData = {
+        username: name,
+        useremail: email,
+        usernumber: number
+      };
 
-        // Get a key for a new Post.
-        var newPostKey = firebase.database().ref().child('posts').push().key;
+      // Get a key for a new Post.
+      var newPostKey = firebase.database().ref().child('posts').push().key;
 
-        // Write the new post's data simultaneously in the posts list and the user's post list.
-        var updates = {};
-        updates['/posts/' + newPostKey] = postData;
+      // Write the new post's data simultaneously in the posts list and the user's post list.
+      var updates = {};
+      updates['/posts/' + newPostKey] = postData;
 
-        return firebase.database().ref().update(updates);
-      }
+      return firebase.database().ref().update(updates);
+    }
+
+    var databaseRef = firebase.database().ref('set/');
+      databaseRef.on('value', function(snapshot) {
+      document.getElementById("loadname").innerHTML = snapshot.val().username;
+      document.getElementById("loademail").innerHTML = snapshot.val().useremail;
+      document.getElementById("loadnumber").innerHTML = snapshot.val().usernumber;
+    });
+
   </script>
 </html>
